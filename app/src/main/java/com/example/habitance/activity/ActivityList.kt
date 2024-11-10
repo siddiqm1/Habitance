@@ -1,4 +1,4 @@
-package com.example.habitance
+package com.example.habitance.activity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +21,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,20 +34,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 
-val fontFamily = FontFamily(
-    Font(R.font.lexend_bold, FontWeight.Bold),
-    Font(R.font.lexend_thin, FontWeight.Thin),
-    Font(R.font.lexend_black, FontWeight.Black),
-    Font(R.font.lexend_light, FontWeight.Light),
-    Font(R.font.lexend_medium, FontWeight.Medium),
-    Font(R.font.lexend_extrabold, FontWeight.ExtraBold),
-    Font(R.font.lexend_extralight, FontWeight.ExtraLight),
-    Font(R.font.lexend_regular, FontWeight.Normal),
-    Font(R.font.lexend_semibold, FontWeight.SemiBold),
-)
+
 @Composable
 fun AddActivityScreen(){
     Column(
