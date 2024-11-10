@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "423682718959",
+    "project_id": "habitance-2bec7",
+    "storage_bucket": "habitance-2bec7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423682718959:android:1925c6a160513b61a4af1a",
+        "android_client_info": {
+          "package_name": "com.example.habitance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYd_Y0hgyHlJqbavH_YFDwaCHQmBmr30I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
