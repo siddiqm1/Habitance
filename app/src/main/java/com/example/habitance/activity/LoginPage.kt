@@ -146,7 +146,7 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Username ID") },
+                    label = { Text("Username ID",color = Color.Gray) },
                     placeholder = { Text("Enter your username") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon")
@@ -161,7 +161,7 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password") },
+                    label = { Text("Password",color = Color.Gray) },
                     placeholder = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
