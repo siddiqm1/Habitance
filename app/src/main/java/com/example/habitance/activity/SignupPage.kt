@@ -71,6 +71,7 @@ fun SignupPage(
                 (authState.value as AuthState.Error).message,
                 Toast.LENGTH_SHORT
             ).show()
+
             else -> Unit
         }
     }
@@ -87,6 +88,15 @@ fun SignupPage(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "App Logo",
             modifier = Modifier.size(100.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Habitance",
+            fontSize = 28.sp,
+            fontFamily = fontFamily,  // Gunakan FontFamily yang sudah didefinisikan
+            fontWeight = FontWeight.Bold,  // Pilih gaya bold dari FontFamily
+            color = Color(0xFF1A5D44)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -118,7 +128,7 @@ fun SignupPage(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Username ID") },
+                    label = { Text("Username ID",color = Color.Gray) },
                     placeholder = { Text("Enter your username") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon")
@@ -133,7 +143,7 @@ fun SignupPage(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password") },
+                    label = { Text("Password",color = Color.Gray) },
                     placeholder = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
@@ -167,43 +177,44 @@ fun SignupPage(
                         onClick = { navController.navigate("login") },
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text(text = "Login", fontSize = 14.sp)
+                        Text(text = "Login", fontSize = 14.sp ,color = Color(0xFF1A5D44))
                     }
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
 
-        // Login with Third Party
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Divider(modifier = Modifier.weight(1f))
-            Text(
-                text = " or Continue with ",
-                fontSize = 12.sp,
-                modifier = Modifier.padding(horizontal = 8.dp),
-                color = Color.Gray
-            )
-            Divider(modifier = Modifier.weight(1f))
-        }
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Google and Facebook Buttons
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            TextButton(onClick = { /* Google Login */ }) {
-                Text(text = "Google", color = Color.Gray)
+            // Login with Third Party
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Divider(modifier = Modifier.weight(1f))
+                Text(
+                    text = " or Continue with ",
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    color = Color.Gray
+                )
+                Divider(modifier = Modifier.weight(1f))
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            TextButton(onClick = { /* Facebook Login */ }) {
-                Text(text = "Facebook", color = Color.Gray)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Google and Facebook Buttons
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TextButton(onClick = { /* Google Login */ }) {
+                    Text(text = "Google", color = Color.Gray)
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                TextButton(onClick = { /* Facebook Login */ }) {
+                    Text(text = "Facebook", color = Color.Gray)
+                }
             }
         }
     }
