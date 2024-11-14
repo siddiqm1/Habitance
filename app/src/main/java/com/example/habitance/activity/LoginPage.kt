@@ -1,11 +1,11 @@
 package com.example.habitance.activity
-//import android.graphics.fonts.Font
-//import android.graphics.fonts.FontFamily
-import androidx.compose.material3.IconButton
+
+
 import androidx.compose.foundation.Image
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -38,17 +38,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-//import androidx.compose.ui.text.font.Font
-//import androidx.compose.ui.text.font.FontFamily
-
-
 import androidx.compose.ui.text.font.FontWeight
-
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -125,7 +122,9 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
             shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp) // Perbaikan Elevas
+            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp), // Perbaikan Elevas
+            colors = CardDefaults.cardColors(containerColor = Color.White)
+
         ) {
             Column(
                 modifier = Modifier
@@ -186,24 +185,10 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                     Text(text = "LOGIN", color = Color.White)
                 }
 
+
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Text untuk Sign Up
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                ) {
-                    Text(text = "Don't have an account?")
-                    TextButton(
-                        onClick = { navController.navigate("signup") },
-                        contentPadding = PaddingValues(0.dp)
-                    ) {
-                        Text(text = "Sign up", color = Color(0xFF1A5D44))
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-
-                //Login dengan Third Party
+                //or
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
@@ -211,28 +196,66 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                 ) {
                     Divider(modifier = Modifier.weight(1f))
                     Text(
-                        text = " or Continue with ",
-                        fontSize = 12.sp,
+                        text = " or ",
+                        fontSize = 13.sp,
                         modifier = Modifier.padding(horizontal = 8.dp),
                         color = Color.Gray
                     )
                     Divider(modifier = Modifier.weight(1f))
                 }
-
+                // Google login
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextButton(onClick = { /* Google */ }) {
-                        Text(text = "Google", color = Color.Gray)
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    TextButton(onClick = { /* Facebook */ }) {
-                        Text(text = "Facebook", color = Color.Gray)
+
+                    Box(
+                        modifier = Modifier
+
+                            .shadow(elevation = 2.dp, shape = RoundedCornerShape(8.dp)) // Efek elevation
+                            .clip(RoundedCornerShape(8.dp)) // Sudut membulat
+                            .background(Color.White) // Background putih
+                            .padding(horizontal = 8.dp, vertical = 4.dp) // Padding di sekitar konten
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically, // Menjaga ikon dan teks agar berada di tengah secara vertikal
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            // Ikon Google
+                            Image(
+                                painter = painterResource(id = R.drawable.google),
+                                contentDescription = "Google",
+                                modifier = Modifier.size(36.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp)) // Spacer untuk jarak antara ikon dan teks
+
+                            // Teks "Google"
+                            Text(
+                                text = "Continue with Google",
+                                fontSize = 14.sp,
+                                color = Color.Black
+                            )
+                        }
                     }
                 }
 
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Text untuk Sign Up
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                ) {
+                    Text(text = "Don't have an account?", fontSize = 13.sp)
+                    TextButton(
+                        onClick = { navController.navigate("signup") },
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text(text = "Sign up", fontSize = 13.sp, color = Color(0xFF1A5D44))
+                    }
+                }
 
             }
         }

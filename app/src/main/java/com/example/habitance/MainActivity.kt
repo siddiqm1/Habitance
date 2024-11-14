@@ -17,16 +17,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val authViewModel : AuthViewModel by viewModels()
+        val authViewModel: AuthViewModel by viewModels()
         setContent {
-           HabitanceTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()){
-                        innerPadding -> Navigation(modifier = Modifier.padding(innerPadding), authViewModel = AuthViewModel())
+            HabitanceTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Navigation(
+                        modifier = Modifier.padding(innerPadding),
+                        authViewModel = AuthViewModel()
+                    )
                 }
-
 
 
             }
         }
     }
 }
+

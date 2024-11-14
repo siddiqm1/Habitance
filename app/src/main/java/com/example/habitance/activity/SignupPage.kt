@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,6 +38,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -107,7 +111,8 @@ fun SignupPage(
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
             shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp) // Perbaikan Elevas
+            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp), // Perbaikan Elevas
+            colors = CardDefaults.cardColors(containerColor = Color.White)
         ) {
             Column(
                 modifier = Modifier
@@ -121,14 +126,24 @@ fun SignupPage(
                     fontWeight = FontWeight.Bold,
                     color = Color.DarkGray
                 )
+                //nama
+//                Spacer(modifier = Modifier.height(16.dp))
+//                OutlinedTextField(
+//                    value = Name,
+//                    onValueChange = { Name = it },
+//                    label = { Text("Name", color = Color.Gray) },
+//                    placeholder = { Text("Enter your name") },
+//
+//                )
 
-                Spacer(modifier = Modifier.height(16.dp))
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 // Input Email
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Username ID",color = Color.Gray) },
+                    label = { Text("Username ID", color = Color.Gray) },
                     placeholder = { Text("Enter your username") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon")
@@ -143,7 +158,7 @@ fun SignupPage(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password",color = Color.Gray) },
+                    label = { Text("Password", color = Color.Gray) },
                     placeholder = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
@@ -152,6 +167,8 @@ fun SignupPage(
                     visualTransformation = PasswordVisualTransformation(),
                     shape = RoundedCornerShape(50)
                 )
+
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -170,50 +187,70 @@ fun SignupPage(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                // Login with Third Party
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Divider(modifier = Modifier.weight(1f))
+                    Text(
+                        text = " or ",
+                        fontSize = 13.sp,
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        color = Color.Gray
+                    )
+                    Divider(modifier = Modifier.weight(1f))
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Tombol Google
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    // Box untuk ikon Google dan teks "Google"
+                    Box(
+                        modifier = Modifier
+                            .shadow(elevation = 2.dp, shape = RoundedCornerShape(8.dp)) // Efek elevation
+                            .clip(RoundedCornerShape(8.dp)) // Sudut membulat
+                            .background(Color.White) // Background putih
+                            .padding(horizontal = 8.dp, vertical = 4.dp) // Padding di sekitar konten
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically, // Menjaga ikon dan teks agar berada di tengah secara vertikal
+                            modifier = Modifier.padding(8.dp)
+                        ) {
+                            // Ikon Google
+                            Image(
+                                painter = painterResource(id = R.drawable.google),
+                                contentDescription = "Google",
+                                modifier = Modifier.size(36.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp)) // Spacer untuk jarak antara ikon dan teks
+
+                            // Teks "Google"
+                            Text(
+                                text = "Continue with Google",
+                                fontSize = 14.sp,
+                                color = Color.Black
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+
                 // Already have an account? Login
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "Already have an account?")
+                    Text(text = "Already have an account?", fontSize = 13.sp)
                     TextButton(
                         onClick = { navController.navigate("login") },
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text(text = "Login", fontSize = 14.sp ,color = Color(0xFF1A5D44))
+                        Text(text = "Login", fontSize = 13.sp, color = Color(0xFF1A5D44))
                     }
-                }
-            }
-
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Login with Third Party
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Divider(modifier = Modifier.weight(1f))
-                Text(
-                    text = " or Continue with ",
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    color = Color.Gray
-                )
-                Divider(modifier = Modifier.weight(1f))
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Google and Facebook Buttons
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                TextButton(onClick = { /* Google Login */ }) {
-                    Text(text = "Google", color = Color.Gray)
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                TextButton(onClick = { /* Facebook Login */ }) {
-                    Text(text = "Facebook", color = Color.Gray)
                 }
             }
         }
