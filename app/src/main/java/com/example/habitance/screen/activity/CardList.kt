@@ -1,4 +1,4 @@
-package com.example.habitance.activity
+package com.example.habitance.screen.activity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,6 +40,7 @@ import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.NewGreen
+import com.example.habitance.ui.theme.fontFamily
 
 @Composable
 fun CardView() {

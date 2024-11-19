@@ -1,9 +1,6 @@
 package com.example.habitance.activity
-//import android.graphics.fonts.Font
-//import android.graphics.fonts.FontFamily
-import androidx.compose.material3.IconButton
+
 import androidx.compose.foundation.Image
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,91 +12,67 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-//import androidx.compose.ui.text.font.Font
-//import androidx.compose.ui.text.font.FontFamily
-
-
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.habitance.AuthState
-import com.example.habitance.AuthViewModel
+import com.example.habitance.AuthManager
 import com.example.habitance.R
-
-val fontFamily = FontFamily(
-    Font(R.font.lexend_bold, FontWeight.Bold),
-    Font(R.font.lexend_thin, FontWeight.Thin),
-    Font(R.font.lexend_black, FontWeight.Black),
-    Font(R.font.lexend_light, FontWeight.Light),
-    Font(R.font.lexend_medium, FontWeight.Medium),
-    Font(R.font.lexend_extrabold, FontWeight.ExtraBold),
-    Font(R.font.lexend_extralight, FontWeight.ExtraLight),
-    Font(R.font.lexend_regular, FontWeight.Normal),
-    Font(R.font.lexend_semibold, FontWeight.SemiBold),
-)
-
+import com.example.habitance.screen.auth.login.LoginViewModel
+import com.example.habitance.ui.theme.BackGround
+import com.example.habitance.ui.theme.Name
+import com.example.habitance.ui.theme.fontFamily
+import kotlinx.coroutines.launch
 
 @Composable
 
-fun LoginPage(modifier : Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel){
-
-    var email by remember {
-        mutableStateOf("") }
-    var password by remember {
-        mutableStateOf("") }
-
-    val authState = authViewModel.authState.observeAsState()
-    val context = LocalContext.current
-
-    LaunchedEffect(authState.value) {
-        when (authState.value) {
-            is AuthState.Authenticated -> navController.navigate("home")
-            is AuthState.Error -> Toast.makeText(context,
-                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
-            else -> Unit
-        }
-    }
-
+fun LoginPage(
+    modifier : Modifier = Modifier,
+    navController: NavController,
+) {
+    val viewModel = LoginViewModel(LocalContext.current)
+    val email by viewModel.email.collectAsState()
+    val password by viewModel.password.collectAsState()
+    val passwordVisibility by viewModel.isPasswordVisible.collectAsState()
 
     Column(
         modifier
             .fillMaxSize()
-            .background(Color(0xFFC4DAD2)), // Sesuaikan warna latar belakang
+            .background(BackGround), // Sesuaikan warna latar belakang
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-
-    ){
+    ) {
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "App Logo",
@@ -108,14 +81,12 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Habitance",
+            text = stringResource(R.string.app_name),
             fontSize = 28.sp,
             fontFamily = fontFamily,  // Gunakan FontFamily yang sudah didefinisikan
             fontWeight = FontWeight.Bold,  // Pilih gaya bold dari FontFamily
-            color = Color(0xFF1A5D44)
+            color = Name
         )
-
-
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -125,6 +96,7 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
             shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp) // Perbaikan Elevas
         ) {
             Column(
@@ -145,8 +117,8 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                 // Input Email
                 OutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
-                    label = { Text("Username ID",color = Color.Gray) },
+                    onValueChange = { viewModel.updateEmail(it)},
+                    label = { Text("Username ID", color = Color.Gray) },
                     placeholder = { Text("Enter your username") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon")
@@ -160,14 +132,22 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                 // Input Password
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Password",color = Color.Gray) },
+                    onValueChange = { viewModel.updatePassword(it)},
+                    label = { Text("Password", color = Color.Gray) },
                     placeholder = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
                     },
+                    trailingIcon = {
+                        IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
+                            Icon(
+                                imageVector = if (passwordVisibility) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                contentDescription = "Password Visibility"
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
                     shape = RoundedCornerShape(50)
                 )
 
@@ -175,8 +155,12 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
 
                 // Tombol Login
                 Button(
-                    onClick = { authViewModel.login(email, password) },
-                    enabled = authState.value != AuthState.Loading,
+                    onClick = {
+                        viewModel.loginWithEmailAndPassword {
+                            navController.navigate("home")
+                        }
+                    },
+//                    enabled = authState.value != AuthState.Loading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
@@ -209,32 +193,47 @@ fun LoginPage(modifier : Modifier = Modifier, navController: NavController, auth
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Divider(modifier = Modifier.weight(1f))
+                    HorizontalDivider(modifier = Modifier.weight(1f))
                     Text(
                         text = " or Continue with ",
                         fontSize = 12.sp,
                         modifier = Modifier.padding(horizontal = 8.dp),
                         color = Color.Gray
                     )
-                    Divider(modifier = Modifier.weight(1f))
+                    HorizontalDivider(modifier = Modifier.weight(1f))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
+                OutlinedButton(
+                    onClick = {
+                        viewModel.signInWithGoogle {
+                            navController.navigate("home")
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
                 ) {
-                    TextButton(onClick = { /* Google */ }) {
-                        Text(text = "Google", color = Color.Gray)
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    TextButton(onClick = { /* Facebook */ }) {
-                        Text(text = "Facebook", color = Color.Gray)
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.google),
+                            contentDescription = null,
+                            modifier = Modifier.size(36.dp).padding(end = 8.dp)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.google_sign_in),
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Black
+                        )
                     }
                 }
-
-
             }
+
+
         }
     }
 }

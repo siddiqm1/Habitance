@@ -1,4 +1,4 @@
-package com.example.habitance.activity
+package com.example.habitance.screen.activity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,8 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,10 +35,11 @@ import androidx.compose.ui.unit.sp
 import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
+import com.example.habitance.ui.theme.fontFamily
 
 
 @Composable
-fun AddActivityScreen(){
+fun ActivityList(){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -169,5 +168,5 @@ fun AddActivityScreen(){
 @Composable
 @Preview
 fun AddActivityScreenPreview(){
-    AddActivityScreen()
+    ActivityList()
 }
