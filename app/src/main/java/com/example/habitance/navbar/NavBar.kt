@@ -44,7 +44,7 @@ fun NavBar() {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomBar(navController = navController) }, // Navbar tetap di bawah
+        bottomBar = { BottomBar(navController = navController) },
         containerColor = Color.White
     ) { paddingValues ->
         Column(
@@ -64,7 +64,7 @@ fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Activity,
-        BottomBarScreen.Register,
+        BottomBarScreen.FinisActivity,
         BottomBarScreen.Note
     )
 

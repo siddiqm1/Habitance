@@ -26,15 +26,15 @@ sealed class BottomBarScreen(
     )
     object Note : BottomBarScreen(
         route = "note",
-        title = "Notes",
+        title = "Note",
         icon = R.drawable.note,
         icon_focused = R.drawable.note_focused
     )
 
-    // for report
-    object Register: BottomBarScreen(
-        route = "register",
-        title = "Activity",
+    // for Finis
+    object FinisActivity: BottomBarScreen(
+        route = "finis",
+        title = "FinisActivity",
         icon = R.drawable.ic_bottom_report,
         icon_focused = R.drawable.ic_bottom_report_focused
     )

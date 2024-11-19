@@ -9,6 +9,7 @@ import com.example.habitance.Screen.Activity.ActivityList
 import com.example.habitance.Screen.HomePage
 import com.example.habitance.Screen.Note.NotePage
 import com.example.habitance.Screen.Auth.RegisterPage
+import com.example.habitance.Screen.FinisActivity.FinisPage
 
 @Composable
 fun BottomNavGraph(
@@ -27,9 +28,9 @@ fun BottomNavGraph(
             ActivityList()
 
         }
-        composable(route = BottomBarScreen.Register.route)
+        composable(route = BottomBarScreen.FinisActivity.route)
         {
-            RegisterPage()
+            FinisPage()
         }
         composable(route = BottomBarScreen.Note.route)
         {
