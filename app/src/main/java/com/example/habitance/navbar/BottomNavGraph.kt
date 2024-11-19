@@ -4,16 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
-import com.example.habitance.Screen.Activity.ActivityList
-import com.example.habitance.Screen.HomePage
-import com.example.habitance.Screen.Note.NotePage
-import com.example.habitance.Screen.Auth.RegisterPage
-import com.example.habitance.Screen.FinisActivity.FinisPage
+import com.example.habitance.screen.activity.ActivityList
+import com.example.habitance.screen.HomePage
+import com.example.habitance.screen.Note.NotePage
+import com.example.habitance.screen.FinisActivity.FinisPage
 
 @Composable
 fun BottomNavGraph(
-    navController: NavHostController
+    navController: NavHostController = rememberNavController()
 ) {
     NavHost(
         navController = navController,
@@ -21,7 +21,7 @@ fun BottomNavGraph(
     ) {
         composable(route = BottomBarScreen.Home.route)
         {
-           HomePage()
+           HomePage(navController = navController)
         }
         composable(route = BottomBarScreen.Activity.route)
         {

@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.credentials:credentials:1.5.0-beta01")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -65,6 +65,9 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.tv.material)
+    implementation(libs.googleid)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.material3.lint)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,4 +81,14 @@ dependencies {
     val nav_version = "2.8.0"
 
     implementation(libs.androidx.navigation.compose)
+
+    implementation (libs.accompanist.pager)
+    implementation (libs.accompanist.pager.indicators)
+    implementation ("androidx.compose.foundation:foundation:1.7.5") // Versi terbaru Compose Foundation
+    implementation ("androidx.compose.material3:material3:1.3.1")
+
+    implementation(libs.material3)
+    implementation(libs.androidx.material.icons.core)
+    implementation(libs.androidx.material.icons.extended)
+
 }
