@@ -26,7 +26,7 @@ sealed class BottomBarScreen(
     )
     object Note : BottomBarScreen(
         route = "note",
-        title = "Note",
+        title = "Notes",
         icon = R.drawable.note,
         icon_focused = R.drawable.note_focused
     )

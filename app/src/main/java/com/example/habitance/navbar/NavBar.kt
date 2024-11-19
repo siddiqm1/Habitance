@@ -50,7 +50,7 @@ fun NavBar() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues) // Memberi ruang untuk navbar
+                .padding(paddingValues)
                 .verticalScroll(rememberScrollState()) // Menambahkan scrolling ke konten
         ) {
             BottomNavGraph(navController = navController)
