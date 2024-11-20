@@ -86,6 +86,8 @@ dependencies {
     implementation (libs.accompanist.pager.indicators)
     implementation ("androidx.compose.foundation:foundation:1.7.5") // Versi terbaru Compose Foundation
     implementation ("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
 
     implementation(libs.material3)
     implementation(libs.androidx.material.icons.core)
