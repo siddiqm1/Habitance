@@ -51,7 +51,9 @@ android {
 }
 
 dependencies {
-    implementation("androidx.credentials:credentials:1.5.0-beta01")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.androidx.credentials)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -68,6 +70,8 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.material3.lint)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,15 +82,14 @@ dependencies {
 
 
 
-    val nav_version = "2.8.0"
 
     implementation(libs.androidx.navigation.compose)
 
     implementation (libs.accompanist.pager)
     implementation (libs.accompanist.pager.indicators)
-    implementation ("androidx.compose.foundation:foundation:1.7.5") // Versi terbaru Compose Foundation
-    implementation ("androidx.compose.material3:material3:1.3.1")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation (libs.androidx.foundation) // Versi terbaru Compose Foundation
+    implementation (libs.androidx.material3.v131)
+    implementation(libs.androidx.constraintlayout.compose)
 
 
     implementation(libs.material3)

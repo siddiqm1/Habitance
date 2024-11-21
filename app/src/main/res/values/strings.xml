@@ -14,5 +14,6 @@
     <string name="reset_password_success">reset</string>
     <string name="or_continue_with">gas</string>
     <string name="google_sign_in">google</string>
+    <string name="register">Register</string>
 
 </resources>

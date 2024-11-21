@@ -1,10 +1,8 @@
-package com.example.habitance.screen.auth
+package com.example.habitance.function
 
 import android.content.Context
-import androidx.credentials.Credential
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.habitance.AuthManager
 import kotlinx.coroutines.launch
 
 open class AuthViewModel(
