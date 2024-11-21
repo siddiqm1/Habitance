@@ -1,4 +1,4 @@
-package com.example.habitance.screen.FinisActivity
+package com.example.habitance.screen.finished
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FinisPage(){
+fun FinishedPage(){
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

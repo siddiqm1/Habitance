@@ -1,13 +1,9 @@
 package com.example.habitance.screen.auth.login
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.habitance.AuthManager
-import com.example.habitance.screen.auth.AuthViewModel
+import com.example.habitance.function.AuthViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 class LoginViewModel(
     context: Context

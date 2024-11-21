@@ -1,5 +1,6 @@
-package com.example.habitance.screen
+package com.example.habitance.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,20 +31,20 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.habitance.AuthManager
+import com.example.habitance.function.AuthManager
 import com.example.habitance.R
+import com.example.habitance.ui.theme.BackGround
 
 @Composable
 fun HomePage(
-//    modifier: Modifier = Modifier,
-//    authManager: NavHostController,
-    navController: NavHostController
+navMainController: NavController
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFE9EFEC))
+            .background(BackGround)
 
     ) {
         //head
@@ -51,7 +52,7 @@ fun HomePage(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(157.dp)
-                .background(Color(0xFF6A9C89))
+                .background(BackGround)
                 .padding(horizontal = 21.dp)
 
 
@@ -97,7 +98,8 @@ fun HomePage(
                     contentDescription = "Keluar",
                     modifier = Modifier.size(24.dp).clickable {
                         AuthManager(context).signOut()
-                        navController.navigate("login")
+                        Log.d("cobs","$navMainController")
+                        navMainController?.navigate("login")
 
                     },
                     tint = Color.Black
