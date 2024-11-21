@@ -1,4 +1,4 @@
-package com.example.habitance.activity
+package com.example.habitance.screen.Note
 
 
 import androidx.compose.foundation.Image
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,14 +32,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.tv.material3.Border
+
 import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
+import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun NoteScreen() {
+fun NotePage() {
     val scrollState = rememberScrollState()
     Column(modifier = Modifier
         .fillMaxSize()
@@ -150,6 +150,8 @@ fun NoteScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun NoteScreenPreview() {
-    NoteScreen()
+fun NotePagePreview() {
+    NotePage()
 }
+
+
