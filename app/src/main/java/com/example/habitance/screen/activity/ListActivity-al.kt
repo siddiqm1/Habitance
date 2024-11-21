@@ -1,5 +1,6 @@
 package com.example.habitance.screen.activity
 
+import android.app.ListActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,7 +49,7 @@ import com.example.habitance.ui.theme.fontFamily
 
 
 @Composable
-fun CardList() {
+fun CardActivity() {
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
@@ -264,7 +265,7 @@ fun CardList() {
 //}
 
 @Composable
-fun ListActivity(){
+fun BasePageList(cardItem: @Composable () -> Unit, title: String){
     Column(modifier = Modifier
         .fillMaxSize()
         .background(BackGround)
@@ -305,7 +306,7 @@ fun ListActivity(){
                 modifier = Modifier.padding(25.dp)
             ){
                 Text(
-                    text= "ACTIVITY LIST",
+                    text= title,
                     fontSize = 22.sp,
                     color = NewGreen,
                     fontFamily = fontFamily,
@@ -379,24 +380,26 @@ fun ListActivity(){
                         )
                     }
                 }
-                Spacer(Modifier.size(15.dp))
+                Spacer(Modifier.size(21.dp))
 
-                CardList()
-                CardList()
-                CardList()
-                CardList()
-
+                cardItem()
             }
         }
     }
 }
 
+//@Composable
+//fun ListActivity(){
+//    BasePageList(cardItem = CardActivity())
+//}
+
+
+
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    CardList()
-    ListActivity()
+    BasePageList(cardItem = { CardActivity() }, title = "ACTIVITY LIST")
 }
 
 //@Preview(showBackground = true)
