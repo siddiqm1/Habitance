@@ -26,6 +26,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -48,7 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
-import com.example.habitance.ui.theme.Name
+import com.example.habitance.ui.theme.TextLogo
 import com.example.habitance.ui.theme.fontFamily
 
 
@@ -84,7 +85,7 @@ fun SignupPage(
             fontSize = 28.sp,
             fontFamily = fontFamily,  // Gunakan FontFamily yang sudah didefinisikan
             fontWeight = FontWeight.Bold,  // Pilih gaya bold dari FontFamily
-            color = Name
+            color = TextLogo
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -119,7 +120,7 @@ fun SignupPage(
                     singleLine = true,
                     value = email,
                     onValueChange = { viewModel.updateEmail(it) },
-                    label = { Text("Email",color = Color.Gray) },
+                    label = { Text("Email",color = Color.Gray,fontSize = 13.sp) },
                     placeholder = { Text("Enter your username") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon")
@@ -135,7 +136,7 @@ fun SignupPage(
                     singleLine = true,
                     value = password,
                     onValueChange = { viewModel.updatePassword(it) },
-                    label = { Text("Password",color = Color.Gray) },
+                    label = { Text("Password",color = Color.Gray,fontSize = 13.sp) },
                     placeholder = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
@@ -158,7 +159,7 @@ fun SignupPage(
                     singleLine = true,
                     value = confirmPassword,
                     onValueChange = { viewModel.updateConfirmPassword(it) },
-                    label = { Text("Confirm Password",color = Color.Gray) },
+                    label = { Text("Confirm Password",color = Color.Gray, fontSize = 13.sp)},
                     placeholder = { Text("Confirm Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
@@ -199,7 +200,7 @@ fun SignupPage(
 
 
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             // Login with Third Party
             Row(
@@ -239,22 +240,28 @@ fun SignupPage(
                     Image(
                         painter = painterResource(id = R.drawable.google),
                         contentDescription = null,
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(36.dp).padding(end = 8.dp)
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Continue With Google", color = Color.Gray)
+                    Text(
+                        text = "Continue With Google",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Gray
+                    )
                 }
             }
                 Spacer(modifier = Modifier.height(30.dp))
                 // Already have an account? Login
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 0.dp))
+                {
                     Text(text = "Already have an account?",color = Color.Gray, fontSize = 13.sp)
                     TextButton(
                         onClick = { navController.navigate("login") },
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text(text = "Login", fontSize = 13.sp ,color = Color(0xFF1A5D44))
+                        Text(text = "Login", fontSize = 13.sp ,color = Color(0xFF1A5D44), fontWeight = FontWeight.Bold)
                     }
                 }
             }

@@ -1,6 +1,5 @@
 package com.example.habitance.screen.auth.register
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,7 +31,7 @@ class RegisterViewModel : ViewModel() {
 
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-    // Update functions for each state value
+    // Update
     fun updateFirstname(newFirstname: String) {
         _firstname.value = newFirstname
     }

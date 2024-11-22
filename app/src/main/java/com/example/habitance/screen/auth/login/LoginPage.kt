@@ -48,7 +48,8 @@ import androidx.navigation.NavController
 import com.example.habitance.R
 import com.example.habitance.screen.auth.login.LoginViewModel
 import com.example.habitance.ui.theme.BackGround
-import com.example.habitance.ui.theme.Name
+import com.example.habitance.ui.theme.Text
+import com.example.habitance.ui.theme.TextLogo
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -65,7 +66,7 @@ fun LoginPage(
     Column(
         modifier
             .fillMaxSize()
-            .background(BackGround), // Sesuaikan warna latar belakang
+            .background(BackGround),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -79,9 +80,9 @@ fun LoginPage(
         Text(
             text = stringResource(R.string.app_name),
             fontSize = 28.sp,
-            fontFamily = fontFamily,  // Gunakan FontFamily yang sudah didefinisikan
-            fontWeight = FontWeight.Bold,  // Pilih gaya bold dari FontFamily
-            color = Name
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Bold,
+            color = TextLogo
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -114,10 +115,13 @@ fun LoginPage(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { viewModel.updateEmail(it)},
-                    label = { Text("Username ID", color = Color.Gray) },
+                    label = { Text("Username ID", color = Color.Gray,fontSize = 13.sp) },
                     placeholder = { Text("Enter your username") },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon")
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = "Email Icon"
+                        )
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(50)
@@ -129,7 +133,7 @@ fun LoginPage(
                 OutlinedTextField(
                     value = password,
                     onValueChange = { viewModel.updatePassword(it)},
-                    label = { Text("Password", color = Color.Gray) },
+                    label = { Text("Password", color = Color.Gray,fontSize = 13.sp) },
                     placeholder = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
@@ -163,25 +167,17 @@ fun LoginPage(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A5D44)),
                     shape = RoundedCornerShape(50)
                 ) {
-                    Text(text = "LOGIN", color = Color.White)
+                    Text(
+                        text = "Login",
+                        color = Color.White ,
+                        fontSize = 18.sp,
+                        fontFamily = fontFamily
+                    )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
 
-                // Text untuk Sign Up
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                ) {
-                    Text(text = "Don't have an account?")
-                    TextButton(
-                        onClick = { navController.navigate("signup") },
-                        contentPadding = PaddingValues(0.dp)
-                    ) {
-                        Text(text = "Sign up", color = Color(0xFF1A5D44))
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
+
+                Spacer(modifier = Modifier.height(30.dp))
 
                 //Login dengan Third Party
                 Row(
@@ -221,15 +217,26 @@ fun LoginPage(
                         )
                         Text(
                             text = stringResource(id = R.string.google_sign_in),
-                            fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.titleMedium,
-                            color = Color.Black
+                            color = Color.Gray
                         )
                     }
                 }
+                Spacer(modifier = Modifier.height(30.dp))
+                // Text untuk Sign Up
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(bottom = 0.dp)
+                ) {
+                    Text(text = "Don't have an account?",color = Color.Gray, fontSize = 13.sp)
+                    TextButton(
+                        onClick = { navController.navigate("signup") },
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text(text = "Sign Up", fontSize = 13.sp ,color = Color(0xFF1A5D44), fontWeight = FontWeight.Bold)
+                    }
+                }
             }
-
-
         }
     }
 }
