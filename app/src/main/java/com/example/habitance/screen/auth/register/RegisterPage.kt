@@ -58,7 +58,12 @@ import coil3.request.ImageRequest
 import coil3.request.transformations
 import coil3.transform.CircleCropTransformation
 import com.example.habitance.R
+import com.example.habitance.data.SaveUserDataToFirestore
 import com.example.habitance.data.User
+import com.example.habitance.ui.theme.BackGround
+import com.example.habitance.ui.theme.BackGround2
+import com.example.habitance.ui.theme.Bottom
+import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -78,16 +83,15 @@ fun RegisterScreen(navController: NavController) {
     val dateOfBirth by viewModel.dateOfBirth.collectAsState()
     val gender by viewModel.gender.collectAsState()
     val showDatePicker by viewModel.showDatePicker.collectAsState()
-    val buttonColor = Color(0xFF211321)
+    val buttonColor = Bottom
     val context = LocalContext.current
-    val backgroundColor = Color(0xFF473947)
-    val textFieldColor = Color(0xFF796179)
+    val textFieldColor = BackGround2
     val textColor = Color(0xFF1e1e1e)
     val  currentUser = FirebaseAuth.getInstance().currentUser
 
     Column(
         modifier = Modifier
-            .background(backgroundColor)
+            .background(BackGround)
             .fillMaxSize()
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -95,26 +99,29 @@ fun RegisterScreen(navController: NavController) {
     ) {
         Text(
             text = stringResource(id = R.string.register),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            fontFamily = fontFamily
         )
 
         var isViewingProfileImage by remember { mutableStateOf(false) }
-
-
-
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+        ) { // first name
             TextField(
                 modifier = Modifier.weight(1f),
                 value = firstname,
                 shape = MaterialTheme.shapes.medium,
                 onValueChange = { viewModel.updateFirstname(it) },
-                label = { Text(text = "First Name", color = textColor) },
+                label = {
+                    Text(
+                        text = "First Name",
+                        color = textColor
+                    )
+                },
                 colors = TextFieldDefaults.colors().copy(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
@@ -126,7 +133,7 @@ fun RegisterScreen(navController: NavController) {
             )
 
             Spacer(modifier = Modifier.width(16.dp))
-
+        //lastname
             TextField(
                 modifier = Modifier.weight(1f),
                 value = lastname,
@@ -143,7 +150,7 @@ fun RegisterScreen(navController: NavController) {
                 textStyle = LocalTextStyle.current.copy(color = Color.White)
             )
         }
-
+        //usernanme
         TextField(
             value = username,
             shape = MaterialTheme.shapes.medium,
@@ -159,7 +166,7 @@ fun RegisterScreen(navController: NavController) {
             ),
             textStyle = LocalTextStyle.current.copy(color = Color.White)
         )
-
+        //kalender
         val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
@@ -182,7 +189,7 @@ fun RegisterScreen(navController: NavController) {
             readOnly = true,
             trailingIcon = {
                 IconButton(onClick = {viewModel.updateShowDatePicker(true)}) {
-                    Icon(Icons.Default.DateRange, contentDescription = "nwfnwjfw", tint = Color.White)
+                    Icon(Icons.Default.DateRange, contentDescription = null, tint = Color.Black)
                 }
             }
         )
@@ -212,14 +219,14 @@ fun RegisterScreen(navController: NavController) {
 //gender
         var isExpanded by remember { mutableStateOf(false) }
         val genderOptions = listOf("Male", "Female", "Other")
-        val selectedGender by viewModel.gender.collectAsState()
+        val gender by viewModel.gender.collectAsState()
 
         ExposedDropdownMenuBox(
             expanded = isExpanded,
-            onExpandedChange = { isExpanded = it } // Mengatur expanded state saat TextField ditekan
+            onExpandedChange = { isExpanded = it }
         ) {
             TextField(
-                value = selectedGender,
+                value = gender,
                 onValueChange = {},
                 readOnly = true,
                 label = { Text("Gender", color = textColor) },
@@ -235,20 +242,20 @@ fun RegisterScreen(navController: NavController) {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .menuAnchor() // Anchor untuk menu dropdown
-                    .clickable { isExpanded = true } // Membuka dropdown saat TextField ditekan
+                    .menuAnchor()
+                    .clickable { isExpanded = true }
             )
 
             ExposedDropdownMenu(
                 expanded = isExpanded,
-                onDismissRequest = { isExpanded = false } // Menutup menu saat kehilangan fokus
+                onDismissRequest = { isExpanded = false }
             ) {
                 genderOptions.forEach { genderOption ->
                     DropdownMenuItem(
                         text = { Text(genderOption, color = Color.Black) },
                         onClick = {
-                            viewModel.updateGender(genderOption) // Menyimpan ke ViewModel
-                            isExpanded = false // Menutup dropdown setelah pilihan dipilih
+                            viewModel.updateGender(genderOption)
+                            isExpanded = false
                         }
                     )
                 }
@@ -262,28 +269,32 @@ fun RegisterScreen(navController: NavController) {
             onClick = {
                 val userId = currentUser?.uid
                 if (userId != null) {
-                    saveUserDataToFirestore(
-                        user = User(id = Firebase.auth.currentUser!!.uid,
+                    SaveUserDataToFirestore(
+                        user = User
+                            (
+                            id = Firebase.auth.currentUser!!.uid,
                             name = firstname,
                             email = currentUser.email.toString(),
-                            country = "Indonesia", gender = selectedGender),
+                            country = "Indonesia",
+                            gender = gender
+                        ),
                         context = context
-                    ) { isSuccess ->
+                    )
+                    { isSuccess ->
                         if (isSuccess) {
                             Log.d("FirestoreSave", "Data successfully saved to Firestore")
                         } else {
                             Log.e("FirestoreSave", "Failed to save data to Firestore")
                         }
-            }
+                    }
                 }
-                      },
+                navController.navigate("home")
+            },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
         ) {
             Text(text = "Register", color = Color.White)
         }
-
-
 
         TextButton(
             onClick = {
@@ -292,44 +303,11 @@ fun RegisterScreen(navController: NavController) {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Login", color = Color.White)
+            Text(text = "Back to Login", color = Color.Black)
         }
 
     }
 }
 
-
-fun saveUserDataToFirestore(user: User, context: Context, callback: (Boolean) -> Unit) {
-    val firestore = FirebaseFirestore.getInstance()
-    val currentUser = FirebaseAuth.getInstance().currentUser
-
-    currentUser?.reload()?.addOnCompleteListener { reloadTask ->
-        if (reloadTask.isSuccessful) {
-                val userMap = mapOf(
-                    "name" to user.name,
-                    "email" to user.email,
-                    "country" to user.country,
-                    "gender" to user.gender
-                )
-                Log.d("userData", user.toString())
-
-                // Simpan data ke koleksi "users" dengan ID dokumen berdasarkan userId
-                firestore.collection("users").document(user.id)
-                    .set(userMap)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("loginStatus", "Data saved for verified account")
-                            callback(true) // Return true if data saved and verified
-                        } else {
-                            Log.e("RegisterActivity", "Failed to save data: ${task.exception?.message}")
-                            callback(false) // Return false if data saving failed
-                        }
-                    }
-        } else {
-            Log.e("loginStatus", "Failed to reload user data: ${reloadTask.exception?.message}")
-            callback(false) // Return false if reloading user data failed
-        }
-    }
-}
 
 

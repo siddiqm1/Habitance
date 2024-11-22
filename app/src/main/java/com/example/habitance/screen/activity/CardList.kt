@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.Border
-import com.example.habitance.ui.theme.NewGreen
+import com.example.habitance.ui.theme.Bottom
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -140,7 +140,7 @@ fun CardView() {
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clip(CircleShape),
-                            colors = ButtonDefaults.buttonColors(containerColor = NewGreen)
+                            colors = ButtonDefaults.buttonColors(containerColor = Bottom)
                         ) {}
 
                         Image(

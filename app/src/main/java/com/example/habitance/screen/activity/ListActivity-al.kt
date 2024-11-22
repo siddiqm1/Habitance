@@ -39,12 +39,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
-import com.example.habitance.ui.theme.NewGreen
+import com.example.habitance.ui.theme.Bottom
 import com.example.habitance.ui.theme.fontFamily
 
 
@@ -68,7 +67,7 @@ fun CardList() {
                 fontSize = 13.sp,
                 fontWeight = FontWeight(500),
                 fontFamily = fontFamily,
-                color = NewGreen,
+                color = Bottom,
                 modifier = Modifier
                     .constrainAs(judulText){
                         start.linkTo(parent.start)
@@ -81,7 +80,7 @@ fun CardList() {
                 letterSpacing = 1.sp,
                 fontSize = 6.sp,
                 fontFamily = fontFamily,
-                color = NewGreen,
+                color = Bottom,
                 modifier = Modifier
                     .constrainAs(targetText){
                         end.linkTo(targetText2.end)
@@ -93,7 +92,7 @@ fun CardList() {
                 text = "35/30",
                 fontSize = 15.sp,
                 fontFamily = fontFamily,
-                color = NewGreen,
+                color = Bottom,
                 fontWeight = FontWeight(900),
                 modifier = Modifier
                     .constrainAs(targetText2){
@@ -105,7 +104,7 @@ fun CardList() {
             Icon(
                 imageVector = Icons.Default.Edit,
                 contentDescription = "edit",
-                tint = NewGreen,
+                tint = Bottom,
                 modifier = Modifier
                     .size(17.dp)
                     .constrainAs(editIcon){
@@ -123,7 +122,7 @@ fun CardList() {
             Icon(
                 painter = painterResource(id = R.drawable.target),
                 contentDescription = "target icon",
-                tint = NewGreen,
+                tint = Bottom,
                 modifier = Modifier
                     .size(25.dp)
                     .constrainAs(targetIcon){
@@ -136,7 +135,7 @@ fun CardList() {
                 text = "30 halaman / day",
                 fontSize = 11.sp,
                 fontFamily = fontFamily,
-                color = NewGreen,
+                color = Bottom,
                 modifier = Modifier
                     .constrainAs(targetText){
                         start.linkTo(targetIcon.end, margin = 5.dp)
@@ -147,7 +146,7 @@ fun CardList() {
             Icon(
                 painter = painterResource(id = R.drawable.flag),
                 contentDescription = "start icon",
-                tint = NewGreen,
+                tint = Bottom,
                 modifier = Modifier
                     .size(13.dp)
                     .constrainAs(startIcon){
@@ -159,7 +158,7 @@ fun CardList() {
                 text = "03/01/2024",
                 fontSize = 7.sp,
                 fontFamily = fontFamily,
-                color = NewGreen,
+                color = Bottom,
                 modifier = Modifier
                     .constrainAs(startText){
                         start.linkTo(startIcon.end, margin = 7.dp)
@@ -170,7 +169,7 @@ fun CardList() {
             Icon(
                 painter = painterResource(R.drawable.flag2),
                 contentDescription = "end icon",
-                tint = NewGreen,
+                tint = Bottom,
                 modifier = Modifier
                     .size(13.dp)
                     .constrainAs(endIcon){
@@ -182,7 +181,7 @@ fun CardList() {
                 text = "03/01/2024",
                 fontSize = 7.sp,
                 fontFamily = fontFamily,
-                color = NewGreen,
+                color = Bottom,
                 modifier = Modifier
                     .constrainAs(endText){
                         start.linkTo(endIcon.end, margin = 7.dp)
@@ -211,7 +210,7 @@ fun CardList() {
                         start.linkTo(parent.start, margin = 10.dp)
                     },
                 colors = ButtonDefaults.buttonColors(
-                    NewGreen // Warna latar belakang tombol
+                    Bottom // Warna latar belakang tombol
                 ),
                 contentPadding = PaddingValues(0.dp) // Hilangkan padding default
             ) {
@@ -236,7 +235,7 @@ fun CardList() {
                     text = "lorem12",
                     fontFamily = fontFamily,
                     fontWeight = FontWeight(300),
-                    color = NewGreen,
+                    color = Bottom,
                     fontSize = 7.sp
                 )
             }
@@ -278,7 +277,7 @@ fun ListActivity(){
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back icon",
-                tint = NewGreen,
+                tint = Bottom,
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .padding(start = 32.dp)
@@ -308,7 +307,7 @@ fun ListActivity(){
                 Text(
                     text= "ACTIVITY LIST",
                     fontSize = 22.sp,
-                    color = NewGreen,
+                    color = Bottom,
                     fontFamily = fontFamily,
                     fontWeight = FontWeight(600)
                 )
@@ -323,14 +322,14 @@ fun ListActivity(){
                             .size(42.dp) // Ukuran lingkaran
                             .clip(CircleShape), // Membuat bentuk lingkaran
                         colors = ButtonDefaults.buttonColors(
-                            NewGreen // Warna latar belakang tombol
+                            Bottom // Warna latar belakang tombol
                         ),
                         contentPadding = PaddingValues(0.dp) // Hilangkan padding default
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = "plus",
-                            tint = BackGround
+                            tint = BackGround2
                         )
                     }
                     Spacer(Modifier.size(12.dp))
@@ -354,7 +353,7 @@ fun ListActivity(){
                         modifier = Modifier
                             .weight(1f)
                             .background(
-                                color = NewGreen,
+                                color = Bottom,
                                 shape = RoundedCornerShape(20.dp)
                             )
                             .padding(10.dp),
@@ -363,7 +362,7 @@ fun ListActivity(){
                         Text(
                             text = "Baik",
                             fontFamily = fontFamily,
-                            color = BackGround,
+                            color = BackGround2,
                         )
                     }
                     Box(
@@ -376,7 +375,7 @@ fun ListActivity(){
                         Text(
                             text = "Buruk",
                             fontFamily = fontFamily,
-                            color = NewGreen,
+                            color = Bottom,
                         )
                     }
                 }
