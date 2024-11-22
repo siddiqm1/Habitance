@@ -19,7 +19,7 @@ fun Navigation( modifier : Modifier = Modifier, authManager: AuthManager){
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "register"
+        startDestination = "login"
     ) {
         composable("login"){
            LoginPage(modifier, navController)

@@ -35,10 +35,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -73,17 +77,24 @@ fun LoginPage(
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "App Logo",
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier.size(120.dp)
         )
-        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = stringResource(R.string.app_name),
             fontSize = 28.sp,
-            fontFamily = fontFamily,
-            fontWeight = FontWeight.Bold,
-            color = TextLogo
+            fontFamily = FontFamily.Cursive,
+            fontWeight = FontWeight.Black,
+            color = TextLogo,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = TextLogo,
+                    offset = Offset(2f, 2f),
+
+                )
+            )
         )
+
 
         Spacer(modifier = Modifier.height(24.dp))
 
