@@ -1,4 +1,4 @@
-package com.example.habitance.screen.finished
+package com.example.habitance.screen.FinisedActivity
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

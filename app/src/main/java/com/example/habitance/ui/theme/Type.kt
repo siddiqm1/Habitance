@@ -20,6 +20,8 @@ val fontFamily = FontFamily(
     Font(R.font.lexend_semibold, FontWeight.SemiBold),
 )
 
+
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(

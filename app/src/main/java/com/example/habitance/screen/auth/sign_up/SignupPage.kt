@@ -196,10 +196,6 @@ fun SignupPage(
                 }
 
 
-
-
-
-
             Spacer(modifier = Modifier.height(30.dp))
 
             // Login with Third Party
@@ -229,7 +225,7 @@ fun SignupPage(
                 OutlinedButton(
                     onClick = {
                         viewModel.signInWithGoogle {
-                            navController.navigate("home") //nanti buat ke register
+                            navController.navigate("register") //nanti buat ke register
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
