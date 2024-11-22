@@ -19,7 +19,7 @@ fun Navigation( modifier : Modifier = Modifier, authManager: AuthManager){
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "login"
+        startDestination = "register"
     ) {
         composable("login"){
            LoginPage(modifier, navController)
@@ -28,7 +28,7 @@ fun Navigation( modifier : Modifier = Modifier, authManager: AuthManager){
             SignupPage(modifier, navController)
         }
         composable("register"){
-           RegisterScreen(navController)
+           RegisterScreen(modifier, navController)
         }
         composable("home"){
             BottomNavGraph(navController)

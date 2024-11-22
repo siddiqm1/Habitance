@@ -2,6 +2,7 @@ package com.example.habitance.ui.theme
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import org.w3c.dom.Text
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
@@ -19,8 +20,9 @@ val BackGround = Brush.linearGradient(
 )
 val Border = Color(0xFF6A9C89)
 val Bar = Color(0xFF6A9C89)
-val Text = Color(0xFFC4DAD2)
+val BottomText = Color(0xFFC4DAD2)
 val Border2 = Color(0xFFC4DAD2)
 val TextLogo = Color (0xFF16AC86)
 val Bottom = Color(0xFF16423C)
+val Text = Color(0xFF16423C)
 
