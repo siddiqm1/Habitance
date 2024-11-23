@@ -52,7 +52,6 @@ import androidx.navigation.NavController
 import com.example.habitance.R
 import com.example.habitance.screen.auth.login.LoginViewModel
 import com.example.habitance.ui.theme.BackGround
-import com.example.habitance.ui.theme.Text
 import com.example.habitance.ui.theme.TextLogo
 import com.example.habitance.ui.theme.fontFamily
 
@@ -161,6 +160,9 @@ fun LoginPage(
                     visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
                     shape = RoundedCornerShape(50)
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                //reset password
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
