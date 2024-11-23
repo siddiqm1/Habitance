@@ -37,10 +37,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -78,14 +82,20 @@ fun SignupPage(
             contentDescription = null,
             modifier = Modifier.size(100.dp)
         )
-        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = stringResource(R.string.app_name),
             fontSize = 28.sp,
-            fontFamily = fontFamily,  // Gunakan FontFamily yang sudah didefinisikan
-            fontWeight = FontWeight.Bold,  // Pilih gaya bold dari FontFamily
-            color = TextLogo
+            fontFamily = FontFamily.Cursive,
+            fontWeight = FontWeight.Black,
+            color = TextLogo,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = TextLogo,
+                    offset = Offset(2f, 2f),
+
+                    )
+            )
         )
 
         Spacer(modifier = Modifier.height(24.dp))

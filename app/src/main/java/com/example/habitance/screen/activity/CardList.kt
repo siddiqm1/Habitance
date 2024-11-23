@@ -40,6 +40,7 @@ import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.Bottom
+import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -69,7 +70,8 @@ fun CardView() {
                         text = "Seseorang's Notes",
                         fontSize = 18.sp,
                         fontFamily = fontFamily,
-                        fontWeight = FontWeight(500)
+                        fontWeight = FontWeight(500),
+                        color = TextDark
                     )
 
                     Column(verticalArrangement = Arrangement.Top) {

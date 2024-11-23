@@ -46,10 +46,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -103,13 +107,19 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
             contentDescription = null,
             modifier = Modifier.size(100.dp)
         )
-        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(R.string.app_name),
             fontSize = 28.sp,
-            fontFamily = fontFamily,
-            fontWeight = FontWeight.Bold,
-            color = TextLogo
+            fontFamily = FontFamily.Cursive,
+            fontWeight = FontWeight.Black,
+            color = TextLogo,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = TextLogo,
+                    offset = Offset(2f, 2f),
+
+                    )
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -138,7 +148,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                     TextField(
                         value = firstname,
                         onValueChange = { viewModel.updateFirstname(it) },
-                        label = { Text("First Name", color = textColor) },
+                        label = { Text("First Name", color = textColor,fontSize = 13.sp) },
                         modifier = Modifier.weight(1f),
                         shape = MaterialTheme.shapes.medium,
                         colors = TextFieldDefaults.colors().copy(
@@ -154,7 +164,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                     TextField(
                         value = lastname,
                         onValueChange = { viewModel.updateLastname(it) },
-                        label = { Text("Last Name", color = textColor) },
+                        label = { Text("Last Name", color = textColor,fontSize = 13.sp) },
                         modifier = Modifier.weight(1f),
                         shape = MaterialTheme.shapes.medium,
                         colors = TextFieldDefaults.colors().copy(
@@ -174,7 +184,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                 TextField(
                     value = username,
                     onValueChange = { viewModel.updateUsername(it) },
-                    label = { Text("Username", color = textColor) },
+                    label = { Text("Username", color = textColor,fontSize = 13.sp) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.medium,
                     colors = TextFieldDefaults.colors().copy(
@@ -196,7 +206,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                 TextField(
                     value = dateOfBirth,
                     onValueChange = {},
-                    label = { Text("Date of Birth", color = textColor) },
+                    label = { Text("Date of Birth", color = textColor,fontSize = 13.sp) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { viewModel.updateShowDatePicker(true) },
@@ -253,7 +263,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                     TextField(
                         value = gender,
                         onValueChange = {},
-                        label = { Text("Gender", color = textColor) },
+                        label = { Text("Gender", color = textColor,fontSize = 13.sp) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .menuAnchor(),

@@ -24,5 +24,5 @@ val BottomText = Color(0xFFC4DAD2)
 val Border2 = Color(0xFFC4DAD2)
 val TextLogo = Color (0xFF16AC86)
 val Bottom = Color(0xFF16423C)
-val Text = Color(0xFF16423C)
+val TextDark = Color(0xFF16423C)
 
