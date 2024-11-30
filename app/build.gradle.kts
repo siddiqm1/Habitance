@@ -91,6 +91,9 @@ dependencies {
     implementation (libs.androidx.material3.v131)
     implementation(libs.androidx.constraintlayout.compose)
 
+    implementation("androidx.compose.material3:material3")
+
+
 
     implementation(libs.material3)
     implementation(libs.androidx.material.icons.core)
