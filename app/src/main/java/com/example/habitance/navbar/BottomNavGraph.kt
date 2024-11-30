@@ -11,10 +11,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.habitance.screen.Note.NotePage
-import com.example.habitance.screen.activity.ActivityList
-import com.example.habitance.screen.FinisedActivity.FinishedPage
-import com.example.habitance.screen.home.HomePage
+import com.example.habitance.ui.screens.note.NotePage
+import com.example.habitance.ui.screens.activitylist.ActivityList
+import com.example.habitance.ui.screens.finishedactivity.FinishedPage
+import com.example.habitance.ui.screens.home.HomePage
 
 @Composable
 fun BottomNavGraph(navHostController: NavController) {

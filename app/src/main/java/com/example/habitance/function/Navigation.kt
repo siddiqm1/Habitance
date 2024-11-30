@@ -9,9 +9,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.habitance.activity.LoginPage
 import com.example.habitance.navbar.BottomNavGraph
 import com.example.habitance.navbar.NavBar
-import com.example.habitance.screen.auth.register.RegisterScreen
-import com.example.habitance.screen.auth.sign_up.SignupPage
-import com.example.habitance.screen.home.HomePage
+import com.example.habitance.ui.screens.auth.register.RegisterScreen
+import com.example.habitance.ui.screens.auth.sign_up.SignupPage
+import com.example.habitance.ui.screens.home.HomePage
 
 
 @Composable
