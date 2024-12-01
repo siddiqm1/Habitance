@@ -4,8 +4,11 @@ sealed class Screen(val route: String) {
     object HomeScreen : Screen("home")
     object ActivityScreen : Screen("activity")
     object NoteScreen : Screen("note")
-    object FinisActivityScreen : Screen("finis")
-    object AddActivityScreen : Screen("add_activity")
+    object FinishedActivityScreen : Screen("finished")
+    object FinishedActivityEmpty : Screen("listemptyfinished")
+    object AddActivityScreen : Screen("addactivity")
     object ProfileScreen : Screen("profile")
+    object ActivityListEmpty : Screen("listempty")
+    object ActivityList : Screen("activitylist")
 
 }

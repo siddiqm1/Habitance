@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.habitance.R
+import com.example.habitance.ui.components.CategorySelection
+import com.example.habitance.ui.components.DatePicker
+import com.example.habitance.ui.components.TextFieldActivity
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
@@ -51,7 +55,7 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun FormScreen() {
+fun AddActivity(navigateToActivityListEmpty: () -> Unit, navigateToActivityList: () -> Unit) {
     var activity by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var unit by remember { mutableStateOf("") }
@@ -76,7 +80,9 @@ fun FormScreen() {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                     contentDescription = "back button",
-                    modifier = Modifier.size(25.dp)
+                    modifier = Modifier
+                        .size(25.dp)
+                        .clickable { navigateToActivityList() }
                 )
             }
 
@@ -153,130 +159,6 @@ fun FormScreen() {
 
 @Preview
 @Composable
-fun FormScreenPreview(){
-    FormScreen()
-}
-
-@Composable
-fun TextFieldActivity(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit,
-){
-    Text(
-        text = label,
-        fontSize = 16.sp,
-        fontFamily = fontFamily,
-        fontWeight = FontWeight(500),
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(42.dp)
-            .clip(RoundedCornerShape(30.dp)) // Membulatkan sudut
-            .background(Color.White) // Warna latar belakang
-            .border(1.dp, TextDark, RoundedCornerShape(30.dp)), // Garis tepi
-        maxLines = 35,
-        singleLine = true,
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-        )
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-}
-
-@Composable
-fun CategorySelection() {
-    var category by rememberSaveable { mutableStateOf<String?>(null) }
-
-    Text(
-        text = "Kategori",
-        fontSize = 16.sp,
-        fontFamily = fontFamily,
-        fontWeight = FontWeight(500),
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Button(
-            onClick = { category = "Baik" },
-            modifier = Modifier
-                .weight(1f)
-                .height(48.dp),
-            shape = RoundedCornerShape(24.dp),
-            elevation = ButtonDefaults.buttonElevation(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = if (category == "Baik") Border else BottomText
-            )
-        ) {
-            Text("Baik", color = Color.Black, fontFamily = fontFamily, fontSize = 15.sp)
-        }
-
-        Button(
-            onClick = { category = "Buruk" },
-            shape = RoundedCornerShape(50.dp),
-            modifier = Modifier
-                .weight(1f)
-                .height(48.dp),
-            elevation = ButtonDefaults.buttonElevation(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = if (category == "Buruk") Border else BottomText
-            )
-        ) {
-            Text("Buruk", color = Color.Black, fontFamily = fontFamily, fontSize = 15.sp)
-        }
-    }
-}
-
-@Composable
-fun DatePicker(){
-    Column {
-        Text(
-            text = "Waktu Mulai dan Selesai",
-            fontSize = 16.sp,
-            fontFamily = fontFamily,
-            fontWeight = FontWeight(500),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier
-            .fillMaxWidth()){
-
-            Button(modifier = Modifier
-                .padding(8.dp)
-                .weight(1f),
-                colors = ButtonDefaults.buttonColors(BottomText),
-                border = BorderStroke(1.dp, Border),
-                onClick = {}) {
-                Text(text = "Mulai", modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
-                    fontFamily = fontFamily, fontSize = 14.sp, fontWeight = FontWeight(400), color = TextDark
-                )
-            }
-
-            Button(modifier = Modifier
-                .padding(8.dp)
-                .weight(1f),
-                colors = ButtonDefaults.buttonColors(BottomText),
-                border = BorderStroke(1.dp, Border),
-                onClick = {}) {
-                Text(text = "Selesai", modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
-                    fontFamily = fontFamily, fontSize = 14.sp, fontWeight = FontWeight(400), color = TextDark
-                )
-            }
-        }
-    }
-}
-
-@Preview (showBackground = true)
-@Composable
-fun DatePickerPreview(){
-    DatePicker()
+fun AddActivyreview(){
+    AddActivity({}, {})
 }

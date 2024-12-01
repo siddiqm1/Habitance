@@ -12,8 +12,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.habitance.ui.screens.note.NotePage
-import com.example.habitance.ui.screens.activitylist.ActivityList
-import com.example.habitance.ui.screens.finishedactivity.FinishedPage
+import com.example.habitance.ui.screens.activitylist.ActivityListEmpty
+import com.example.habitance.ui.screens.addactivity.AddActivity
+import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
 import com.example.habitance.ui.screens.home.HomePage
 
 @Composable
@@ -40,13 +41,29 @@ fun BottomNavGraph(navHostController: NavController) {
                     HomePage(navHostController)
                 }
                 composable(route = BottomBarScreen.Activity.route) {
-                    ActivityList()
+                    ActivityListEmpty({})
                 }
                 composable(route = BottomBarScreen.Note.route) {
                     NotePage()
                 }
                 composable(route = BottomBarScreen.FinisActivity.route) {
-                    FinishedPage()
+                    FinishedActivityEmpty()
+                }
+                composable(route = Screen.AddActivityScreen.route){
+                    AddActivity(
+                        navigateToActivityListEmpty = {
+                        navHostController.navigate(Screen.ActivityListEmpty.route)
+                    },
+                        navigateToActivityList = {
+                            navHostController.navigate(Screen.ActivityList.route)
+                        })
+                }
+                composable(route = Screen.ActivityListEmpty.route){
+                    ActivityListEmpty(
+                        navigateToAddActivity = {
+                            navHostController.navigate(Screen.AddActivityScreen.route)
+                        }
+                    )
                 }
             }
         }
