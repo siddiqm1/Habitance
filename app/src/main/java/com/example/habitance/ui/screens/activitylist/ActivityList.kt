@@ -4,6 +4,7 @@ import CardList
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
+import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
@@ -45,7 +49,7 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun ListActivity(){
+fun ActivityList(navController: NavHostController){
     Column(modifier = Modifier
         .fillMaxSize()
         .background(BackGround)
@@ -70,6 +74,7 @@ fun ListActivity(){
                     .width(61.dp)
                     .height(51.dp)
                     .align(Alignment.Center)
+                    .clickable { navController.navigate(Screen.HomeScreen.route) }
             )
         }
         Spacer(Modifier.size(15.dp))
@@ -98,7 +103,7 @@ fun ListActivity(){
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
                     Button(
-                        onClick = {},
+                        onClick = {navController.navigate(Screen.AddActivityScreen.route)},
                         modifier = Modifier
                             .size(42.dp) // Ukuran lingkaran
                             .clip(CircleShape), // Membuat bentuk lingkaran
@@ -174,6 +179,6 @@ fun ListActivity(){
 
 @Preview
 @Composable
-fun ListActivityPreview(){
-    ListActivity()
+fun ActivityListPreview(){
+    ActivityList(navController = rememberNavController())
 }

@@ -43,7 +43,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
+import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.components.CategorySelection
 import com.example.habitance.ui.components.DatePicker
 import com.example.habitance.ui.components.TextFieldActivity
@@ -55,7 +58,7 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun AddActivity(navigateToActivityListEmpty: () -> Unit, navigateToActivityList: () -> Unit) {
+fun AddActivity(navController: NavHostController) {
     var activity by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var unit by remember { mutableStateOf("") }
@@ -82,7 +85,7 @@ fun AddActivity(navigateToActivityListEmpty: () -> Unit, navigateToActivityList:
                     contentDescription = "back button",
                     modifier = Modifier
                         .size(25.dp)
-                        .clickable { navigateToActivityList() }
+                        .clickable { navController.navigate(Screen.HomeScreen.route)}
                 )
             }
 
@@ -146,7 +149,7 @@ fun AddActivity(navigateToActivityListEmpty: () -> Unit, navigateToActivityList:
                 Button(modifier = Modifier
                     .padding(8.dp),
                     colors = ButtonDefaults.buttonColors(TextDark),
-                    onClick = {}) {
+                    onClick = {navController.navigate(Screen.ActivityList.route)}) {
                     Text(text = "Simpan", modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
                         fontFamily = fontFamily, fontSize = 14.sp, fontWeight = FontWeight(400))
                 }
@@ -160,5 +163,5 @@ fun AddActivity(navigateToActivityListEmpty: () -> Unit, navigateToActivityList:
 @Preview
 @Composable
 fun AddActivyreview(){
-    AddActivity({}, {})
+    AddActivity(navController = rememberNavController())
 }
