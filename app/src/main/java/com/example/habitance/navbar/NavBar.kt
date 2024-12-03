@@ -27,6 +27,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -36,12 +37,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
 
 @Composable
-fun NavBar() {
-    val navController = rememberNavController()
+fun NavBar(navController: NavController) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomBar(navController = navController) },
+        bottomBar = { BottomBar(navController = navController as NavHostController) },
         containerColor = Color.White
     ) { paddingValues ->
         Column(
@@ -50,7 +50,7 @@ fun NavBar() {
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState()) // Menambahkan scrolling ke konten
         ) {
-            BottomNavGraph(navController = navController)
+            BottomNavGraph(navController)
             }
         }
     }
@@ -136,11 +136,11 @@ fun AddItem(
     }
 }
 
-@Composable
-@Preview
-fun BottomNavPreview() {
-    NavBar()
-}
+//@Composable
+//@Preview
+//fun BottomNavPreview() {
+//    NavBar()
+//}
 
 
 
