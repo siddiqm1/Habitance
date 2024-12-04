@@ -238,5 +238,16 @@ fun CardList(
     Spacer(modifier = Modifier.height(16.dp))
 }
 
+@Preview
+@Composable
+fun CardListPreview() {
+    CardList(
+        activityName = "Activity Name",
+        target = "10",
+        unit = "Unit",
+        startDate = "Start Date",
+        endDate = "End Date"
+    )
+}
 
 

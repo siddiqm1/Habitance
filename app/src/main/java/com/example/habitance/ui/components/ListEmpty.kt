@@ -38,6 +38,8 @@ import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
+import com.example.habitance.ui.theme.BottomText
+import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -109,6 +111,7 @@ fun ListEmpty(
                     Text(
                         text = label,
                         fontSize = 24.sp,
+                        color = TextDark,
                         fontFamily = fontFamily,
                         fontWeight = FontWeight(600),
                     )
@@ -138,6 +141,7 @@ fun ListEmpty(
                     Text(
                         text = "Oops, belum ada aktivitas. Waktunya menambahkan yang pertama!",
                         fontSize = 18.sp,
+                        color = TextDark,
                         fontFamily = fontFamily,
                         fontWeight = FontWeight(600),
                         modifier = Modifier
@@ -163,6 +167,7 @@ fun ListEmpty(
                             text = "ADD ACTIVITY",
                             fontSize = 16.sp,
                             fontFamily = fontFamily,
+                            color = BottomText,
                             fontWeight = FontWeight(400),
                             modifier = Modifier
                                 .padding(vertical = 6.dp, horizontal = 8.dp)
