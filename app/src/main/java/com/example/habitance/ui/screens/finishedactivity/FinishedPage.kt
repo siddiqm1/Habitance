@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.habitance.R
 import com.example.habitance.ui.components.ListEmpty
 import com.example.habitance.ui.theme.BackGround
@@ -39,14 +40,9 @@ import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun FinishedActivityEmpty(){
-    ListEmpty("Finished Activity", navigateToAddActivity = {}, navigateToHomeScreen = {})
+fun FinishedActivityEmpty(navController: NavController){
+    ListEmpty("Finished Activity",navController)
 }
 
-@Preview
-@Composable
-fun PreviewFinishedActivityEmpty(){
-    FinishedActivityEmpty()
-}
 
 

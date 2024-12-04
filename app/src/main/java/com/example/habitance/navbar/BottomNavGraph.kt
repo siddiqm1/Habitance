@@ -11,8 +11,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.habitance.ui.components.ListEmpty
 import com.example.habitance.ui.screens.note.NotePage
-import com.example.habitance.ui.screens.activitylist.ActivityListEmpty
+import com.example.habitance.ui.screens.activitylist.ActivityScreen
+import com.example.habitance.ui.screens.activitylist.ListActivity
 import com.example.habitance.ui.screens.addactivity.AddActivity
 import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
 import com.example.habitance.ui.screens.home.HomePage
@@ -41,28 +43,22 @@ fun BottomNavGraph(navHostController: NavController) {
                     HomePage(navHostController)
                 }
                 composable(route = BottomBarScreen.Activity.route) {
-                    ActivityListEmpty({})
+                    ActivityScreen(navController)
                 }
                 composable(route = BottomBarScreen.Note.route) {
                     NotePage()
                 }
                 composable(route = BottomBarScreen.FinisActivity.route) {
-                    FinishedActivityEmpty()
+                    ListEmpty("finish", navController)
                 }
                 composable(route = Screen.AddActivityScreen.route){
                     AddActivity(
-                        navigateToActivityListEmpty = {
-                        navHostController.navigate(Screen.ActivityListEmpty.route)
-                    },
-                        navigateToActivityList = {
-                            navHostController.navigate(Screen.ActivityList.route)
-                        })
+                     navController = navController
+                    )
                 }
                 composable(route = Screen.ActivityListEmpty.route){
-                    ActivityListEmpty(
-                        navigateToAddActivity = {
-                            navHostController.navigate(Screen.AddActivityScreen.route)
-                        }
+                    ActivityScreen(
+                        navController
                     )
                 }
             }
