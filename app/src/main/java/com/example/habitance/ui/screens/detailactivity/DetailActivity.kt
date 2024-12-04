@@ -116,11 +116,16 @@ fun ActivityList(navController: NavHostController){
                     fontWeight = FontWeight(600)
                 )
                 Spacer(Modifier.size(18.dp))
+
+//                KALENDER
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .clickable {
+
+                        }
                 ){
                     Row(
                         modifier = Modifier
