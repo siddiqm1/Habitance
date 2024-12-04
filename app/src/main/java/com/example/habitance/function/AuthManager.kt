@@ -1,5 +1,6 @@
 package com.example.habitance.function
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.channels.awaitClose
@@ -47,34 +49,62 @@ class AuthManager(private val context: Context) {
     fun loginWithEmailAndPassword(
         email: String,
         password: String,
-        onSuccess: () -> Unit
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
     ) {
+        if (email.isBlank()) {
+            onError("Email cannot be empty")
+            return
+        }
+        if (password.isBlank()) {
+            onError("Password cannot be empty")
+            return
+        }
+
         try {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         onSuccess()
                     } else {
-                        Toast.makeText(
-                            context,
-                            "Login failed: ${task.exception?.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val exception = task.exception
+                        val errorMessage = when (exception) {
+                            is FirebaseAuthInvalidUserException -> {
+                                "Email not found. Please check again or register first."
+                            }
+                            is FirebaseAuthInvalidCredentialsException -> {
+                                "Incorrect password. Please try again."
+                            }
+                            else -> {
+                                exception?.message ?: "Login failed. Please try again later."
+                            }
+                        }
+                        onError(errorMessage)
                     }
                 }
         } catch (e: Exception) {
-            Toast.makeText(context, "Login failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            onError(e.message ?: "An error occurred during login.")
         }
     }
+
 
     fun signUpWithEmailAndPassword(
         email: String,
         password: String,
         confirmPassword: String,
-        onLoginSuccess: () -> Unit
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
     ) {
+        if (email.isBlank()) {
+            onError("Email cannot be empty")
+            return
+        }
+        if (password.isBlank() || confirmPassword.isBlank()) {
+            onError("Password cannot be empty")
+            return
+        }
         if (password != confirmPassword) {
-            Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
+            onError("Passwords do not match")
             return
         }
 
@@ -83,34 +113,22 @@ class AuthManager(private val context: Context) {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         auth.currentUser!!.sendEmailVerification()
-                            .addOnCompleteListener {
-                                if (it.isSuccessful) {
-                                    onLoginSuccess()
+                            .addOnCompleteListener { verificationTask ->
+                                if (verificationTask.isSuccessful) {
+                                    onSuccess()
                                 } else {
-                                    Toast.makeText(
-                                        context,
-                                        "Failed to send verification email",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    onError("Failed to send verification email")
                                 }
                             }
                     } else {
-                        Toast.makeText(
-                            context,
-                            "Failed to create account: ${task.exception?.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.e(
-                            "SignUpActivity",
-                            "Failed to create account: ${task.exception?.message}"
-                        )
+                        onError("Failed to create account: ${task.exception?.message}")
                     }
                 }
         } catch (e: Exception) {
-            Log.e("SignUpActivity", "Failed to create account: ${e.message}")
-            Toast.makeText(context, "Failed to create account: ${e.message}", Toast.LENGTH_SHORT).show()
+            onError("Failed to create account: ${e.message}")
         }
     }
+
 
     private fun createNonce(): String {
         val rawNonce = UUID.randomUUID().toString()

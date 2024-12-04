@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -22,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,6 +36,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -50,10 +57,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habitance.R
+import com.example.habitance.function.AuthResponse
 import com.example.habitance.ui.screens.auth.login.LoginViewModel
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.TextLogo
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @Composable
 
@@ -65,6 +78,10 @@ fun LoginPage(
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
     val passwordVisibility by viewModel.isPasswordVisible.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+    var isGoogleSignInLoading by remember { mutableStateOf(false) }
+
 
     Column(
         modifier
@@ -72,6 +89,7 @@ fun LoginPage(
             .background(BackGround),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
+
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo),
@@ -104,7 +122,7 @@ fun LoginPage(
                 .padding(horizontal = 32.dp),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp) // Perbaikan Elevas
+            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 16.dp) // Perbaikan Elevas
         ) {
             Column(
                 modifier = Modifier
@@ -123,10 +141,13 @@ fun LoginPage(
 
                 // Input Email
                 OutlinedTextField(
+                    singleLine = true,
                     value = email,
                     onValueChange = { viewModel.updateEmail(it)},
-                    label = { Text("Username ID", color = Color.Gray,fontSize = 13.sp) },
-                    placeholder = { Text("Enter your username") },
+                    label = { Text("Username",
+                        color = Color.Gray,
+                        fontSize = 13.sp) },
+
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Email,
@@ -134,17 +155,17 @@ fun LoginPage(
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(50)
+                    shape = RoundedCornerShape(16.dp)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Input Password
                 OutlinedTextField(
+                    singleLine = true,
                     value = password,
                     onValueChange = { viewModel.updatePassword(it)},
                     label = { Text("Password", color = Color.Gray,fontSize = 13.sp) },
-                    placeholder = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
                     },
@@ -158,35 +179,44 @@ fun LoginPage(
                     },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-                    shape = RoundedCornerShape(50)
+                    shape = RoundedCornerShape(16.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 //reset password
 
-
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Tombol Login
                 Button(
                     onClick = {
                         viewModel.loginWithEmailAndPassword {
                             navController.navigate("home")
                         }
                     },
-//                    enabled = authState.value != AuthState.Loading,
+                    enabled = !isLoading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A5D44)),
-                    shape = RoundedCornerShape(50)
-                ) {
+                            shape = RoundedCornerShape(16.dp),
+
+                    ) {
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = Color.White,
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text("Login", color = Color.White)
+                    }
+                }
+                errorMessage?.let { error ->
                     Text(
-                        text = "Login",
-                        color = Color.White ,
-                        fontSize = 18.sp,
-                        fontFamily = fontFamily
+                        text = error,
+                        color = Color.Red,
+                        modifier = Modifier.padding(top = 8.dp)
                     )
                 }
+
 
 
 
@@ -209,32 +239,65 @@ fun LoginPage(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
+                val scope = rememberCoroutineScope()
                 OutlinedButton(
                     onClick = {
+                        isGoogleSignInLoading = true // Memulai loading
                         viewModel.signInWithGoogle {
-                            navController.navigate("home")
+                            scope.launch {
+                                try {
+                                    val userExists = Firebase.firestore.collection("users")
+                                        .document(Firebase.auth.currentUser!!.uid).get().await()
+                                        .exists()
+                                    if (userExists) {
+                                        navController.navigate("home") {
+                                            popUpTo("login") {
+                                                inclusive = true
+                                            }
+                                        }
+                                    } else {
+                                        navController.navigate("register")
+                                    }
+                                } catch (e: Exception) {
+                                } finally {
+                                    isGoogleSignInLoading = false // Mengakhiri loading
+                                }
+                            }
                         }
                     },
+                    enabled = !isGoogleSignInLoading, // Nonaktifkan tombol saat loading
                     modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.google),
-                            contentDescription = null,
-                            modifier = Modifier.size(36.dp).padding(end = 8.dp)
+                    if (isGoogleSignInLoading) {
+                        // Menampilkan indikator loading
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = Color.Gray,
+                            strokeWidth = 2.dp
                         )
-                        Text(
-                            text = stringResource(id = R.string.google_sign_in),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Color.Gray
-                        )
+                    } else {
+                        // Konten tombol normal
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.google),
+                                contentDescription = null,
+                                modifier = Modifier.size(36.dp).padding(end = 8.dp)
+                            )
+                            Text(
+                                text = stringResource(id = R.string.google_sign_in),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.Gray
+                            )
+                        }
                     }
                 }
+
                 Spacer(modifier = Modifier.height(30.dp))
                 // Text untuk Sign Up
                 Row(

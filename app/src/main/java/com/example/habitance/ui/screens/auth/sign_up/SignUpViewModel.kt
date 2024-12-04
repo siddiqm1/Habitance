@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class SignUpViewModel(
     context: Context
-): AuthViewModel(context) {
+) : AuthViewModel(context) {
 
     // State flows for UI states
     private val _email = MutableStateFlow("")
@@ -25,13 +25,11 @@ class SignUpViewModel(
     private val _isConfirmPasswordVisible = MutableStateFlow(false)
     val isConfirmPasswordVisible = _isConfirmPasswordVisible.asStateFlow()
 
-    fun updateConfirmPassword(newPassword: String) {
-        _confirmPassword.value = newPassword.replace(" ", "")
-    }
+    private val _isLoading = MutableStateFlow(false) // Loading state
+    val isLoading = _isLoading.asStateFlow()
 
-    fun toggleConfirmPasswordVisibility() {
-        _isConfirmPasswordVisible.value = !_isConfirmPasswordVisible.value
-    }
+    private val _errorMessage = MutableStateFlow<String?>(null) // Error message state
+    val errorMessage = _errorMessage.asStateFlow()
 
     fun updateEmail(newEmail: String) {
         _email.value = newEmail.replace(" ", "")
@@ -41,19 +39,34 @@ class SignUpViewModel(
         _password.value = newPassword.replace(" ", "")
     }
 
+    fun updateConfirmPassword(newPassword: String) {
+        _confirmPassword.value = newPassword.replace(" ", "")
+    }
+
     fun togglePasswordVisibility() {
         _isPasswordVisible.value = !_isPasswordVisible.value
     }
 
-    fun signUpWithEmailAndPassword(
-        onLoginSuccess: () -> Unit,
-    ) {
+    fun toggleConfirmPasswordVisibility() {
+        _isConfirmPasswordVisible.value = !_isConfirmPasswordVisible.value
+    }
+
+    fun signUpWithEmailAndPassword(onSignUpSuccess: () -> Unit) {
+        _isLoading.value = true // Mulai loading
+        _errorMessage.value = null // Hapus error sebelumnya
+
         authManager.signUpWithEmailAndPassword(
-            _email.value,
-            _password.value,
-            _confirmPassword.value
-        ) {
-            onLoginSuccess()
-        }
+            email = _email.value,
+            password = _password.value,
+            confirmPassword = _confirmPassword.value,
+            onSuccess = {
+                _isLoading.value = false // Berhenti loading
+                onSignUpSuccess()
+            },
+            onError = { errorMessage ->
+                _isLoading.value = false // Berhenti loading
+                _errorMessage.value = errorMessage // Simpan pesan error
+            }
+        )
     }
 }

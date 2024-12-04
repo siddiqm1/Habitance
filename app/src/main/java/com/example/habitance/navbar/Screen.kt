@@ -10,5 +10,6 @@ sealed class Screen(val route: String) {
     object ProfileScreen : Screen("profile")
     object ActivityListEmpty : Screen("listempty")
     object ActivityList : Screen("activitylist")
+    object NotificationScreen : Screen("notification")
 
 }
