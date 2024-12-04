@@ -19,7 +19,6 @@ val BackGround = Brush.linearGradient(
     )
 )
 val Border = Color(0xFF6A9C89)
-val Bar = Color(0xFF6A9C89)
 val BottomText = Color(0xFFC4DAD2)
 val Border2 = Color(0xFFC4DAD2)
 val TextLogo = Color (0xFF16AC86)

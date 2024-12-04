@@ -18,8 +18,8 @@ import com.example.habitance.ui.screens.activitylist.ActivityScreen
 import com.example.habitance.ui.screens.addactivity.AddActivity
 
 @Composable
-fun BottomNavGraph(navHostController: NavController) {
-    val navController = rememberNavController() // Inisialisasi NavController hanya sekali
+fun MainNavigation(navHostController: NavController) {
+    val navController = rememberNavController()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -47,7 +47,7 @@ fun BottomNavGraph(navHostController: NavController) {
                     NotePage(navController)
                 }
                 composable(route = BottomBarScreen.FinisActivity.route) {
-                    ListEmpty("finish", navController)
+                    ListEmpty("Finished Activity", navController)
                 }
                 composable(route = Screen.AddActivityScreen.route){
                     AddActivity(
