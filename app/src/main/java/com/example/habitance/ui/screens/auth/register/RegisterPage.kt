@@ -318,10 +318,10 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                                 user = User
                                     (
                                     id = Firebase.auth.currentUser!!.uid,
-                                    name = firstname,
+                                    name = username,
                                     email = currentUser.email.toString(),
                                     country = "Indonesia",
-
+                                    dateofbirth = dateOfBirth,
                                     gender = gender
                                 ),
                                 context = context
