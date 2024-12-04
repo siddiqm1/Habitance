@@ -11,7 +11,6 @@ import com.example.habitance.navbar.BottomNavGraph
 import com.example.habitance.navbar.NavBar
 import com.example.habitance.ui.screens.auth.register.RegisterScreen
 import com.example.habitance.ui.screens.auth.sign_up.SignupPage
-import com.example.habitance.ui.screens.home.HomePage
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
