@@ -1,7 +1,8 @@
-package com.example.habitance.activity
+package com.example.habitance.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,19 +29,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.habitance.R
+import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
-
+import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun AddActivityScreen(){
+fun ListEmpty(
+    label: String,
+    navController: NavHostController
+){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,7 +65,9 @@ fun AddActivityScreen(){
                 Image(
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                     contentDescription = "back button",
-                    modifier = Modifier.size(25.dp)
+                    modifier = Modifier
+                        .size(25.dp)
+                        .clickable { navController.navigate(Screen.HomeScreen.route) }
                 )
             }
 
@@ -99,7 +105,7 @@ fun AddActivityScreen(){
                         .padding(top = 20.dp, start = 20.dp)
                 ) {
                     Text(
-                        text = "ACTIVITY LIST",
+                        text = label,
                         fontSize = 24.sp,
                         fontFamily = fontFamily,
                         fontWeight = FontWeight(600),
@@ -117,7 +123,7 @@ fun AddActivityScreen(){
                     Image(
                         painter = painterResource(id = R.drawable.folder),
                         contentDescription = "Folder",
-                        modifier = Modifier.size(250.dp)
+                        modifier = Modifier.size(224.dp)
                     )
                 }
 
@@ -142,7 +148,7 @@ fun AddActivityScreen(){
                     .padding(top = 5.dp)
                 ){
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate(Screen.AddActivityScreen.route) },
                         modifier = Modifier
                             .padding(horizontal = 30.dp, vertical = 18.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -164,10 +170,4 @@ fun AddActivityScreen(){
         }
 
     }
-}
-
-@Composable
-@Preview
-fun AddActivityScreenPreview(){
-    AddActivityScreen()
 }
