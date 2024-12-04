@@ -66,6 +66,7 @@ import com.example.habitance.data.User
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Bottom
+import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextLogo
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.Firebase
@@ -341,7 +342,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(),
+                    colors = ButtonDefaults.buttonColors(TextDark),
                     shape = RoundedCornerShape(16.dp),
                     enabled = !isLoading
                 ) {

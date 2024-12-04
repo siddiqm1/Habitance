@@ -43,6 +43,7 @@ fun DatePicker(onDateSelected: (start: String?, end: String?) -> Unit) {
     Column {
         Text(
             text = "Waktu Mulai dan Selesai",
+            color = TextDark,
             fontSize = 16.sp,
             fontFamily = fontFamily,
             fontWeight = FontWeight(500),

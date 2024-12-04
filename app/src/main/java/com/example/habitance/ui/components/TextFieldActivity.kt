@@ -33,6 +33,7 @@ fun TextFieldActivity(
 ){
     Text(
         text = label,
+        color = TextDark,
         fontSize = 16.sp,
         fontFamily = fontFamily,
         fontWeight = FontWeight(500),

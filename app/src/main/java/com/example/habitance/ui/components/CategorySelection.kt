@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.BottomText
+import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -29,6 +30,7 @@ fun CategorySelection(onCategorySelected: (String) -> Unit) {
 
     Text(
         text = "Kategori",
+        color = TextDark,
         fontSize = 16.sp,
         fontFamily = fontFamily,
         fontWeight = FontWeight(500),

@@ -60,6 +60,8 @@ import com.example.habitance.R
 import com.example.habitance.function.AuthResponse
 import com.example.habitance.ui.screens.auth.login.LoginViewModel
 import com.example.habitance.ui.theme.BackGround
+import com.example.habitance.ui.theme.Border
+import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextLogo
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.auth.ktx.auth
@@ -145,7 +147,7 @@ fun LoginPage(
                     value = email,
                     onValueChange = { viewModel.updateEmail(it)},
                     label = { Text("Username",
-                        color = Color.Gray,
+                        color = Border,
                         fontSize = 13.sp) },
 
                     leadingIcon = {
@@ -155,7 +157,7 @@ fun LoginPage(
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(16.dp),
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -196,8 +198,8 @@ fun LoginPage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                            shape = RoundedCornerShape(16.dp),
-
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(TextDark)
                     ) {
                     if (isLoading) {
                         CircularProgressIndicator(

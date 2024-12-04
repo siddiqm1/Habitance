@@ -48,6 +48,7 @@ import com.example.habitance.ui.components.TextFieldActivity
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
+import com.example.habitance.ui.theme.Border2
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.auth.FirebaseAuth
@@ -189,6 +190,7 @@ fun AddActivity(navController: NavController) {
                 ) {
                     Text(
                         text = "Simpan",
+                        color = Border2,
                         modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
                         fontFamily = fontFamily,
                         fontSize = 14.sp,

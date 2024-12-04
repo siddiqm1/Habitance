@@ -39,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,6 +53,7 @@ import com.example.habitance.ui.screens.addactivity.Activity
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
+import com.example.habitance.ui.theme.Border2
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.auth.FirebaseAuth
@@ -180,13 +182,12 @@ fun ListActivity(navController: NavController) {
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = ButtonDefaults.buttonColors(
-
-                        ),
+                        colors = ButtonDefaults.buttonColors(TextDark),
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
                             text = "Baik",
+                            color = Border2,
                             fontFamily = fontFamily
                         )
                     }
@@ -201,13 +202,12 @@ fun ListActivity(navController: NavController) {
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = ButtonDefaults.buttonColors(
-
-                        ),
+                        colors = ButtonDefaults.buttonColors(TextDark),
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
                             text = "Buruk",
+                            color = Border2,
                             fontFamily = fontFamily
                         )
                     }
