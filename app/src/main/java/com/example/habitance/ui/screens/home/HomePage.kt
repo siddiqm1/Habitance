@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -39,14 +40,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
+import com.example.habitance.function.AuthManager
 import com.example.habitance.navbar.Screen
-import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun HomePage(navController: NavHostController) {
+fun HomePage(navController: NavController,navMainController: NavController,) {
+    val context = LocalContext.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -93,16 +95,18 @@ fun HomePage(navController: NavHostController) {
                     )
                 }
 
-//                val context = LocalContext.current
 
                 // Icon Keluar
                 Icon(
 
                     painter = painterResource(id = R.drawable.logout),
                     contentDescription = "Keluar",
-                    modifier = Modifier.size(24.dp).clickable {
-//                        AuthManager(context).signOut()
-//                        navController.navigate("login")
+                    modifier = Modifier.size(24.dp)
+                        .clickable {
+                        AuthManager(context).signOut()
+                        navMainController.navigate("login"){
+                            popUpTo("home") { inclusive = true }
+                        }
 
                     },
                     tint = TextDark
@@ -412,11 +416,8 @@ fun HomePage(navController: NavHostController) {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun HomePagePreview(){
-    HomePage(navController = rememberNavController())
-}
+
+
 
 
 
