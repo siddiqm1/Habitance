@@ -17,6 +17,7 @@ import com.example.habitance.ui.screens.note.NotePage
 import com.example.habitance.ui.screens.activitylist.ActivityListEmpty
 import com.example.habitance.ui.screens.addactivity.AddActivity
 import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
+import com.example.habitance.ui.screens.notification.NotificationScreen
 
 @Composable
 fun MainNavigation(navHostController: NavController) {
@@ -64,6 +65,10 @@ fun MainNavigation(navHostController: NavController) {
                 }
                 composable(route = Screen.ActivityList.route){
                     ActivityList(navController)
+
+                }
+                composable(route = Screen.NotificationScreen.route){
+                    NotificationScreen(navController)
                 }
 
             }

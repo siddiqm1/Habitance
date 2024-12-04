@@ -250,6 +250,7 @@ fun HomePage(navController: NavHostController) {
                             tint = Color(0xFFC4DAD2), // Warna ikon
                             modifier = Modifier
                                 .size(26.dp)
+                                .clickable { navController.navigate(Screen.NotificationScreen.route) }
                         )
                     }
                 }
