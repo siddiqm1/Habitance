@@ -27,9 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -477,52 +481,7 @@ fun HomeTes() {
                         bottom.linkTo(finishedActivity.top)
                     }
             ) {
-                Column() {
-                    Text(
-                        text = "Keep up your STREAKS!",
-                        color = Color(0xFF16423C),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight(500),
-                        letterSpacing = -(0.75).sp,
-                        textAlign = TextAlign.Start
-                    )
-                    Spacer(modifier = Modifier.height(23.dp))
-
-                    // Progress Bar
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .width(200.dp)
-                                .height(12.dp)
-                                .background(Color.Gray, shape = RoundedCornerShape(6.dp))
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxHeight()
-                                    .width(140.dp) // Ubah untuk persentase
-                                    .background(Color(0xFF16423C), shape = RoundedCornerShape(6.dp))
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.fire), // Icon berbentuk api
-                            contentDescription = "Streak",
-                            tint = Color(0xFFFFA726), // Warna oranye untuk ikon
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
-                    Spacer(Modifier.size(15.dp))
-                    Text(
-                        text = "7 / 10",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF16423C),
-                        letterSpacing = 1.sp
-                    )
-                }
+                Streaks()
             }
 
             // Light Mode
@@ -621,18 +580,101 @@ fun HomeTes() {
     }
 }
 
+
+@Composable
+fun Streaks(){
+    ConstraintLayout(
+    ) {
+        // Defining the constraints
+        val (title, progressBar, progressText) = createRefs()
+
+        // Title Text
+        Text(
+            text = buildAnnotatedString {
+                append("Keep up your ")
+                withStyle(style = SpanStyle(fontWeight = FontWeight(900), fontSize = 14.sp, color = Color(0xFF16423C))) {
+                    append(" STREAKS!")
+                }
+            },
+            color = Color(0xFF16423C),
+            fontSize = 12.sp,
+            letterSpacing = -(0.75).sp,
+            textAlign = TextAlign.Start,
+            modifier = Modifier.constrainAs(title) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+            }
+        )
+
+       ConstraintLayout(
+           modifier = Modifier
+               .background(Color.Gray, RoundedCornerShape(15.dp))
+               .constrainAs(progressBar) {
+                   top.linkTo(title.bottom, margin = 23.dp)
+                   start.linkTo(parent.start)
+                   end.linkTo(parent.end)
+               }
+       ) {
+           val batas = createGuidelineFromStart(0.1f)
+           val (bar, icon) = createRefs()
+            Box(
+                modifier = Modifier
+                    .height(10.dp)
+                    .width(140.dp) // Ubah untuk persentase
+                    .background(Color(0xFF16423C), shape = RoundedCornerShape(15.dp))
+                    .constrainAs(bar){
+                        start.linkTo(parent.start)
+                        end.linkTo(batas)
+                    }
+            )
+//           Image(
+//               painter = painterResource(id = R.drawable.fire_on), // Icon berbentuk api
+//               contentDescription = "Streak",
+//               modifier = Modifier
+//                   .offset(x = -20.dp, y=7.dp)
+//                   .size(41.dp)
+//                   .constrainAs(icon) {
+//                        start.linkTo(bar.end)
+//                       bottom.linkTo(bar.bottom)
+//                   }
+//           )
+       }
+
+        Text(
+            text = "7 / 10",
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontFamily = fontFamily,
+                fontWeight = FontWeight(500),
+                color = Color(0xFF16423C),
+                letterSpacing = 1.sp
+            ),
+            modifier = Modifier.constrainAs(progressText) {
+                top.linkTo(progressBar.bottom, margin = 14.dp)
+                start.linkTo(parent.start)
+            }
+        )
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun HomePreview(){
     HomeTes()
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun HomesPreview(){
-    CenteredBox()
+fun StreaksPreview(){
+    Streaks()
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun HomesPreview(){
+//    CenteredBox()
+//}
 
 
 
