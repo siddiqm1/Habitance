@@ -24,7 +24,7 @@ import com.example.habitance.ui.theme.BottomText
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun CategorySelection() {
+fun CategorySelection(onCategorySelected: (String) -> Unit) {
     var category by rememberSaveable { mutableStateOf<String?>(null) }
 
     Text(
@@ -40,7 +40,10 @@ fun CategorySelection() {
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Button(
-            onClick = { category = "Baik" },
+            onClick = {
+                category = "Baik"
+                onCategorySelected("Baik") // Memanggil callback
+            },
             modifier = Modifier
                 .weight(1f)
                 .height(48.dp),
@@ -54,7 +57,10 @@ fun CategorySelection() {
         }
 
         Button(
-            onClick = { category = "Buruk" },
+            onClick = {
+                category = "Buruk"
+                onCategorySelected("Buruk") // Memanggil callback
+            },
             shape = RoundedCornerShape(50.dp),
             modifier = Modifier
                 .weight(1f)

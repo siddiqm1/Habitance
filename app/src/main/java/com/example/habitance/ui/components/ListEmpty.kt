@@ -33,8 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.habitance.R
+import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
@@ -43,7 +43,7 @@ import com.example.habitance.ui.theme.fontFamily
 @Composable
 fun ListEmpty(
     label: String,
-    navController: NavHostController
+    navController: NavController
 ){
     Column(
         modifier = Modifier
@@ -67,7 +67,9 @@ fun ListEmpty(
                     contentDescription = "back button",
                     modifier = Modifier
                         .size(25.dp)
-                        .clickable { navController.navigate(Screen.HomeScreen.route) }
+                        .clickable {
+                            navController.navigate(BottomBarScreen.Home.route)
+                        }
                 )
             }
 
@@ -148,7 +150,9 @@ fun ListEmpty(
                     .padding(top = 5.dp)
                 ){
                     Button(
-                        onClick = { navController.navigate(Screen.AddActivityScreen.route) },
+                        onClick = {
+                            navController.navigate(Screen.AddActivityScreen.route)
+                        },
                         modifier = Modifier
                             .padding(horizontal = 30.dp, vertical = 18.dp),
                         colors = ButtonDefaults.buttonColors(
