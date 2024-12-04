@@ -12,14 +12,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.habitance.screen.home.HomePage
-import com.example.habitance.ui.screens.activitylist.ActivityList
+import com.example.habitance.ui.components.ListEmpty
 import com.example.habitance.ui.screens.note.NotePage
-import com.example.habitance.ui.screens.activitylist.ActivityListEmpty
+import com.example.habitance.ui.screens.activitylist.ActivityScreen
 import com.example.habitance.ui.screens.addactivity.AddActivity
-import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
 
 @Composable
-fun MainNavigation(navHostController: NavController) {
+fun BottomNavGraph(navHostController: NavController) {
     val navController = rememberNavController() // Inisialisasi NavController hanya sekali
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -42,30 +41,24 @@ fun MainNavigation(navHostController: NavController) {
                     HomePage(navController)
                 }
                 composable(route = BottomBarScreen.Activity.route) {
-                    ActivityListEmpty(navController)
+                    ActivityScreen(navController)
                 }
                 composable(route = BottomBarScreen.Note.route) {
                     NotePage(navController)
                 }
                 composable(route = BottomBarScreen.FinisActivity.route) {
-                    FinishedActivityEmpty(navController)
-                }
-                composable(route = Screen.HomeScreen.route){
-                    HomePage(navController)
-                }
-                composable(route = Screen.NoteScreen.route){
-                    NotePage(navController)
+                    ListEmpty("finish", navController)
                 }
                 composable(route = Screen.AddActivityScreen.route){
-                    AddActivity(navController)
+                    AddActivity(
+                     navController = navController
+                    )
                 }
-                composable(route = Screen.FinishedActivityEmpty.route){
-                    FinishedActivityEmpty(navController)
+                composable(route = Screen.ActivityListEmpty.route){
+                    ActivityScreen(
+                        navController
+                    )
                 }
-                composable(route = Screen.ActivityList.route){
-                    ActivityList(navController)
-                }
-
             }
         }
     }

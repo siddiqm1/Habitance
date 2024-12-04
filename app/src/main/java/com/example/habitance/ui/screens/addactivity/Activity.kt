@@ -7,6 +7,6 @@ data class Activity(
     val unit: String,
     val target: String,
     val category: String,
-    val start: Date,
-    val end: Date
+    val start: String?,
+    val end: String?
 )
