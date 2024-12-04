@@ -218,7 +218,7 @@ fun CenteredBox() {
                     painter = painterResource(id = R.drawable.finish), // Ikon Finished Activity
                     contentDescription = "Finished Activity",
                     tint = Color(0xFF16423C),
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(70.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -328,10 +328,6 @@ fun HomeTes() {
             }
         }
 
-
-        Column(){
-
-        }
         // "What did you do today?"
         Box(
             modifier = Modifier
@@ -407,15 +403,13 @@ fun HomeTes() {
             tint = Color(0xFF16AC86)
         )
 
-        //MENU-MENU
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxSize()
-                .offset(y=-80.dp)
-                .padding(21.dp)
-        ) {
-            val (activityList, streaks, lightMode, finishedActivity, notes) = createRefs()
 
+        //MENU-MENU
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .offset(y=-80.dp)
+            .padding(21.dp)
+        ) {
             // Kotak Activity List
             Box(
                 modifier = Modifier
@@ -423,11 +417,6 @@ fun HomeTes() {
                     .height(125.dp)
                     .shadow(3.dp, shape = RoundedCornerShape(12.dp))
                     .background(Color(0xFFC4DAD2))
-                    .constrainAs(activityList){
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        top.linkTo(parent.top)
-                    }
             ) {
                 Text(
                     text = "Activity List",
@@ -472,107 +461,106 @@ fun HomeTes() {
                 }
             }
 
+            Spacer(Modifier.size(22.dp))
+            
             // Progress Bar untuk Streaks
             Box(
                 modifier = Modifier
-                    .constrainAs(streaks){
-                        start.linkTo(parent.start)
-                        top.linkTo(activityList.bottom, margin = 15.dp)
-                        bottom.linkTo(finishedActivity.top)
+            ) {
+                Streaks(0.1f)
+            }
+
+            Spacer(Modifier.size(22.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                // Finished Activity
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(2f)
+                        .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.finish), // Ikon Finished Activity
+                                contentDescription = "Finished Activity",
+                                tint = Color(0xFF16423C),
+                                modifier = Modifier.size(36.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Finished Activity",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF16423C)
+                            )
+                        }
                     }
-            ) {
-                Streaks()
-            }
 
-            // Light Mode
-            Box(
-                modifier = Modifier
-                    .size(110.dp)
-                    .background(Color(0xFF6A9C89), shape = RoundedCornerShape(16.dp))
-                    .padding(16.dp)
-                    .constrainAs(lightMode){
-                        bottom.linkTo(notes.top)
-                        top.linkTo(streaks.top)
-                        end.linkTo(parent.end)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.light_mode), // Ikon Light Mode
-                        contentDescription = "Light mode",
-                        tint = Color(0xFFE9EFEC),
-                        modifier = Modifier.size(36.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Light Mode",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE9EFEC)
+                Spacer(Modifier.size(22.dp))
 
-                    )
-                }
-            }
+                Column(
+                    modifier = Modifier
+                        .weight(1.5f)
+                ){
 
-            // Finished Activity
-            Box(
-                modifier = Modifier
-                    .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp))
-                    .constrainAs(finishedActivity){
-                        start.linkTo(parent.start)
-                        end.linkTo(streaks.end)
-                        top.linkTo(streaks.bottom, margin = 15.dp)
-                        bottom.linkTo(parent.bottom)
-                        height = Dimension.fillToConstraints
-                        width = Dimension.fillToConstraints
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.finish), // Ikon Finished Activity
-                        contentDescription = "Finished Activity",
-                        tint = Color(0xFF16423C),
-                        modifier = Modifier.size(36.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Finished Activity",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF16423C)
-                    )
-                }
-            }
+                    // Light Mode
+                    Box(
+                        modifier = Modifier
+                            .background(Color(0xFF6A9C89), shape = RoundedCornerShape(16.dp))
+                            .padding(16.dp)
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.light_mode), // Ikon Light Mode
+                                contentDescription = "Light mode",
+                                tint = Color(0xFFE9EFEC),
+                                modifier = Modifier.size(36.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Light Mode",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFE9EFEC)
 
-            // Notes
-            Box(
-                modifier = Modifier
-                    .size(110.dp)
-                    .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp))
-                    .padding(16.dp)
-                    .constrainAs(notes){
-                        bottom.linkTo(finishedActivity.bottom)
-                        top.linkTo(lightMode.bottom)
-                        end.linkTo(parent.end)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.note), // Ikon Notes
-                        contentDescription = "Notes",
-                        tint = Color(0xFF16423C),
-                        modifier = Modifier.size(36.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Notes",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF16423C)
-                    )
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.size(22.dp))
+
+        //            Notes
+                    Box(
+                        modifier = Modifier
+                            .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp))
+                            .padding(16.dp)
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.note), // Ikon Notes
+                                contentDescription = "Notes",
+                                tint = Color(0xFF16423C),
+                                modifier = Modifier.size(36.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Notes",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF16423C)
+                            )
+                        }
+                    }
                 }
             }
 
@@ -582,11 +570,14 @@ fun HomeTes() {
 
 
 @Composable
-fun Streaks(){
+fun Streaks(persen: Float = 0.7f){
+
     ConstraintLayout(
+        Modifier.width(500.dp)
     ) {
+        val batas = createGuidelineFromStart(persen)
         // Defining the constraints
-        val (title, progressBar, progressText) = createRefs()
+        val (title, progressBar, progressText, bar, barContainer, icon) = createRefs()
 
         // Title Text
         Text(
@@ -606,39 +597,46 @@ fun Streaks(){
             }
         )
 
-       ConstraintLayout(
-           modifier = Modifier
-               .background(Color.Gray, RoundedCornerShape(15.dp))
-               .constrainAs(progressBar) {
-                   top.linkTo(title.bottom, margin = 23.dp)
-                   start.linkTo(parent.start)
-                   end.linkTo(parent.end)
-               }
-       ) {
-           val batas = createGuidelineFromStart(0.1f)
-           val (bar, icon) = createRefs()
-            Box(
-                modifier = Modifier
-                    .height(10.dp)
-                    .width(140.dp) // Ubah untuk persentase
-                    .background(Color(0xFF16423C), shape = RoundedCornerShape(15.dp))
-                    .constrainAs(bar){
-                        start.linkTo(parent.start)
-                        end.linkTo(batas)
-                    }
-            )
-//           Image(
-//               painter = painterResource(id = R.drawable.fire_on), // Icon berbentuk api
-//               contentDescription = "Streak",
-//               modifier = Modifier
-//                   .offset(x = -20.dp, y=7.dp)
-//                   .size(41.dp)
-//                   .constrainAs(icon) {
-//                        start.linkTo(bar.end)
-//                       bottom.linkTo(bar.bottom)
-//                   }
-//           )
-       }
+        //bar container
+        Box(
+            modifier = Modifier
+                .height(10.dp)
+                .width(140.dp) // Ubah untuk persentase
+                .background(Color.Gray, shape = RoundedCornerShape(15.dp))
+                .constrainAs(barContainer){
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(title.bottom, margin = 14.dp)
+                    width = Dimension.fillToConstraints
+                }
+        )
+
+        //bar
+        Box(
+            modifier = Modifier
+                .height(10.dp)
+                .width(140.dp) // Ubah untuk persentase
+                .background(Color(0xFF16423C), shape = RoundedCornerShape(15.dp))
+                .constrainAs(bar){
+                    start.linkTo(parent.start)
+                    end.linkTo(batas)
+                    top.linkTo(barContainer.top)
+                    width = Dimension.fillToConstraints
+                }
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.fire_on), // Icon berbentuk api
+            contentDescription = "Streak",
+            modifier = Modifier
+                .offset(x = -20.dp, y=10.dp)
+                .size(41.dp)
+                .constrainAs(icon) {
+                    start.linkTo(bar.end)
+                    bottom.linkTo(bar.bottom)
+                }
+        )
+
 
         Text(
             text = "7 / 10",
@@ -650,7 +648,7 @@ fun Streaks(){
                 letterSpacing = 1.sp
             ),
             modifier = Modifier.constrainAs(progressText) {
-                top.linkTo(progressBar.bottom, margin = 14.dp)
+                top.linkTo(barContainer.bottom, margin = 14.dp)
                 start.linkTo(parent.start)
             }
         )
@@ -664,17 +662,6 @@ fun HomePreview(){
     HomeTes()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun StreaksPreview(){
-    Streaks()
-}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun HomesPreview(){
-//    CenteredBox()
-//}
 
 
 
