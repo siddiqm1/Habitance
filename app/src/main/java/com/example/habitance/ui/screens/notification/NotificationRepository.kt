@@ -1,4 +1,5 @@
-import com.example.habitance.ui.screens.notification.Notification
+
+package com.example.habitance.ui.screens.notification
 
 
 import com.google.firebase.auth.FirebaseAuth
@@ -11,7 +12,9 @@ class NotificationRepository {
     private val auth = FirebaseAuth.getInstance()
 
     private fun getUserCollection() =
-        firestore.collection("users").document(auth.currentUser?.uid ?: "").collection("notifications")
+        firestore.collection("users")
+            .document(auth.currentUser?.uid ?: "")
+            .collection("notifications")
 
     suspend fun addNotification(notification: Notification) {
         val userCollection = getUserCollection()

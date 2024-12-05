@@ -1,6 +1,5 @@
 package com.example.habitance.ui.screens.notification
 
-import NotificationRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,6 +1,5 @@
 package com.example.habitance.navbar
 
-import NotificationRepository
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +18,7 @@ import com.example.habitance.ui.screens.addactivity.AddActivity
 import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
 import com.example.habitance.ui.screens.home.HomePage
 import com.example.habitance.ui.screens.note.NotePage
+import com.example.habitance.ui.screens.notification.NotificationRepository
 import com.example.habitance.ui.screens.notification.NotificationViewModel
 import com.example.habitance.ui.screens.profile.EditProfilePage
 import com.example.habitance.ui.screens.profile.ProfilePage
