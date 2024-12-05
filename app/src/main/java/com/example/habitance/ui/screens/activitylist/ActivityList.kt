@@ -53,6 +53,7 @@ import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.TextLight
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -180,13 +181,12 @@ fun ListActivity(navController: NavController) {
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = ButtonDefaults.buttonColors(
-
-                        ),
+                        colors = ButtonDefaults.buttonColors(TextDark),
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
                             text = "Baik",
+                            color = TextLight,
                             fontFamily = fontFamily
                         )
                     }
@@ -201,13 +201,12 @@ fun ListActivity(navController: NavController) {
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = ButtonDefaults.buttonColors(
-
-                        ),
+                        colors = ButtonDefaults.buttonColors(TextDark),
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
                             text = "Buruk",
+                            color = TextLight,
                             fontFamily = fontFamily
                         )
                     }
