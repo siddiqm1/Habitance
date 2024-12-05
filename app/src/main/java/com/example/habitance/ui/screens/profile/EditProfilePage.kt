@@ -34,141 +34,158 @@ fun EditProfilePage(
     navController: NavController,
     profileViewModel: ProfileViewModel = viewModel()
 ) {
-    // State dari ViewModel
+    val context = LocalContext.current
     val dateOfBirth by profileViewModel.dateofbirth.collectAsState()
-    var updatedName by remember { mutableStateOf(profileViewModel.name.value) }
+    var name by remember { mutableStateOf(profileViewModel.name.value) }
     val gender by profileViewModel.gender.collectAsState()
     val showDatePicker by profileViewModel.showDatePicker.collectAsState()
-
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(BackGround),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .background(BackGround)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
-       TextField(
-           value = updatedName,
-           onValueChange = { updatedName = it },
-           label = { Text("Name", color = Color.Gray, fontSize = 13.sp) },
-           modifier = Modifier.fillMaxWidth(),
-           shape = MaterialTheme.shapes.medium
-
-       )
-        // Tanggal Lahir (Date Picker)
-        Spacer(modifier = Modifier.height(16.dp))
-        val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
-        val formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy")
-
-        TextField(
-            value = dateOfBirth,
-            onValueChange = {profileViewModel.updateDateOfBirth(it)},
-            label = { Text("Date of Birth", color = Color.Gray, fontSize = 13.sp) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { profileViewModel.updateShowDatePicker(true) },
-            shape = MaterialTheme.shapes.medium,
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = BackGround2,
-                unfocusedContainerColor = BackGround2,
-                cursorColor = Color.Black,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            textStyle = LocalTextStyle.current.copy(color = Color.Black),
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { profileViewModel.updateShowDatePicker(true) }) {
-                    Icon(Icons.Default.DateRange, contentDescription = null, tint = Color.Black)
-                }
-            }
+        // Heading
+        Text(
+            text = "Edit Profile",
+            style = MaterialTheme.typography.titleLarge,
+            color = Color.White,
+            modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        if (showDatePicker) {
-            DatePickerDialog(
-                onDismissRequest = { profileViewModel.updateShowDatePicker(false) },
-                confirmButton = {
-                    TextButton(onClick = {
-                        datePickerState.selectedDateMillis?.let { millis ->
-                            val formattedDate = Instant.ofEpochMilli(millis)
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDate()
-                                .format(formatter)
-                            profileViewModel.updateDateOfBirth(formattedDate)
+        // Card for Profile Editing
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = BackGround2)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Name Input
+                TextField(
+                    value = name,
+                    onValueChange = {
+                        name = it
+                        profileViewModel.updateName(it)
+                    },
+                    label = { Text("Name", fontSize = 14.sp, color = Color.Gray) },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        cursorColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    )
+                )
+
+                // Date of Birth Input
+                val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
+                val formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy")
+
+                TextField(
+                    value = dateOfBirth,
+                    onValueChange = {},
+                    label = { Text("Date of Birth", fontSize = 14.sp, color = Color.Gray) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { profileViewModel.updateShowDatePicker(true) },
+                    readOnly = true,
+                    trailingIcon = {
+                        IconButton(onClick = { profileViewModel.updateShowDatePicker(true) }) {
+                            Icon(Icons.Default.DateRange, contentDescription = null, tint = Color.Black)
                         }
-                        profileViewModel.updateShowDatePicker(false)
-                    }) {
-                        Text("Select")
+                    },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        cursorColor = Color.Black,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    )
+                )
+
+                if (showDatePicker) {
+                    DatePickerDialog(
+                        onDismissRequest = { profileViewModel.updateShowDatePicker(false) },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                datePickerState.selectedDateMillis?.let { millis ->
+                                    val formattedDate = Instant.ofEpochMilli(millis)
+                                        .atZone(ZoneId.systemDefault())
+                                        .toLocalDate()
+                                        .format(formatter)
+                                    profileViewModel.updateDateOfBirth(formattedDate)
+                                }
+                                profileViewModel.updateShowDatePicker(false)
+                            }) {
+                                Text("Select")
+                            }
+                        }
+                    ) {
+                        DatePicker(state = datePickerState, showModeToggle = false)
                     }
                 }
-            ) {
-                DatePicker(state = datePickerState, showModeToggle = false)
-            }
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+                // Gender Dropdown
+                val expanded = remember { mutableStateOf(false) }
+                val genderOptions = listOf("Male", "Female", "Other")
 
-        // Gender (Dropdown Menu)
-        val expanded = remember { mutableStateOf(false) }
-        val genderOptions = listOf("Male", "Female", "Other")
-
-        ExposedDropdownMenuBox(
-            expanded = expanded.value,
-            onExpandedChange = { expanded.value = !expanded.value }
-        ) {
-            TextField(
-                value = gender,
-                onValueChange = {},
-                label = { Text("Gender", color = Color.Gray, fontSize = 13.sp) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor(),
-                readOnly = true,
-                trailingIcon = {
-                    IconButton(onClick = { expanded.value = !expanded.value }) {
-                        Icon(Icons.Default.ArrowDropDown, contentDescription = "Dropdown Icon")
-                    }
-                },
-                shape = MaterialTheme.shapes.medium,
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = BackGround2,
-                    unfocusedContainerColor = BackGround2,
-                    cursorColor = Color.Black,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                )
-            )
-
-            ExposedDropdownMenu(
-                expanded = expanded.value,
-                onDismissRequest = { expanded.value = false }
-            ) {
-                genderOptions.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option) },
-                        onClick = {
-                            profileViewModel.updateGender(option) // Perbarui gender
-                            expanded.value = false
-                        }
+                ExposedDropdownMenuBox(
+                    expanded = expanded.value,
+                    onExpandedChange = { expanded.value = !expanded.value }
+                ) {
+                    TextField(
+                        value = gender,
+                        onValueChange = {},
+                        label = { Text("Gender", fontSize = 14.sp, color = Color.Gray) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
+                        readOnly = true,
+                        trailingIcon = {
+                            IconButton(onClick = { expanded.value = !expanded.value }) {
+                                Icon(Icons.Default.ArrowDropDown, contentDescription = "Dropdown Icon")
+                            }
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            cursorColor = Color.Black,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        )
                     )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded.value,
+                        onDismissRequest = { expanded.value = false }
+                    ) {
+                        genderOptions.forEach { option ->
+                            DropdownMenuItem(
+                                text = { Text(option) },
+                                onClick = {
+                                    profileViewModel.updateGender(option)
+                                    expanded.value = false
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Tombol Simpan
+        // Save Button
         Button(
             onClick = {
-                profileViewModel.updateName(updatedName)
-
-                // Pastikan data dari ViewModel diteruskan ke fungsi updateProfile
                 profileViewModel.updateProfile(
-                    name = updatedName,
+                    name = profileViewModel.name.value,
                     gender = profileViewModel.gender.value,
                     country = profileViewModel.country.value,
                     dateOfBirth = profileViewModel.dateofbirth.value
@@ -185,4 +202,4 @@ fun EditProfilePage(
             Text("Save Changes", color = Color.White, fontSize = 18.sp)
         }
     }
-    }
+}

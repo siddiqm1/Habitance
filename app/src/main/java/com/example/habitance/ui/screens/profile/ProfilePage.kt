@@ -80,7 +80,7 @@ fun ProfilePage(
                 if (imageUrl.isNotEmpty()) {
                     AsyncImage(
                         model = imageUrl,
-                        contentDescription = "Foto Profil",
+                        contentDescription = "Foto Profile",
                         modifier = Modifier
                             .size(110.dp)
                             .clip(CircleShape)
@@ -91,7 +91,7 @@ fun ProfilePage(
                 } else {
                     Icon(
                         imageVector = Icons.Default.Person,
-                        contentDescription = "Placeholder Profil",
+                        contentDescription = "Placeholder Profile",
                         modifier = Modifier.size(80.dp),
                         tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
@@ -113,7 +113,6 @@ fun ProfilePage(
                     ProfileItem(label = "Nama", value = name)
                     ProfileItem(label = "Email", value = email)
                     ProfileItem(label = "Gender", value = gender)
-                    ProfileItem(label = "Country", value = country)
                     ProfileItem(label = "Date of Birth", value = dateofbirth)
                 }
             }
