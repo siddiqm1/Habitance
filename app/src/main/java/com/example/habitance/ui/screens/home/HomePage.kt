@@ -24,8 +24,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -38,15 +40,21 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil3.compose.AsyncImage
 import com.example.habitance.R
+import com.example.habitance.function.AuthManager
+import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
-import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
-fun HomePage(navController: NavHostController) {
+fun HomePage(navController: NavController,navMainController: NavController,) {
+    val context = LocalContext.current
+    val photoProfile = Firebase.auth.currentUser?.photoUrl.toString()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -66,11 +74,36 @@ fun HomePage(navController: NavHostController) {
                 horizontalArrangement = Arrangement.SpaceBetween // Icon logout berada di ujung kanan
             ) {
                 // Foto Profil
-                Box(
-                    modifier = Modifier
-                        .size(59.dp)
-                        .background(Color.Gray, shape = CircleShape) // Circle untuk foto profil
-                )
+                if (photoProfile.isNotEmpty()) {
+                    AsyncImage(
+                        model = photoProfile,
+                        contentDescription = "Foto Profil",
+                        modifier = Modifier
+                            .size(52.dp)
+                            .clip(CircleShape)
+                            .background(Color.Gray, CircleShape)
+                            .clickable {
+                                navController.navigate(route = Screen.ProfileScreen.route)// Ganti dengan route halaman profil
+                            }
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .size(52.dp)
+                            .clip(CircleShape)
+                            .background(Color.Gray)
+                            .clickable {
+                                navController.navigate(route = Screen.ProfileScreen.route) // Ganti dengan route halaman profil
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "N/A",
+                            color = Color.White,
+                            fontSize = 12.sp
+                        )
+                    }
+                }
 
                 // Teks
                 Column(
@@ -93,16 +126,18 @@ fun HomePage(navController: NavHostController) {
                     )
                 }
 
-//                val context = LocalContext.current
 
                 // Icon Keluar
                 Icon(
 
                     painter = painterResource(id = R.drawable.logout),
                     contentDescription = "Keluar",
-                    modifier = Modifier.size(24.dp).clickable {
-//                        AuthManager(context).signOut()
-//                        navController.navigate("login")
+                    modifier = Modifier.size(24.dp)
+                        .clickable {
+                        AuthManager(context).signOut()
+                        navMainController.navigate("login"){
+                            popUpTo("home") { inclusive = true }
+                        }
 
                     },
                     tint = TextDark
@@ -250,6 +285,7 @@ fun HomePage(navController: NavHostController) {
                             tint = Color(0xFFC4DAD2), // Warna ikon
                             modifier = Modifier
                                 .size(26.dp)
+                                .clickable { navController.navigate(Screen.NotificationScreen.route) }
                         )
                     }
                 }
@@ -411,11 +447,8 @@ fun HomePage(navController: NavHostController) {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun HomePagePreview(){
-    HomePage(navController = rememberNavController())
-}
+
+
 
 
 

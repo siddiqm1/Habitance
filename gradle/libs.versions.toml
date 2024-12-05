@@ -4,6 +4,7 @@ agp = "8.6.0"
 coilCompose = "3.0.3"
 constraintlayoutCompose = "1.1.0"
 credentials = "1.5.0-beta01"
+firebaseAuthKtx = "23.1.0"
 foundation = "1.7.5"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
@@ -43,6 +44,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-ui-text-google-fonts-v151 = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFontsVersion" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

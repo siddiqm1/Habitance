@@ -11,16 +11,22 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.habitance.data.User
 import com.example.habitance.screen.home.HomePage
-import com.example.habitance.ui.screens.activitylist.ActivityList
 import com.example.habitance.ui.screens.note.NotePage
 import com.example.habitance.ui.screens.activitylist.ActivityListEmpty
 import com.example.habitance.ui.screens.addactivity.AddActivity
 import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
+import com.example.habitance.ui.screens.notification.NotificationScreen
+import com.example.habitance.ui.screens.profile.EditProfilePage
+import com.example.habitance.ui.screens.profile.ProfilePage
+import com.example.habitance.ui.screens.profile.ProfileViewModel
 
 @Composable
-fun MainNavigation(navHostController: NavController) {
-    val navController = rememberNavController() // Inisialisasi NavController hanya sekali
+fun  BottomNavGraph(navHostController: NavController) {
+    val navController = rememberNavController()
+
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -39,7 +45,7 @@ fun MainNavigation(navHostController: NavController) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 composable(route = BottomBarScreen.Home.route) {
-                    HomePage(navController)
+                    HomePage(navController,navMainController = navHostController)
                 }
                 composable(route = BottomBarScreen.Activity.route) {
                     ActivityListEmpty(navController)
@@ -51,7 +57,7 @@ fun MainNavigation(navHostController: NavController) {
                     FinishedActivityEmpty(navController)
                 }
                 composable(route = Screen.HomeScreen.route){
-                    HomePage(navController)
+                    HomePage(navController,navMainController = navHostController)
                 }
                 composable(route = Screen.NoteScreen.route){
                     NotePage(navController)
@@ -62,9 +68,13 @@ fun MainNavigation(navHostController: NavController) {
                 composable(route = Screen.FinishedActivityEmpty.route){
                     FinishedActivityEmpty(navController)
                 }
-                composable(route = Screen.ActivityList.route){
-                    ActivityList(navController)
+                composable(route = Screen.NotificationScreen.route){
+                    NotificationScreen(navController)
                 }
+                composable(route = Screen.ProfileScreen.route){
+                    ProfilePage(navController, profileViewModel = ProfileViewModel(), navMainController = navHostController)
+                }
+                composable("edit_profile") { EditProfilePage(navController = navController) }
 
             }
         }

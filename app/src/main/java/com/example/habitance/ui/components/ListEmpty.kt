@@ -33,17 +33,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.habitance.R
+import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
+import com.example.habitance.ui.theme.BottomText
+import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
 fun ListEmpty(
     label: String,
-    navController: NavHostController
+    navController: NavController
 ){
     Column(
         modifier = Modifier
@@ -67,7 +69,9 @@ fun ListEmpty(
                     contentDescription = "back button",
                     modifier = Modifier
                         .size(25.dp)
-                        .clickable { navController.navigate(Screen.HomeScreen.route) }
+                        .clickable {
+                            navController.navigate(BottomBarScreen.Home.route)
+                        }
                 )
             }
 
@@ -107,6 +111,7 @@ fun ListEmpty(
                     Text(
                         text = label,
                         fontSize = 24.sp,
+                        color = TextDark,
                         fontFamily = fontFamily,
                         fontWeight = FontWeight(600),
                     )
@@ -136,6 +141,7 @@ fun ListEmpty(
                     Text(
                         text = "Oops, belum ada aktivitas. Waktunya menambahkan yang pertama!",
                         fontSize = 18.sp,
+                        color = TextDark,
                         fontFamily = fontFamily,
                         fontWeight = FontWeight(600),
                         modifier = Modifier
@@ -148,7 +154,9 @@ fun ListEmpty(
                     .padding(top = 5.dp)
                 ){
                     Button(
-                        onClick = { navController.navigate(Screen.AddActivityScreen.route) },
+                        onClick = {
+                            navController.navigate(Screen.AddActivityScreen.route)
+                        },
                         modifier = Modifier
                             .padding(horizontal = 30.dp, vertical = 18.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -159,6 +167,7 @@ fun ListEmpty(
                             text = "ADD ACTIVITY",
                             fontSize = 16.sp,
                             fontFamily = fontFamily,
+                            color = BottomText,
                             fontWeight = FontWeight(400),
                             modifier = Modifier
                                 .padding(vertical = 6.dp, horizontal = 8.dp)

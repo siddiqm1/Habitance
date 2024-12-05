@@ -1,4 +1,4 @@
-package com.example.habitance.ui.screens.activitylist
+package com.example.habitance.ui.screens.note
 
 import CardList
 import android.util.Log
@@ -39,15 +39,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
 import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
+import com.example.habitance.ui.components.NoteItem
 import com.example.habitance.ui.screens.addactivity.Activity
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
@@ -58,7 +61,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun ListActivity(navController: NavController) {
+fun ListNote(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,17 +74,17 @@ fun ListActivity(navController: NavController) {
         val errorMessage = remember { mutableStateOf<String?>(null) }
         val selectedCategory = remember { mutableStateOf<String?>(null) }
 
-        LaunchedEffect(Unit) {
-            fetchActivities(
-                onResult = { fetchedActivities ->
-                    activities.value = fetchedActivities
-                    filteredActivities.value = fetchedActivities
-                },
-                onError = { error ->
-                    errorMessage.value = error.message
-                }
-            )
-        }
+//        LaunchedEffect(Unit) {
+//            fetchActivities(
+//                onResult = { fetchedActivities ->
+//                    activities.value = fetchedActivities
+//                    filteredActivities.value = fetchedActivities
+//                },
+//                onError = { error ->
+//                    errorMessage.value = error.message
+//                }
+//            )
+//        }
 
         Box(
             modifier = Modifier
@@ -121,7 +124,7 @@ fun ListActivity(navController: NavController) {
                 modifier = Modifier.padding(25.dp)
             ) {
                 Text(
-                    text = "ACTIVITY LIST",
+                    text = "ACTIVITY NOTE",
                     fontSize = 22.sp,
                     color = TextDark,
                     fontFamily = fontFamily,
@@ -134,7 +137,7 @@ fun ListActivity(navController: NavController) {
                 ) {
                     Button(
                         onClick = {
-                            navController.navigate(Screen.AddActivityScreen.route)
+                            navController.navigate(Screen.NoteScreen.route)
                         },
                         modifier = Modifier
                             .size(42.dp)
@@ -216,14 +219,8 @@ fun ListActivity(navController: NavController) {
 
                 LazyColumn {
                     items(filteredActivities.value) { activity ->
-                        Log.d("ActivityList", "Activity: $activity")
-                        CardList(
-                            activityName = activity.name,
-                            target = activity.target,
-                            unit = activity.unit,
-                            startDate = activity.start ?: "N/A",
-                            endDate = activity.end ?: "N/A"
-                        )
+//                        Log.d("ActivityList", "Activity: $activity")
+                        NoteItem("Membaca", "Belajar membaca 2 hari sekali")
                     }
                 }
             }
@@ -233,39 +230,45 @@ fun ListActivity(navController: NavController) {
 
 
 
-fun fetchActivities(
-    onResult: (List<Activity>) -> Unit,
-    onError: (Exception) -> Unit
-) {
-    val firestore = FirebaseFirestore.getInstance()
-    val currentUser = FirebaseAuth.getInstance().currentUser
+//fun fetchActivities(
+//    onResult: (List<Activity>) -> Unit,
+//    onError: (Exception) -> Unit
+//) {
+//    val firestore = FirebaseFirestore.getInstance()
+//    val currentUser = FirebaseAuth.getInstance().currentUser
+//
+//    if (currentUser != null) {
+//        firestore.collection("users")
+//            .document(currentUser.uid)
+//            .collection("activities")
+//            .get()
+//            .addOnSuccessListener { querySnapshot ->
+//                val activities = querySnapshot.documents.mapNotNull { document ->
+//                    try {
+//                        Activity(
+//                            name = document.getString("name") ?: "",
+//                            unit = document.getString("unit") ?: "",
+//                            target = document.getString("target") ?: "",
+//                            category = document.getString("category") ?: "",
+//                            start = document.getString("start"),
+//                            end = document.getString("end")
+//                        )
+//                    } catch (e: Exception) {
+//                        null
+//                    }
+//                }
+//                onResult(activities) // Return the list of activities
+//            }
+//            .addOnFailureListener { exception ->
+//                onError(exception) // Return the error
+//            }
+//    } else {
+//        onError(Exception("User is not logged in"))
+//    }
+//}
 
-    if (currentUser != null) {
-        firestore.collection("users")
-            .document(currentUser.uid)
-            .collection("activities")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                val activities = querySnapshot.documents.mapNotNull { document ->
-                    try {
-                        Activity(
-                            name = document.getString("name") ?: "",
-                            unit = document.getString("unit") ?: "",
-                            target = document.getString("target") ?: "",
-                            category = document.getString("category") ?: "",
-                            start = document.getString("start"),
-                            end = document.getString("end")
-                        )
-                    } catch (e: Exception) {
-                        null
-                    }
-                }
-                onResult(activities) // Return the list of activities
-            }
-            .addOnFailureListener { exception ->
-                onError(exception) // Return the error
-            }
-    } else {
-        onError(Exception("User is not logged in"))
-    }
+@Preview
+@Composable
+fun ListNotePreview() {
+    ListNote(navController = rememberNavController())
 }

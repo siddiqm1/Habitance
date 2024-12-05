@@ -1,6 +1,7 @@
 package com.example.habitance.ui.screens.auth.register
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -86,6 +87,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
     val dateOfBirth by viewModel.dateOfBirth.collectAsState()
     val showDatePicker by viewModel.showDatePicker.collectAsState()
     val gender by viewModel.gender.collectAsState()
+    var isLoading by remember { mutableStateOf(false) }
 
     // Warna dan konteks
     val textFieldColor = BackGround2
@@ -306,35 +308,46 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                 // Tombol register
                 Button(
                     onClick = {
-                        val userId = currentUser?.uid
-                        if (userId != null) {
-                            SaveUserDataToFirestore(
+                        if (firstname.isBlank() || lastname.isBlank() || username.isBlank()) {
+                            Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                        } else {
+                            isLoading = true
+                            val userId = currentUser?.uid
+                            if (userId != null) {
+                                SaveUserDataToFirestore(
                                 user = User
                                     (
                                     id = Firebase.auth.currentUser!!.uid,
-                                    name = firstname,
+                                    name = username,
                                     email = currentUser.email.toString(),
                                     country = "Indonesia",
+                                    dateofbirth = dateOfBirth,
                                     gender = gender
                                 ),
                                 context = context
                             )
                             { isSuccess ->
+                                isLoading = false
                                 if (isSuccess) {
-                                    Log.d("FirestoreSave", "Data successfully saved to Firestore")
+                                    Toast.makeText(context, "Register successful!", Toast.LENGTH_SHORT).show()
+                                    navController.navigate("home")
                                 } else {
-                                    Log.e("FirestoreSave", "Failed to save data to Firestore")
+                                    Toast.makeText(context, "Failed to register. Try again!", Toast.LENGTH_SHORT).show()
                                 }
                             }
+                            }
                         }
-                        navController.navigate("home")
                     },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = buttonColor)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(),
+                    shape = RoundedCornerShape(16.dp),
+                    enabled = !isLoading
                 ) {
-                    Text(text = "Register",
-                        color = com.example.habitance.ui.theme.BottomText,
-                        fontFamily = fontFamily,
+                    Text(
+                        text = if (isLoading) "Loading..." else "Register",
+                        color = Color.White,
                         fontSize = 18.sp
                     )
                 }

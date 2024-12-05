@@ -1,10 +1,9 @@
 package com.example.habitance.ui.screens.addactivity
 
-
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,26 +25,22 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
+import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.components.CategorySelection
 import com.example.habitance.ui.components.DatePicker
@@ -53,17 +48,27 @@ import com.example.habitance.ui.components.TextFieldActivity
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
-import com.example.habitance.ui.theme.BottomText
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun AddActivity(navController: NavHostController) {
+fun AddActivity(navController: NavController) {
     var activity by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
     var unit by remember { mutableStateOf("") }
     var target by remember { mutableStateOf("") }
-    var time by remember { mutableStateOf("") }
+    var startDate by remember { mutableStateOf("") }
+    var endDate by remember { mutableStateOf("") }
+
+    // Validasi apakah semua field sudah terisi
+    val isFormValid = activity.isNotBlank() &&
+            category.isNotBlank() &&
+            unit.isNotBlank() &&
+            target.isNotBlank() &&
+            startDate.isNotBlank() &&
+            endDate.isNotBlank()
 
     Column(
         modifier = Modifier
@@ -85,7 +90,9 @@ fun AddActivity(navController: NavHostController) {
                     contentDescription = "back button",
                     modifier = Modifier
                         .size(25.dp)
-                        .clickable { navController.navigate(Screen.HomeScreen.route)}
+                        .clickable {
+                            navController.navigate(BottomBarScreen.Activity.route)
+                        }
                 )
             }
 
@@ -130,38 +137,73 @@ fun AddActivity(navController: NavHostController) {
                     fontWeight = FontWeight(600)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                TextFieldActivity("Nama Aktivitas", activity, onValueChange = { activity = it })
 
-                TextFieldActivity("Nama Aktivitas", activity, onValueChange = {activity = it})
-
-                CategorySelection()
+                CategorySelection(onCategorySelected = { category = it })
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextFieldActivity("Satuan", unit, onValueChange = {unit = it})
+                TextFieldActivity("Satuan", unit, onValueChange = { unit = it })
 
-                TextFieldActivity("Target", target, onValueChange = {target = it})
+                TextFieldActivity("Target", target, onValueChange = { target = it })
 
-                DatePicker()
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                Button(modifier = Modifier
-                    .padding(8.dp),
-                    colors = ButtonDefaults.buttonColors(TextDark),
-                    onClick = {navController.navigate(Screen.ActivityList.route)}) {
-                    Text(text = "Simpan", modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
-                        fontFamily = fontFamily, fontSize = 14.sp, fontWeight = FontWeight(400))
+                DatePicker { start, end ->
+                    if (start != null) {
+                        startDate = start
+                    }
+                    if (end != null) {
+                        endDate = end
+                    }
                 }
+                Button(
+                    modifier = Modifier.padding(8.dp),
+                    colors = ButtonDefaults.buttonColors(TextDark),
+                    enabled = isFormValid, // Tombol akan diaktifkan hanya jika semua field terisi
+                    onClick = {
+                        val firestore = FirebaseFirestore.getInstance()
+                        val currentUser = FirebaseAuth.getInstance().currentUser
 
+                        if (currentUser != null) {
+                            val newActivity = Activity(
+                                name = activity,
+                                unit = unit,
+                                target = target,
+                                category = category,
+                                start = startDate,
+                                end = endDate
+                            )
+
+                            firestore.collection("users")
+                                .document(currentUser.uid)
+                                .collection("activities")
+                                .add(newActivity)
+                                .addOnSuccessListener {
+                                    navController.navigate(Screen.ActivityListEmpty.route)
+                                }
+                                .addOnFailureListener { e ->
+                                    // Tangani kesalahan
+                                    Log.e("Firestore", "Error adding document", e)
+                                }
+                        }
+                    }
+                ) {
+                    Text(
+                        text = "Simpan",
+                        modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
+                        fontFamily = fontFamily,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight(400)
+                    )
+                }
             }
         }
-
     }
 }
 
 @Preview
 @Composable
-fun AddActivyreview(){
+fun AddActivityPreview() {
     AddActivity(navController = rememberNavController())
 }
+
+

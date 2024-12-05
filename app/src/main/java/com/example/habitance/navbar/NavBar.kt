@@ -50,7 +50,7 @@ fun NavBar(navController: NavController) {
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState()) // Menambahkan scrolling ke konten
         ) {
-            MainNavigation(navController)
+            BottomNavGraph(navController)
             }
         }
     }

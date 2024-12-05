@@ -79,27 +79,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-
-
-
     implementation(libs.androidx.navigation.compose)
-
     implementation (libs.accompanist.pager)
     implementation (libs.accompanist.pager.indicators)
     implementation (libs.androidx.foundation) // Versi terbaru Compose Foundation
     implementation (libs.androidx.material3.v131)
     implementation(libs.androidx.constraintlayout.compose)
-
     implementation("androidx.compose.material3:material3")
-
-
-
+    implementation (libs.firebase.auth.ktx)
     implementation(libs.material3)
     implementation(libs.androidx.material.icons.core)
     implementation(libs.androidx.material.icons.extended)
-
     implementation (libs.androidx.ui.text.google.fonts.v151) // tks habitance
+
 
 
 }

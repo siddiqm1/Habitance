@@ -23,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,7 +35,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -68,6 +72,9 @@ fun SignupPage(
     val passwordVisibility by viewModel.isPasswordVisible.collectAsState()
     val confirmPassword by viewModel.confirmPassword.collectAsState()
     val confirmPasswordVisibility by viewModel.isConfirmPasswordVisible.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+
 
     Column(
         modifier
@@ -131,12 +138,12 @@ fun SignupPage(
                     value = email,
                     onValueChange = { viewModel.updateEmail(it) },
                     label = { Text("Email",color = Color.Gray,fontSize = 13.sp) },
-                    placeholder = { Text("Enter your username") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Email, contentDescription = "Email Icon")
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(50)
+                                       shape = RoundedCornerShape(16.dp),
+
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -147,7 +154,6 @@ fun SignupPage(
                     value = password,
                     onValueChange = { viewModel.updatePassword(it) },
                     label = { Text("Password",color = Color.Gray,fontSize = 13.sp) },
-                    placeholder = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
                     },
@@ -160,7 +166,8 @@ fun SignupPage(
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),                    shape = RoundedCornerShape(50)
+                    visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),                                       shape = RoundedCornerShape(16.dp),
+
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -170,7 +177,6 @@ fun SignupPage(
                     value = confirmPassword,
                     onValueChange = { viewModel.updateConfirmPassword(it) },
                     label = { Text("Confirm Password",color = Color.Gray, fontSize = 13.sp)},
-                    placeholder = { Text("Confirm Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock Icon")
                     },
@@ -183,81 +189,48 @@ fun SignupPage(
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None else PasswordVisualTransformation(),                    shape = RoundedCornerShape(50)
+                    visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None else PasswordVisualTransformation(),                                       shape = RoundedCornerShape(16.dp),
+
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(36.dp))
                 val scope = rememberCoroutineScope()
-                // Tombol sigup
+// Tombol Signup
                 Button(
                     onClick = {
                         viewModel.signUpWithEmailAndPassword {
-                        }
                             navController.navigate("register")
+                        }
                     },
-//                    enabled = authState.value != AuthResponse.Loading,
+                    enabled = !isLoading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1A5D44)),
-                    shape = RoundedCornerShape(50)
+                    shape = RoundedCornerShape(16.dp)
                 ) {
-                    Text(text = "Create Account", color = Color.White)
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = Color.White,
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text(text = "Create Account", color = Color.White)
+                    }
                 }
-
-
-            Spacer(modifier = Modifier.height(30.dp))
-
-            // Login with Third Party
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                HorizontalDivider(modifier = Modifier.weight(1f))
-                Text(
-                    text = " or Continue with ",
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    color = Color.Gray
-                )
-                HorizontalDivider(modifier = Modifier.weight(1f))
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-
-                OutlinedButton(
-                    onClick = {
-                        viewModel.signInWithGoogle {
-                            navController.navigate("register") //nanti buat ke register
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
-
-                ) {
-                    // Display the Google logo
-                    Image(
-                        painter = painterResource(id = R.drawable.google),
-                        contentDescription = null,
-                        modifier = Modifier.size(36.dp).padding(end = 8.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
+                errorMessage?.let { error ->
                     Text(
-                        text = "Continue With Google",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.Gray
+                        text = error,
+                        color = Color.Red,
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(top = 8.dp)
                     )
                 }
-            }
-                Spacer(modifier = Modifier.height(30.dp))
+
+
+                Spacer(modifier = Modifier.height(50.dp))
+
+
                 // Already have an account? Login
                 Row(verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(bottom = 0.dp))
@@ -271,6 +244,7 @@ fun SignupPage(
                     }
                 }
             }
+
 
         }
     }

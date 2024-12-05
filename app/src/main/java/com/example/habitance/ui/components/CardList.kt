@@ -35,14 +35,21 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun CardList() {
+fun CardList(
+    activityName: String,
+    target: String,
+    unit: String,
+    startDate: String,
+    endDate: String
+) {
+    val targetInt = target.toIntOrNull() ?: 0
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
             .fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp), // Bentuk sudut card
+        shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp)
-    ){
+    ) {
         ConstraintLayout(modifier = Modifier
             .fillMaxWidth()
             .background(Border)
@@ -50,7 +57,7 @@ fun CardList() {
         ) {
             val (judulText, targetText, targetText2, editIcon) = createRefs()
             Text(
-                text = "Membaca buku",
+                text = activityName,
                 fontSize = 13.sp,
                 fontWeight = FontWeight(500),
                 fontFamily = fontFamily,
@@ -76,7 +83,7 @@ fun CardList() {
                     }
             )
             Text(
-                text = "35/30",
+                text = "$targetInt / $unit",
                 fontSize = 15.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -104,7 +111,7 @@ fun CardList() {
         ConstraintLayout(modifier = Modifier
             .background(BackGround)
             .fillMaxWidth()
-        ){
+        ) {
             val (targetIcon, targetText, startIcon, startText, endIcon, endText, fireIcon, noteButton, notePreview) = createRefs()
             Icon(
                 painter = painterResource(id = R.drawable.target),
@@ -119,7 +126,7 @@ fun CardList() {
                     }
             )
             Text(
-                text = "30 halaman / day",
+                text = "$target/$unit",
                 fontSize = 11.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -142,7 +149,7 @@ fun CardList() {
                     }
             )
             Text(
-                text = "03/01/2024",
+                text = startDate,
                 fontSize = 7.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -165,7 +172,7 @@ fun CardList() {
                     }
             )
             Text(
-                text = "03/01/2024",
+                text = endDate,
                 fontSize = 7.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -234,5 +241,13 @@ fun CardList() {
 @Preview
 @Composable
 fun CardListPreview() {
-    CardList()
+    CardList(
+        activityName = "Activity Name",
+        target = "10",
+        unit = "Unit",
+        startDate = "Start Date",
+        endDate = "End Date"
+    )
 }
+
+
