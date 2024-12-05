@@ -22,52 +22,37 @@ import com.example.habitance.ui.screens.notification.NotificationViewModel
 
 @Composable
 fun NotificationListScreen(navController: NavController, viewModel: NotificationViewModel) {
-    Log.d("mek","disini")
     val notifications = viewModel.notifications.collectAsState()
 
-Column {
-    LazyColumn(modifier = Modifier.padding(8.dp)) {
-        items(notifications.value) { notification ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.padding(16.dp)
+    Column {
+        LazyColumn(modifier = Modifier.padding(8.dp)) {
+            items(notifications.value) { notification ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
                 ) {
-                    Column {
-                        Text("Judul: ${notification.title}")
-                        Text("Waktu: ${notification.time}")
-                    }
-                    IconButton(onClick = {
-                        viewModel.deleteNotification(notification.id)
-                    }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete")
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Column {
+                            Text("Judul: ${notification.title}")
+                            Text("Waktu: ${notification.time}")
+                        }
+                        IconButton(onClick = {
+                            viewModel.deleteNotification(notification.id)
+                        }) {
+                            Icon(Icons.Default.Delete, contentDescription = "Delete")
+                        }
                     }
                 }
-
             }
         }
-        item {
-            IconButton(onClick = {
-            }) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete")
-            }
+        IconButton(onClick = {
+            navController.navigate("add_notification")
+        }) {
+            Icon(Icons.Default.Add, contentDescription = "Add")
         }
-
-    }
-
-    IconButton(onClick = {
-        navController.navigate("add_notification")
-    }) {
-        Icon(Icons.Default.Add, contentDescription = "")
-    }
-
-    IconButton(onClick = {
-    }) {
-        Icon(Icons.Default.Delete, contentDescription = "Delete")
-    }
     }
 }

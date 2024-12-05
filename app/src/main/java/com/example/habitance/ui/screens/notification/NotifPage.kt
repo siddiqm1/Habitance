@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.screens.notification.Notification
 import com.example.habitance.ui.screens.notification.NotificationViewModel
+import com.example.habitance.ui.screens.notification.scheduleNotification
 import java.util.Calendar
 
 @Composable
@@ -47,7 +49,6 @@ fun AddNotificationScreen(navController: NavController, viewModel: NotificationV
         ) {
             Text(if (time.isEmpty()) "Pilih Waktu" else "Waktu: $time")
         }
-
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
@@ -59,7 +60,8 @@ fun AddNotificationScreen(navController: NavController, viewModel: NotificationV
                         time = time
                     )
                     viewModel.addNotification(notification)
-//                    navController.navigate("notification_list")
+                    scheduleNotification(context, notification)
+                    navController.navigate(route = Screen.NotificationScreen.route)
                 }
             },
             modifier = Modifier.fillMaxWidth()
