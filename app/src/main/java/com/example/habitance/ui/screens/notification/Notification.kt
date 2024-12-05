@@ -1,6 +1,6 @@
 package com.example.habitance.ui.screens.notification
 
-data class NotificationModel(
+data class Notification(
     val id: String = "",
     val title: String = "",
     val description: String = "",

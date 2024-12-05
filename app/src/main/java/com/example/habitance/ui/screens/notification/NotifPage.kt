@@ -1,22 +1,22 @@
-package com.example.habitance.ui.screens.notification
+package com.example.habitance.ui.screens
 
 import android.app.TimePickerDialog
+import android.content.Context
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.habitance.navbar.Screen
+import com.example.habitance.ui.screens.notification.Notification
+import com.example.habitance.ui.screens.notification.NotificationViewModel
 import java.util.Calendar
 
 @Composable
-fun AddNotificationScreen(navController: NavController) {
-    val viewModel: NotificationViewModel = hiltViewModel()
+fun AddNotificationScreen(navController: NavController, viewModel: NotificationViewModel) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("") }
@@ -26,7 +26,7 @@ fun AddNotificationScreen(navController: NavController) {
         TextField(
             value = title,
             onValueChange = { title = it },
-            label = { Text("Judul Notifikasi") },
+            label = { Text("Judul") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -51,16 +51,14 @@ fun AddNotificationScreen(navController: NavController) {
         Button(
             onClick = {
                 if (title.isNotEmpty() && description.isNotEmpty() && time.isNotEmpty()) {
-                    val notification = NotificationModel(
-                        id = "", // ID akan dihasilkan otomatis
+                    val notification = Notification(
+                        id = "",
                         title = title,
                         description = description,
                         time = time
                     )
                     viewModel.addNotification(notification)
-                    navController.navigate(Screen.NotificationScreen.route) {
-                        popUpTo(Screen.NotificationScreen.route) { inclusive = true }
-                    }
+//                    navController.navigate("notification_list")
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -70,24 +68,16 @@ fun AddNotificationScreen(navController: NavController) {
     }
 }
 
-// Mengubah showTimePicker menjadi fungsi biasa
-fun showTimePicker(context: android.content.Context, onTimeSelected: (String) -> Unit) {
+fun showTimePicker(context: Context, onTimeSelected: (String) -> Unit) {
     val calendar = Calendar.getInstance()
     val timePicker = TimePickerDialog(
         context,
         { _, hour, minute ->
-            val formattedTime = String.format("%02d:%02d", hour, minute)
-            onTimeSelected(formattedTime)
+            onTimeSelected(String.format("%02d:%02d", hour, minute))
         },
         calendar.get(Calendar.HOUR_OF_DAY),
         calendar.get(Calendar.MINUTE),
         true
     )
     timePicker.show()
-}
-
-@Preview
-@Composable
-fun AddNotificationScreenPreview() {
-    AddNotificationScreen(navController = NavController(LocalContext.current))
 }

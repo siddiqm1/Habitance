@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
-    id("com.google.dagger.hilt.android") version "2.51.1" apply true // Plugin Hilt untuk Android
-    id("kotlin-kapt") // Menggunakan KAPT untuk Hilt
+//    id("com.google.dagger.hilt.android") version "2.51.1" apply true // Plugin Hilt untuk Android
+//    id("kotlin-kapt") // Menggunakan KAPT untuk Hilt
 }
 
 android {
@@ -106,10 +106,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Dagger Hilt dependencies
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+//    implementation(libs.hilt.android)
+//    kapt(libs.hilt.compiler)
 
-
+    implementation (libs.androidx.core.ktx.v1101)
+    implementation (libs.androidx.work.runtime.ktx)
 
 
     // Untuk Jetpack Compose ViewModel

@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import com.example.habitance.function.AuthManager
 import com.example.habitance.function.Navigation
 import com.example.habitance.ui.theme.HabitanceTheme
-import dagger.hilt.android.HiltAndroidApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
