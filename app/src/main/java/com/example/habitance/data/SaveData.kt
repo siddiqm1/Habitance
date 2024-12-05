@@ -16,7 +16,8 @@ fun SaveUserDataToFirestore(user: User, context: Context, callback: (Boolean) ->
                 "name" to user.name,
                 "email" to user.email,
                 "country" to user.country,
-                "gender" to user.gender
+                "gender" to user.gender,
+                "dateofbirth" to user.dateofbirth,
             )
             Log.d("userData", user.toString())
 
