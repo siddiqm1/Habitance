@@ -17,7 +17,8 @@ import com.example.habitance.ui.screens.note.NotePage
 import com.example.habitance.ui.screens.activitylist.ActivityListEmpty
 import com.example.habitance.ui.screens.addactivity.AddActivity
 import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
-import com.example.habitance.ui.screens.notification.NotificationScreen
+import com.example.habitance.ui.screens.notification.AddNotificationScreen
+import com.example.habitance.ui.screens.notification.NotificationListScreen
 import com.example.habitance.ui.screens.profile.EditProfilePage
 import com.example.habitance.ui.screens.profile.ProfilePage
 import com.example.habitance.ui.screens.profile.ProfileViewModel
@@ -68,13 +69,23 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = Screen.FinishedActivityEmpty.route){
                     FinishedActivityEmpty(navController)
                 }
-                composable(route = Screen.NotificationScreen.route){
-                    NotificationScreen(navController)
-                }
                 composable(route = Screen.ProfileScreen.route){
                     ProfilePage(navController, profileViewModel = ProfileViewModel(), navMainController = navHostController)
                 }
-                composable("edit_profile") { EditProfilePage(navController = navController) }
+                composable("edit_profile") {
+                    EditProfilePage(navController = navController)
+                }
+                composable(route = Screen.NotificationScreen.route) {
+                    NotificationListScreen(
+                        navController = navController // ke halaman ini untuk daftar notifikasi
+                    )
+                }
+                composable(route = Screen.AddNotificationScreen.route) {
+                    AddNotificationScreen(
+                        navController = navController // untuk menambahkan notifikasi
+                    )
+                }
+
 
             }
         }
