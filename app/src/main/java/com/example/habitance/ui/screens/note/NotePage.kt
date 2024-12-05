@@ -20,13 +20,24 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,10 +52,16 @@ import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
+import com.example.habitance.ui.theme.Border2
+import com.example.habitance.ui.theme.BottomText
+import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.TextLogo
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
 fun NotePage(navController: NavHostController) {
+    var activity by remember { mutableStateOf("") }
+    var body by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
     Column(modifier = Modifier
         .fillMaxSize()
@@ -115,33 +132,86 @@ fun NotePage(navController: NavHostController) {
                             .background(Border)
                             .fillMaxWidth()
                             .padding(16.dp)){
-                            Text(
-                                text = "Seseorang's Notes",
-                                fontSize = 18.sp,
-                                fontFamily = fontFamily,
-                                fontWeight = FontWeight(500)
+                            TextField(
+                                value = activity,
+                                onValueChange = { activity = it },
+                                label = {
+                                    Text(
+                                        text = "Masukkan Nama Activity",
+                                        color = Border2,
+                                        fontSize = 13.sp
+                                    )
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 1.dp,
+                                        color = Border2,
+                                        shape = MaterialTheme.shapes.medium
+                                    ),
+                                shape = MaterialTheme.shapes.medium,
+                                colors = TextFieldDefaults.colors().copy(
+                                    focusedContainerColor = Border,
+                                    unfocusedContainerColor = Border,
+                                    cursorColor = Color.Black,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent
+                                ),
+                                textStyle = LocalTextStyle.current.copy(color = Color.Black)
                             )
                         }
 
-                        Column(modifier = Modifier
-                            .fillMaxWidth()
-                            .background(BackGround)
-                            .padding(16.dp)
-                            .verticalScroll(scrollState)){
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(BottomText)
+                                .padding(16.dp)
+                                .verticalScroll(scrollState)
+                        ) {
+                            TextField(
+                                value = body,
+                                onValueChange = { body = it },
+                                label = {
+                                    Text(
+                                        text = "Masukkan Note",
+                                        color = TextDark,
+                                        fontSize = 13.sp
+                                    )
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(
+                                        width = 1.dp,
+                                        color = TextDark,
+                                        shape = MaterialTheme.shapes.medium
+                                    ),
+                                shape = MaterialTheme.shapes.medium,
+                                colors = TextFieldDefaults.colors().copy(
+                                    focusedContainerColor = Border2,
+                                    unfocusedContainerColor = Border2,
+                                    cursorColor = Color.Black,
+                                    unfocusedIndicatorColor = Color.Transparent,
+                                    focusedIndicatorColor = Color.Transparent
+                                ),
+                                textStyle = LocalTextStyle.current.copy(color = Color.Black)
+                            )
 
-                            Text(
-                                text = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo voluptates reprehenderit, commodi sit consectetur nulla dolores accusantium delectus officia consequatur nesciunt voluptas, voluptatum ipsam exercitationem tempora voluptatem eius amet provident!\n" +
-                                        "Saepe fugit ab facilis eligendi. Blanditiis nam, quasi consectetur repudiandae dignissimos dolores pariatur consequuntur dolorum quo rerum deleniti minus repellat maiores a fugiat iure cupiditate amet! Quos sed hic libero!\n" +
-                                        "Soluta eveniet laborum perspiciatis hic illo ratione neque, incidunt explicabo necessitatibus veritatis repellendus! Distinctio sapiente repellendus voluptatem inventore, saepe, a consequatur atque molestias laudantium, perspiciatis quae nemo eligendi quidem porro.\n" +
-                                        "Soluta eveniet laborum perspiciatis hic illo ratione neque, incidunt explicabo necessitatibus veritatis repellendus! Distinctio sapiente repellendus voluptatem inventore, saepe, a consequatur atque molestias laudantium, perspiciatis quae nemo eligendi quidem porro.\n" +
-                                        "Soluta eveniet laborum perspiciatis hic illo ratione neque, incidunt explicabo necessitatibus veritatis repellendus! Distinctio sapiente repellendus voluptatem inventore, saepe, a consequatur atque molestias laudantium, perspiciatis quae nemo eligendi quidem porro.\n" +
-                                        "Soluta eveniet laborum perspiciatis hic illo ratione neque, incidunt explicabo necessitatibus veritatis repellendus! Distinctio sapiente repellendus voluptatem inventore, saepe, a consequatur atque molestias laudantium, perspiciatis quae nemo eligendi quidem porro.\n" +
-                                        "Soluta eveniet laborum perspiciatis hic illo ratione neque, incidunt explicabo necessitatibus veritatis repellendus! Distinctio sapiente repellendus voluptatem inventore, saepe, a consequatur atque molestias laudantium, perspiciatis quae nemo eligendi quidem porro.\n" +
-                                        "Deleniti, dicta. Neque, cumque. Tenetur possimus dolore excepturi! Molestias totam, minima quidem natus optio ipsum debitis itaque ullam consectetur perferendis! Fugit aspernatur laboriosam culpa at ut quibusdam ratione impedit quisquam?",
-                                fontSize = 12.sp,
-                                fontFamily = fontFamily,
-                                lineHeight = 16.sp)
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Button(
+                                modifier = Modifier
+                                    .align(Alignment.End), // Menempatkan tombol di sisi kanan
+                                onClick = {},
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = TextDark,
+                                    contentColor = BackGround2
+                                )
+                            ) {
+                                Text(text = "Simpan")
+                            }
                         }
+
 
                     }
 
