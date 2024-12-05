@@ -276,7 +276,7 @@ fun HomePage(navController: NavController, navMainController: NavController) {
                             modifier = Modifier
                                 .size(26.dp)
                                 .clickable {
-//                                    navController.navigate(Screen.NotificationScreen.route)
+                                    navController.navigate(Screen.NotificationScreen.route)
                                 }
                         )
                     }
