@@ -19,8 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.BottomText
+import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -50,7 +50,7 @@ fun CategorySelection(onCategorySelected: (String) -> Unit) {
             shape = RoundedCornerShape(24.dp),
             elevation = ButtonDefaults.buttonElevation(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (category == "Baik") Border else BottomText
+                containerColor = if (category == "Baik") TextMedium else BottomText
             )
         ) {
             Text("Baik", color = Color.Black, fontFamily = fontFamily, fontSize = 15.sp)
@@ -67,7 +67,7 @@ fun CategorySelection(onCategorySelected: (String) -> Unit) {
                 .height(48.dp),
             elevation = ButtonDefaults.buttonElevation(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (category == "Buruk") Border else BottomText
+                containerColor = if (category == "Buruk") TextMedium else BottomText
             )
         ) {
             Text("Buruk", color = Color.Black, fontFamily = fontFamily, fontSize = 15.sp)

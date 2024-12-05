@@ -23,9 +23,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.BottomText
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 import java.util.Calendar
 import java.util.Date
@@ -58,7 +58,7 @@ fun DatePicker(onDateSelected: (start: String?, end: String?) -> Unit) {
                     .padding(8.dp)
                     .weight(1f),
                 colors = ButtonDefaults.buttonColors(BottomText),
-                border = BorderStroke(1.dp, Border),
+                border = BorderStroke(1.dp, TextMedium),
                 onClick = {
                     showDatePickerDialog(context) { date ->
                         startDate = dateFormat.format(date)
@@ -82,7 +82,7 @@ fun DatePicker(onDateSelected: (start: String?, end: String?) -> Unit) {
                     .padding(8.dp)
                     .weight(1f),
                 colors = ButtonDefaults.buttonColors(BottomText),
-                border = BorderStroke(1.dp, Border),
+                border = BorderStroke(1.dp, TextMedium),
                 onClick = {
                     showDatePickerDialog(context) { date ->
                         endDate = dateFormat.format(date)

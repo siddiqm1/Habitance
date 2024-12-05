@@ -11,7 +11,6 @@ import com.example.habitance.function.AuthManager
 import com.example.habitance.function.Navigation
 import com.example.habitance.ui.theme.HabitanceTheme
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

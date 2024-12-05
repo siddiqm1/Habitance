@@ -1,5 +1,6 @@
 package com.example.habitance.navbar
 
+import NotificationRepository
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,14 +12,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.habitance.data.User
-import com.example.habitance.ui.screens.note.NotePage
-import com.example.habitance.ui.screens.activitylist.ActivityListEmpty
+import com.example.habitance.ui.screens.AddNotificationScreen
+import com.example.habitance.ui.screens.NotificationListScreen
 import com.example.habitance.ui.screens.activitylist.ActivityScreen
 import com.example.habitance.ui.screens.addactivity.AddActivity
 import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
 import com.example.habitance.ui.screens.home.HomePage
-import com.example.habitance.ui.screens.notification.NotificationScreen
+import com.example.habitance.ui.screens.note.NotePage
+import com.example.habitance.ui.screens.notification.NotificationViewModel
 import com.example.habitance.ui.screens.profile.EditProfilePage
 import com.example.habitance.ui.screens.profile.ProfilePage
 import com.example.habitance.ui.screens.profile.ProfileViewModel
@@ -26,6 +27,12 @@ import com.example.habitance.ui.screens.profile.ProfileViewModel
 @Composable
 fun  BottomNavGraph(navHostController: NavController) {
     val navController = rememberNavController()
+    // Buat instance NotificationRepository
+    val notificationRepository = NotificationRepository()
+
+    // Inisialisasi NotificationViewModel dengan repository
+    val notificationViewModel = NotificationViewModel(notificationRepository)
+
 
 
     Scaffold(
@@ -69,8 +76,11 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = Screen.FinishedActivityEmpty.route){
                     FinishedActivityEmpty(navController)
                 }
-                composable(route = Screen.NotificationScreen.route){
-                    NotificationScreen(navController)
+                composable(route = Screen.NotificationScreen.route) {
+                    NotificationListScreen(navController = navController, viewModel = notificationViewModel)
+                }
+                composable(route = Screen.AddNotificationScreen.route) {
+                    AddNotificationScreen(navController = navController, viewModel = notificationViewModel)
                 }
                 composable(route = Screen.ProfileScreen.route){
                     ProfilePage(navController, profileViewModel = ProfileViewModel(), navMainController = navHostController)

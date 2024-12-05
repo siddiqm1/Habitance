@@ -1,47 +1,84 @@
-package com.example.habitance.ui.screens.notification
+package com.example.habitance.ui.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import android.app.TimePickerDialog
+import android.content.Context
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.example.habitance.R
-import com.example.habitance.navbar.Screen
+import androidx.navigation.NavController
+import com.example.habitance.ui.screens.notification.Notification
+import com.example.habitance.ui.screens.notification.NotificationViewModel
+import java.util.Calendar
 
 @Composable
-fun NotificationScreen(navController: NavHostController) {
-   Column (){
-       Text(
-           text = "Notification Screen",
-           style = TextStyle(fontSize = MaterialTheme.typography.headlineMedium.fontSize),
-           modifier = Modifier.padding(16.dp)
-       )
-       IconButton(
-           onClick = { navController.navigate(Screen.HomeScreen.route) },
-           modifier = Modifier.padding(horizontal = 8.dp)
-       ) {
-           Image(
-               painter = painterResource(id = R.drawable.baseline_arrow_back_24),
-               contentDescription = null,
-               modifier = Modifier
-                   .size(25.dp)
-           )
-       }
-   }
+fun AddNotificationScreen(navController: NavController, viewModel: NotificationViewModel) {
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var time by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        TextField(
+            value = title,
+            onValueChange = { title = it },
+            label = { Text("Judul") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = description,
+            onValueChange = { description = it },
+            label = { Text("Deskripsi") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = {
+                showTimePicker(context) { selectedTime ->
+                    time = selectedTime
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(if (time.isEmpty()) "Pilih Waktu" else "Waktu: $time")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = {
+                if (title.isNotEmpty() && description.isNotEmpty() && time.isNotEmpty()) {
+                    val notification = Notification(
+                        id = "",
+                        title = title,
+                        description = description,
+                        time = time
+                    )
+                    viewModel.addNotification(notification)
+//                    navController.navigate("notification_list")
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Simpan Notifikasi")
+        }
+    }
 }
-@Composable
-@Preview
-fun NotificationScreenPreview() {
-    NotificationScreen(navController = NavHostController(LocalContext.current))
+
+fun showTimePicker(context: Context, onTimeSelected: (String) -> Unit) {
+    val calendar = Calendar.getInstance()
+    val timePicker = TimePickerDialog(
+        context,
+        { _, hour, minute ->
+            onTimeSelected(String.format("%02d:%02d", hour, minute))
+        },
+        calendar.get(Calendar.HOUR_OF_DAY),
+        calendar.get(Calendar.MINUTE),
+        true
+    )
+    timePicker.show()
 }
