@@ -44,8 +44,8 @@ import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.components.CardFinished
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
-import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -80,7 +80,7 @@ fun FinishedActivity(navController: NavHostController){
         Spacer(Modifier.size(15.dp))
         Card (
             colors = CardDefaults.cardColors(BackGround2),
-            border = BorderStroke(1.dp, Border),
+            border = BorderStroke(1.dp, TextMedium),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp, 0.dp),

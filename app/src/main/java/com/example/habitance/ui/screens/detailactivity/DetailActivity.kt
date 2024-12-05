@@ -93,7 +93,7 @@ fun ActivityList(navController: NavHostController){
         Spacer(Modifier.size(15.dp))
         Card (
             colors = CardDefaults.cardColors(BackGround2),
-            border = BorderStroke(1.dp, Border),
+            border = BorderStroke(1.dp, TextMedium),
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp, 0.dp),

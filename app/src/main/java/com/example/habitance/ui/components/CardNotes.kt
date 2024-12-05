@@ -35,7 +35,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
-import com.example.habitance.ui.theme.Border
+import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextLight
 import com.example.habitance.ui.theme.TextMedium
@@ -53,7 +53,7 @@ fun CardNotes() {
     ){
         ConstraintLayout(modifier = Modifier
             .fillMaxWidth()
-            .background(Border)
+            .background(TextMedium)
             .padding(16.dp, 3.dp)
             .height(35.dp)
         ) {

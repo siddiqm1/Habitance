@@ -30,8 +30,8 @@ import androidx.constraintlayout.compose.Dimension
 import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
-import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -52,7 +52,7 @@ fun CardList(
     ) {
         ConstraintLayout(modifier = Modifier
             .fillMaxWidth()
-            .background(Border)
+            .background(TextMedium)
             .padding(16.dp, 3.dp)
         ) {
             val (judulText, targetText, targetText2, editIcon) = createRefs()
@@ -214,7 +214,7 @@ fun CardList(
                 )
             }
             Box(modifier = Modifier
-                .background(color = Border, shape = RoundedCornerShape(16.dp))
+                .background(color = TextMedium, shape = RoundedCornerShape(16.dp))
                 .padding(10.dp, 8.dp)
                 .constrainAs(notePreview){
                     start.linkTo(noteButton.end, margin = 6.dp)

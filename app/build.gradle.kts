@@ -95,6 +95,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.androidx.material3.v131)
     implementation(libs.googleid)
+    implementation(libs.androidx.tv.material)
 
     // Testing
     testImplementation(libs.junit)

@@ -47,6 +47,7 @@ fun AddNotificationScreen(navController: NavController, viewModel: NotificationV
         ) {
             Text(if (time.isEmpty()) "Pilih Waktu" else "Waktu: $time")
         }
+
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
