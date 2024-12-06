@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent?.action == Intent.ACTION_BOOT_COMPLETED) {
-            val repository = NotificationRepository() // Inisialisasi repositori
+            val repository = NotificationRepository()
             CoroutineScope(Dispatchers.IO).launch {
                 val notifications = repository.getNotifications()
                 for (notification in notifications) {

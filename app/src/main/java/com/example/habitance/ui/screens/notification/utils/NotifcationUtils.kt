@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.habitance.R
 
 fun showNotification(context: Context, title: String, description: String) {
     val channelId = "habitance_channel"
@@ -33,7 +34,7 @@ fun showNotification(context: Context, title: String, description: String) {
     }
 
     val notification = NotificationCompat.Builder(context, channelId)
-        .setSmallIcon(android.R.drawable.ic_notification_overlay)
+        .setSmallIcon(R.drawable.logo)
         .setContentTitle(title)
         .setContentText(description)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)

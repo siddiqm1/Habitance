@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.habitance.ui.screens.AddNotificationScreen
+import com.example.habitance.ui.screens.notification.AddNotificationScreen
 import com.example.habitance.ui.screens.NotificationListScreen
 import com.example.habitance.ui.screens.activitylist.ActivityScreen
 import com.example.habitance.ui.screens.addactivity.AddActivity
