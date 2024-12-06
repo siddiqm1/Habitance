@@ -1,5 +1,7 @@
 package com.example.habitance.ui.screens.notification
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,10 +30,30 @@ class NotificationViewModel(private val repository: NotificationRepository) : Vi
         }
     }
 
-    fun deleteNotification(id: String) {
+    fun deleteNotification(id: String, context: Context) {
         viewModelScope.launch {
-            repository.deleteNotification(id)
+            try {
+                repository.deleteNotification(id) // Panggil fungsi untuk menghapus data
+                loadNotifications() // Refresh daftar notifikasi
+                // Tampilkan Toast sukses
+                Toast.makeText(context, "Notifikasi berhasil dihapus", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                // Tampilkan Toast error
+                Toast.makeText(context, "Gagal menghapus notifikasi: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
+
+    fun updateNotificationState(id: String, isEnabled: Boolean) {
+        viewModelScope.launch {
+            repository.updateNotificationState(id, isEnabled)
             loadNotifications()
         }
     }
 }
+
+
+
+

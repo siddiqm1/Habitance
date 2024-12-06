@@ -96,6 +96,8 @@ dependencies {
     implementation(libs.androidx.material3.v131)
     implementation(libs.googleid)
     implementation(libs.androidx.tv.material)
+    implementation (libs.androidx.material3.v120)
+    implementation ("androidx.compose.material3:material3-window-size-class:1.3.1")
 
     // Testing
     testImplementation(libs.junit)
@@ -106,9 +108,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Dagger Hilt dependencies
-//    implementation(libs.hilt.android)
-//    kapt(libs.hilt.compiler)
+
 
     implementation (libs.androidx.core.ktx.v1101)
     implementation (libs.androidx.work.runtime.ktx)

@@ -10,6 +10,7 @@ class NotificationRepository {
 
     private val firestore = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
+    private val notificationList = mutableListOf<Notification>()
 
     private fun getUserCollection() =
         firestore.collection("users")
@@ -18,7 +19,8 @@ class NotificationRepository {
 
     suspend fun addNotification(notification: Notification) {
         val userCollection = getUserCollection()
-        val docRef = userCollection.document(notification.id.ifEmpty { userCollection.document().id })
+        val docRef =
+            userCollection.document(notification.id.ifEmpty { userCollection.document().id })
         docRef.set(notification).await()
     }
 
@@ -32,4 +34,12 @@ class NotificationRepository {
         val userCollection = getUserCollection()
         userCollection.document(id).delete().await()
     }
+
+    fun updateNotificationState(id: String, isEnabled: Boolean) {
+        notificationList.find { it.id == id }?.let {
+            val index = notificationList.indexOf(it)
+            notificationList[index] = it.copy(isEnabled = isEnabled)
+        }
+    }
 }
+
