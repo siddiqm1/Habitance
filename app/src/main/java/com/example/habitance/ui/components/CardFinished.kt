@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.tv.material3.Border
 import com.example.habitance.R
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2

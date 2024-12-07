@@ -1,6 +1,5 @@
 package com.example.habitance.ui.screens.addactivity
 
-import java.util.Date
 
 data class Activity(
     val name: String,

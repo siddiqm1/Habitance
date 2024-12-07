@@ -11,6 +11,6 @@ sealed class Screen(val route: String) {
     object ActivityListEmpty : Screen("listempty")
     object ActivityList : Screen("activitylist")
     object NotificationScreen : Screen("notification")
-    object AddNotificationScreen : Screen("add_notification") // Baru
+    object AddNotificationScreen : Screen("add_notification")
 
 }

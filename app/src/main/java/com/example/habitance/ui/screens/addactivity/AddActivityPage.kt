@@ -62,7 +62,6 @@ fun AddActivity(navController: NavController) {
     var startDate by remember { mutableStateOf("") }
     var endDate by remember { mutableStateOf("") }
 
-    // Validasi apakah semua field sudah terisi
     val isFormValid = activity.isNotBlank() &&
             category.isNotBlank() &&
             unit.isNotBlank() &&

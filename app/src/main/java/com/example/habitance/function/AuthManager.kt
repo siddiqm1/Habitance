@@ -1,9 +1,7 @@
 package com.example.habitance.function
 
-import android.app.ProgressDialog
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -45,7 +43,6 @@ class AuthManager(private val context: Context) {
         awaitClose()
     }
 
-
     fun loginWithEmailAndPassword(
         email: String,
         password: String,
@@ -60,7 +57,6 @@ class AuthManager(private val context: Context) {
             onError("Password cannot be empty")
             return
         }
-
         try {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -87,7 +83,6 @@ class AuthManager(private val context: Context) {
         }
     }
 
-
     fun signUpWithEmailAndPassword(
         email: String,
         password: String,
@@ -107,7 +102,6 @@ class AuthManager(private val context: Context) {
             onError("Passwords do not match")
             return
         }
-
         try {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
@@ -128,7 +122,6 @@ class AuthManager(private val context: Context) {
             onError("Failed to create account: ${e.message}")
         }
     }
-
 
     private fun createNonce(): String {
         val rawNonce = UUID.randomUUID().toString()

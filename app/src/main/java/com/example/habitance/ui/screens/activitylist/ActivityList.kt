@@ -41,12 +41,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habitance.R
-import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.screens.addactivity.Activity
 import com.example.habitance.ui.theme.BackGround

@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.habitance.ui.screens.notification.AddNotificationScreen
-import com.example.habitance.ui.screens.NotificationListScreen
+import com.example.habitance.ui.screens.notification.NotificationListScreen
 import com.example.habitance.ui.screens.activitylist.ActivityScreen
 import com.example.habitance.ui.screens.addactivity.AddActivity
 import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
@@ -27,13 +27,8 @@ import com.example.habitance.ui.screens.profile.ProfileViewModel
 @Composable
 fun  BottomNavGraph(navHostController: NavController) {
     val navController = rememberNavController()
-    // Buat instance NotificationRepository
     val notificationRepository = NotificationRepository()
-
-    // Inisialisasi NotificationViewModel dengan repository
     val notificationViewModel = NotificationViewModel(notificationRepository)
-
-
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -45,7 +40,7 @@ fun  BottomNavGraph(navHostController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues) // Pastikan konten tidak overlap dengan bottom bar
+                .padding(paddingValues)
         ) {
             NavHost(
                 navController = navController,
@@ -90,7 +85,6 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = Screen.ActivityListEmpty.route){
                     ActivityScreen(navController)
                 }
-
             }
         }
     }

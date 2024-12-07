@@ -5,7 +5,6 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 fun SaveUserDataToFirestore(user: User, context: Context, callback: (Boolean) -> Unit) {
     val firestore = FirebaseFirestore.getInstance()
     val currentUser = FirebaseAuth.getInstance().currentUser
@@ -21,7 +20,6 @@ fun SaveUserDataToFirestore(user: User, context: Context, callback: (Boolean) ->
             )
             Log.d("userData", user.toString())
 
-            // Simpan data ke koleksi "users" dengan ID dokumen berdasarkan userId
             firestore.collection("users").document(user.id)
                 .set(userMap)
                 .addOnCompleteListener { task ->

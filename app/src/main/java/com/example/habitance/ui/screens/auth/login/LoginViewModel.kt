@@ -9,7 +9,6 @@ class LoginViewModel(
     context: Context
 ) : AuthViewModel(context) {
 
-    // State flows for UI states
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
 
@@ -19,7 +18,6 @@ class LoginViewModel(
     private val _isPasswordVisible = MutableStateFlow(false)
     val isPasswordVisible = _isPasswordVisible.asStateFlow()
 
-    // New state flows for loading and error
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
@@ -41,18 +39,18 @@ class LoginViewModel(
     fun loginWithEmailAndPassword(
         onLoginSuccess: () -> Unit,
     ) {
-        _isLoading.value = true // Set loading state
-        _errorMessage.value = null // Clear previous errors
+        _isLoading.value = true
+        _errorMessage.value = null
         authManager.loginWithEmailAndPassword(
             _email.value,
             _password.value,
             onSuccess = {
-                _isLoading.value = false // Stop loading
+                _isLoading.value = false
                 onLoginSuccess()
             },
             onError = { error ->
-                _isLoading.value = false // Stop loading
-                _errorMessage.value = error // Set error message
+                _isLoading.value = false
+                _errorMessage.value = error
             }
         )
     }

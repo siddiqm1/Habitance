@@ -37,6 +37,7 @@ fun showNotification(context: Context, title: String, description: String) {
         .setSmallIcon(R.drawable.logo)
         .setContentTitle(title)
         .setContentText(description)
+        //tambhakan suara kalau mau
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .build()
 

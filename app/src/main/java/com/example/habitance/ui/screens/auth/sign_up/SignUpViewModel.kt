@@ -9,7 +9,6 @@ class SignUpViewModel(
     context: Context
 ) : AuthViewModel(context) {
 
-    // State flows for UI states
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
 
@@ -52,20 +51,20 @@ class SignUpViewModel(
     }
 
     fun signUpWithEmailAndPassword(onSignUpSuccess: () -> Unit) {
-        _isLoading.value = true // Mulai loading
-        _errorMessage.value = null // Hapus error sebelumnya
+        _isLoading.value = true
+        _errorMessage.value = null
 
         authManager.signUpWithEmailAndPassword(
             email = _email.value,
             password = _password.value,
             confirmPassword = _confirmPassword.value,
             onSuccess = {
-                _isLoading.value = false // Berhenti loading
+                _isLoading.value = false
                 onSignUpSuccess()
             },
             onError = { errorMessage ->
-                _isLoading.value = false // Berhenti loading
-                _errorMessage.value = errorMessage // Simpan pesan error
+                _isLoading.value = false
+                _errorMessage.value = errorMessage
             }
         )
     }

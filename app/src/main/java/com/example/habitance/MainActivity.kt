@@ -20,11 +20,9 @@ class MainActivity : ComponentActivity() {
     companion object {
         private const val REQUEST_NOTIFICATION_PERMISSION = 100
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Meminta izin jika diperlukan
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ActivityCompat.checkSelfPermission(
                 this,
@@ -38,10 +36,8 @@ class MainActivity : ComponentActivity() {
             )
         }
 
-        // Inisialisasi AuthManager
         val authManager = AuthManager(this)
 
-        // Set layout utama aplikasi
         setContent {
             HabitanceTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -54,7 +50,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // Callback untuk hasil permintaan izin
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -64,11 +59,8 @@ class MainActivity : ComponentActivity() {
         super.onRequestPermissionsResult(requestCode, permissions as Array<String>, grantResults)
         if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Izin notifikasi telah diberikan
-                // Anda bisa menambahkan log atau notifikasi di sini jika diperlukan
+
             } else {
-                // Izin notifikasi ditolak
-                // Anda bisa menambahkan log atau pesan kepada pengguna
             }
         }
     }

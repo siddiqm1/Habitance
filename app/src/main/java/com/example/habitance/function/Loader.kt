@@ -22,10 +22,8 @@ import com.example.habitance.R
 fun Loader(
     isLoading: Boolean,
     content: @Composable () -> Unit,
-
     ){
     content()
-
     AnimatedVisibility(
         isLoading,
         exit = fadeOut()
@@ -46,7 +44,6 @@ fun Loader(
                     contentDescription = "Logo",
                             modifier = Modifier.size(120.dp)
                 )
-
                 LinearProgressIndicator()
             }
         }

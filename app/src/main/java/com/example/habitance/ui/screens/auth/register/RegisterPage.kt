@@ -1,6 +1,5 @@
 package com.example.habitance.ui.screens.auth.register
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,7 +28,6 @@ import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
@@ -67,19 +65,16 @@ import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Bottom
 import com.example.habitance.ui.theme.TextLogo
-import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) {
-    // ViewModel dan state
     val viewModel: RegisterViewModel = viewModel()
     val firstname by viewModel.firstname.collectAsState()
     val lastname by viewModel.lastname.collectAsState()
@@ -88,11 +83,8 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
     val showDatePicker by viewModel.showDatePicker.collectAsState()
     val gender by viewModel.gender.collectAsState()
     var isLoading by remember { mutableStateOf(false) }
-
-    // Warna dan konteks
     val textFieldColor = BackGround2
     val textColor = Color(0xFF1e1e1e)
-    val buttonColor = Bottom
     val context = LocalContext.current
     val currentUser = FirebaseAuth.getInstance().currentUser
 
@@ -103,7 +95,6 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Header (Logo dan Nama Aplikasi)
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
@@ -126,7 +117,6 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Kartu untuk formulir registrasi
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -294,8 +284,8 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                             DropdownMenuItem(
                                 text = { Text(option) },
                                 onClick = {
-                                    viewModel.updateGender(option) // Perbarui nilai gender di ViewModel
-                                    expanded.value = false // Tutup dropdown setelah memilih
+                                    viewModel.updateGender(option)
+                                    expanded.value = false
                                 }
                             )
                         }
