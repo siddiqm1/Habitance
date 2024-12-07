@@ -34,8 +34,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +58,7 @@ import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.TextLight
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -171,46 +174,53 @@ fun ListNote(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(20.dp))
-                        .background(BackGround)
                 ) {
+                    var isClickBaik by remember { mutableStateOf(true) }
+                    var isClickBuruk by remember { mutableStateOf(false) }
                     Button(
                         onClick = {
-                            selectedCategory.value = "Baik"
-                            filteredActivities.value = activities.value.filter {
-                                it.category == selectedCategory.value
-                            }
+                            isClickBaik = true
+                            isClickBuruk = false
+//                            selectedCategory.value = "Baik"
+//                            filteredActivities.value = activities.value.filter {
+//                                it.category == selectedCategory.value
+//                            }
                         },
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = ButtonDefaults.buttonColors(
-
+                        colors = if(isClickBaik) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(
+                            TextLight
                         ),
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
                             text = "Baik",
+                            color = if(isClickBaik) TextLight else TextDark,
                             fontFamily = fontFamily
                         )
                     }
                     Spacer(Modifier.width(10.dp))
                     Button(
                         onClick = {
-                            selectedCategory.value = "Buruk"
-                            filteredActivities.value = activities.value.filter {
-                                it.category == selectedCategory.value
-                            }
+                            isClickBaik = false
+                            isClickBuruk = true
+//                            selectedCategory.value = "Buruk"
+//                            filteredActivities.value = activities.value.filter {
+//                                it.category == selectedCategory.value
+//                            }
                         },
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = ButtonDefaults.buttonColors(
-
+                        colors = if(isClickBuruk) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(
+                            TextLight
                         ),
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
                             text = "Buruk",
+                            color = if(isClickBuruk) TextLight else TextDark,
                             fontFamily = fontFamily
                         )
                     }

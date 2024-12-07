@@ -507,9 +507,3 @@ fun getCurrentDate(): String {
     val currentDate = java.time.LocalDate.now()
     return currentDate.format(formatter)
 }
-
-@Preview(showBackground = true)
-@Composable
-fun HomePreview(){
-    HomePage(navController = NavController(LocalContext.current), navMainController = NavController(LocalContext.current))
-}

@@ -34,8 +34,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -167,10 +169,13 @@ fun ListActivity(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(20.dp))
-                        .background(BackGround)
                 ) {
+                    var isClickBaik by remember { mutableStateOf(true) }
+                    var isClickBuruk by remember { mutableStateOf(false) }
                     Button(
                         onClick = {
+                            isClickBaik = true
+                            isClickBuruk = false
                             selectedCategory.value = "Baik"
                             filteredActivities.value = activities.value.filter {
                                 it.category == selectedCategory.value
@@ -179,18 +184,20 @@ fun ListActivity(navController: NavController) {
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = ButtonDefaults.buttonColors(TextDark),
+                        colors = if(isClickBaik) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(TextLight),
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
                             text = "Baik",
-                            color = TextLight,
+                            color = if(isClickBaik) TextLight else TextDark,
                             fontFamily = fontFamily
                         )
                     }
                     Spacer(Modifier.width(10.dp))
                     Button(
                         onClick = {
+                            isClickBaik = false
+                            isClickBuruk = true
                             selectedCategory.value = "Buruk"
                             filteredActivities.value = activities.value.filter {
                                 it.category == selectedCategory.value
@@ -199,12 +206,12 @@ fun ListActivity(navController: NavController) {
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = ButtonDefaults.buttonColors(TextDark),
+                        colors = if(isClickBuruk) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(TextLight),
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
                             text = "Buruk",
-                            color = TextLight,
+                            color = if(isClickBuruk) TextLight else TextDark,
                             fontFamily = fontFamily
                         )
                     }

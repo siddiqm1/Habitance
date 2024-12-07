@@ -29,6 +29,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,6 +49,7 @@ import com.example.habitance.ui.components.CardFinished
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.TextLight
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 
@@ -133,35 +138,54 @@ fun FinishedActivity(navController: NavHostController){
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(20.dp))
-                        .background(BackGround)
-                ){
-                    Box(
+                ) {
+                    var isClickBaik by remember { mutableStateOf(true) }
+                    var isClickBuruk by remember { mutableStateOf(false) }
+                    Button(
+                        onClick = {
+                            isClickBaik = true
+                            isClickBuruk = false
+//                            selectedCategory.value = "Baik"
+//                            filteredActivities.value = activities.value.filter {
+//                                it.category == selectedCategory.value
+//                            }
+                        },
                         modifier = Modifier
                             .weight(1f)
-                            .background(
-                                color = TextDark,
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                            .padding(10.dp),
-                        contentAlignment = Alignment.Center
-                    ){
+                            .clip(RoundedCornerShape(20.dp)),
+                        colors = if(isClickBaik) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(
+                            TextLight
+                        ),
+                        contentPadding = PaddingValues(10.dp)
+                    ) {
                         Text(
                             text = "Baik",
-                            fontFamily = fontFamily,
-                            color = BackGround2,
+                            color = if(isClickBaik) TextLight else TextDark,
+                            fontFamily = fontFamily
                         )
                     }
-                    Box(
+                    Spacer(Modifier.width(10.dp))
+                    Button(
+                        onClick = {
+                            isClickBaik = false
+                            isClickBuruk = true
+//                            selectedCategory.value = "Buruk"
+//                            filteredActivities.value = activities.value.filter {
+//                                it.category == selectedCategory.value
+//                            }
+                        },
                         modifier = Modifier
                             .weight(1f)
-                            .background(BackGround)
-                            .padding(10.dp),
-                        contentAlignment = Alignment.Center
-                    ){
+                            .clip(RoundedCornerShape(20.dp)),
+                        colors = if(isClickBuruk) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(
+                            TextLight
+                        ),
+                        contentPadding = PaddingValues(10.dp)
+                    ) {
                         Text(
                             text = "Buruk",
-                            fontFamily = fontFamily,
-                            color = TextDark,
+                            color = if(isClickBuruk) TextLight else TextDark,
+                            fontFamily = fontFamily
                         )
                     }
                 }
