@@ -35,8 +35,8 @@ sealed class BottomBarScreen(
     object FinisActivity: BottomBarScreen(
         route = "finis",
         title = "FinisActivity",
-        icon = R.drawable.ic_bottom_report,
-        icon_focused = R.drawable.ic_bottom_report_focused
+        icon = R.drawable.finis,
+        icon_focused = R.drawable.finish
     )
 
 }
