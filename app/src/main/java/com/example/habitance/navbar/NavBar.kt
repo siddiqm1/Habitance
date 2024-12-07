@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -48,7 +49,7 @@ fun BottomBar(navController: NavHostController) {
 
     Row(
         modifier = Modifier
-            .height(60.dp)
+            .height(64.dp)
 
             .background(colorResource(id = R.color.navbar))
             .fillMaxWidth(),
@@ -101,6 +102,8 @@ fun AddItem(
             Icon(
                 painter = painterResource(id = if (selected) screen.icon_focused else screen.icon),
                 contentDescription = "icon",
+                modifier = Modifier
+                    .size(24.dp),
                 tint = contentColor
             )
             AnimatedVisibility(visible = selected) {
