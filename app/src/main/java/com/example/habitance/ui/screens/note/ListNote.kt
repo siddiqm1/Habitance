@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,9 +23,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -155,7 +158,7 @@ fun ListNote(navController: NavController) {
                         )
                     }
                     Spacer(Modifier.size(12.dp))
-                    OutlinedTextField(
+                    BasicTextField(
                         value = searchQuery.value,
                         onValueChange = { query ->
                             searchQuery.value = query
@@ -163,9 +166,35 @@ fun ListNote(navController: NavController) {
                                 it.name.contains(query, ignoreCase = true)
                             }
                         },
-                        label = { Text("Cari Nama Aktivitas") },
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .background(TextLight, shape = RoundedCornerShape(size = 20.dp))
+                            .border(width = 1.dp, color = TextDark, shape = RoundedCornerShape(size = 20.dp))
+                            .height(42.dp)
+                            .fillMaxWidth(),
+                        decorationBox = { innerTextField ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = "Search Icon",
+                                    tint = TextDark,
+                                    modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+                                )
+                                Box(
+                                    Modifier.weight(1f),
+                                    contentAlignment = Alignment.CenterStart
+                                ){
+                                    if(searchQuery.value.isEmpty()){
+                                        Text(
+                                            text = "Search",
+                                            fontSize = 13.sp,
+                                            color = TextDark.copy(alpha = 0.5f),
+                                            fontFamily = fontFamily
+                                        )
+                                    }
+                                    innerTextField()
+                                }
+                            }
+                        }
                     )
                 }
                 Spacer(Modifier.size(21.dp))
