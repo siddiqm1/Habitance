@@ -385,7 +385,6 @@ fun HomePage(navController: NavController, navMainController: NavController) {
                     }
                 }
             }
-
         }
     }
 }
@@ -458,8 +457,6 @@ fun Streaks(persen: Float = 0.7f){
                     bottom.linkTo(bar.bottom)
                 }
         )
-
-
         Text(
             text = "7 / 10",
             style = TextStyle(
@@ -476,7 +473,6 @@ fun Streaks(persen: Float = 0.7f){
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

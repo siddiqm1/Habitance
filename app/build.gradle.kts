@@ -98,6 +98,7 @@ dependencies {
     implementation(libs.androidx.tv.material)
     implementation (libs.androidx.material3.v120)
     implementation ("androidx.compose.material3:material3-window-size-class:1.3.1")
+    implementation(libs.androidx.foundation.android)
 
     // Testing
     testImplementation(libs.junit)

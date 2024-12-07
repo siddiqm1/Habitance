@@ -33,12 +33,10 @@ class NotificationViewModel(private val repository: NotificationRepository) : Vi
     fun deleteNotification(id: String, context: Context) {
         viewModelScope.launch {
             try {
-                repository.deleteNotification(id) // Panggil fungsi untuk menghapus data
-                loadNotifications() // Refresh daftar notifikasi
-                // Tampilkan Toast sukses
+                repository.deleteNotification(id)
+                loadNotifications()
                 Toast.makeText(context, "Notifikasi berhasil dihapus", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                // Tampilkan Toast error
                 Toast.makeText(context, "Gagal menghapus notifikasi: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }

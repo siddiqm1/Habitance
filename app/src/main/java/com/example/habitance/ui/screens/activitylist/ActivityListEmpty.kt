@@ -1,10 +1,8 @@
 package com.example.habitance.ui.screens.activitylist
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.habitance.ui.components.ListEmpty
-
 
 
 @Composable

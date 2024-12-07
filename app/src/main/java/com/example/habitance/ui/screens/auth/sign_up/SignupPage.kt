@@ -97,17 +97,16 @@ fun SignupPage(
             fontWeight = FontWeight.Black,
             color = TextLogo,
             style = TextStyle(
-                shadow = Shadow(
+                shadow = Shadow
+                    (
                     color = TextLogo,
                     offset = Offset(2f, 2f),
-
-                    )
+                )
             )
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Card for Signup Form
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -227,9 +226,7 @@ fun SignupPage(
                     )
                 }
 
-
                 Spacer(modifier = Modifier.height(50.dp))
-
 
                 // Already have an account? Login
                 Row(verticalAlignment = Alignment.CenterVertically,
@@ -244,8 +241,6 @@ fun SignupPage(
                     }
                 }
             }
-
-
         }
     }
 }

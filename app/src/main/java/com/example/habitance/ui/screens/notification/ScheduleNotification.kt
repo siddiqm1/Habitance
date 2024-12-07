@@ -12,7 +12,6 @@ fun scheduleNotification(context: Context, notification: Notification) {
     val currentTime = System.currentTimeMillis()
     val notificationTime = convertTimeToMillis(notification.time)
 
-    // Jika waktu notifikasi sudah lewat, jadwalkan untuk hari berikutnya
     val delay = if (notificationTime < currentTime) {
         notificationTime + 24 * 60 * 60 * 1000 - currentTime
     } else {

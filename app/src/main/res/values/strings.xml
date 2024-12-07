@@ -4,12 +4,12 @@
     <string name="password">Password</string>
     <string name="web_client_id">423682718959-ld5bn42e3fverolkoud4g46t3a3lnapv.apps.googleusercontent.com</string>
     <string name="hide_password">hide_password</string>
-    <string name="login_error">eror</string>
-    <string name="password_length_error">ERORO</string>
-    <string name="login_success">succses</string>
+    <string name="login_error">error</string>
+    <string name="password_length_error">Error</string>
+    <string name="login_success">Success</string>
     <string name="login">login</string>
     <string name="signup">signup</string>
-    <string name="forgot_password">lupa password</string>
+    <string name="forgot_password">Forget Password</string>
     <string name="reset_password_prompt">reset</string>
     <string name="reset_password_success">reset</string>
     <string name="or_continue_with">gas</string>

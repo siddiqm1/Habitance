@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -57,11 +55,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habitance.R
-import com.example.habitance.function.AuthResponse
 import com.example.habitance.ui.screens.auth.login.LoginViewModel
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.TextLogo
-import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -115,7 +111,6 @@ fun LoginPage(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Card untuk Konten Login
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -139,7 +134,6 @@ fun LoginPage(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Input Email
                 OutlinedTextField(
                     singleLine = true,
                     value = email,
@@ -217,9 +211,6 @@ fun LoginPage(
                     )
                 }
 
-
-
-
                 Spacer(modifier = Modifier.height(30.dp))
 
                 //Login dengan Third Party
@@ -271,14 +262,12 @@ fun LoginPage(
                     colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
                 ) {
                     if (isGoogleSignInLoading) {
-                        // Menampilkan indikator loading
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
                             color = Color.Gray,
                             strokeWidth = 2.dp
                         )
                     } else {
-                        // Konten tombol normal
                         Row(
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically,
@@ -299,7 +288,6 @@ fun LoginPage(
                 }
 
                 Spacer(modifier = Modifier.height(30.dp))
-                // Text untuk Sign Up
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(bottom = 0.dp)

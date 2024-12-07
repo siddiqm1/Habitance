@@ -14,14 +14,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.habitance.activity.LoginPage
 import com.example.habitance.navbar.BottomNavGraph
-import com.example.habitance.navbar.NavBar
 import com.example.habitance.ui.screens.auth.register.RegisterScreen
 import com.example.habitance.ui.screens.auth.sign_up.SignupPage
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.ktx.firestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 
@@ -43,7 +40,6 @@ fun Navigation( modifier : Modifier = Modifier, authManager: AuthManager) {
             } else {
                 startDestination = "register"
             }
-
         } else {
             startDestination = "login"
         }
