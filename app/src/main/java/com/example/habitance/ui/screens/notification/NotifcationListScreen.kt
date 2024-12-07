@@ -157,7 +157,7 @@ fun NotificationListScreen(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.add_alarm),
+                    painter = painterResource(id = R.drawable.notif_add),
                     contentDescription = "Add Alarm"
                 )
             }

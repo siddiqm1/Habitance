@@ -49,7 +49,7 @@ fun NotificationRow(
     ) {
         // Icon Alarm
         Icon(
-            painter = painterResource(id = R.drawable.alarm),
+            painter = painterResource(id = R.drawable.notiff),
             contentDescription = "Alarm Icon",
             tint = Color(0xFF16423C),
             modifier = Modifier.size(40.dp)
