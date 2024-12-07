@@ -22,6 +22,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,11 +43,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.habitance.R
 import com.example.habitance.function.AuthManager
 import com.example.habitance.navbar.Screen
+import com.example.habitance.ui.screens.profile.ProfileViewModel
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
@@ -53,16 +57,21 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun HomePage(navController: NavController, navMainController: NavController) {
+fun HomePage(
+    navController: NavController,
+    navMainController: NavController,
+    profileViewModel: ProfileViewModel = viewModel(),
+    ) {
     val context = LocalContext.current
     val photoProfile = Firebase.auth.currentUser?.photoUrl.toString()
+    val name = profileViewModel.name.collectAsState().value
+    val currentDate = remember { getCurrentDate() }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFE9EFEC))
     ) {
-        //head
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -70,7 +79,9 @@ fun HomePage(navController: NavController, navMainController: NavController) {
                 .background(Color(0xFF6A9C89))
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(28.dp,20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(28.dp, 20.dp),
                 verticalAlignment = Alignment.CenterVertically, // Agar elemen berada di tengah secara vertikal
                 horizontalArrangement = Arrangement.SpaceBetween // Icon logout berada di ujung kanan
             ) {
@@ -119,7 +130,7 @@ fun HomePage(navController: NavController, navMainController: NavController) {
                         fontFamily = FontFamily.Default
                     )
                     Text(
-                        text = "Barnibar",
+                        text = name,
                         color = Color(0xFF16423C),
                         fontSize = 15.sp,
                         fontFamily = FontFamily.Default,
@@ -161,7 +172,7 @@ fun HomePage(navController: NavController, navMainController: NavController) {
                 painter = painterResource(id = R.drawable.what_do_you_do_icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(18.dp,0.dp)
+                    .padding(18.dp, 0.dp)
                     .size(48.dp)
                     .align(Alignment.CenterStart)
             )
@@ -171,7 +182,7 @@ fun HomePage(navController: NavController, navMainController: NavController) {
             // Teks "What did you do today?"
             Column(
                 modifier = Modifier
-                    .padding(90.dp,0.dp,0.dp,0.dp)
+                    .padding(90.dp, 0.dp, 0.dp, 0.dp)
                     .align(Alignment.CenterStart)
             ) {
                 Text(
@@ -196,14 +207,18 @@ fun HomePage(navController: NavController, navMainController: NavController) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .offset(y=-154.dp)
-                .border(width = 2.dp, color = Color(0xFF16423C), shape = RoundedCornerShape(size = 15.dp))
+                .offset(y = -154.dp)
+                .border(
+                    width = 2.dp,
+                    color = Color(0xFF16423C),
+                    shape = RoundedCornerShape(size = 15.dp)
+                )
                 .width(146.dp)
                 .height(35.dp)
                 .background(color = BackGround2, shape = RoundedCornerShape(15.dp))
         ){
             Text(
-                "Rabu, 03 Maret 2024",
+                text = currentDate,
                 fontFamily = fontFamily,
                 fontSize = 11.sp,
                 color = TextDark,
@@ -226,7 +241,7 @@ fun HomePage(navController: NavController, navMainController: NavController) {
         //MENU-MENU
         Column(modifier = Modifier
             .fillMaxSize()
-            .offset(y=-80.dp)
+            .offset(y = -80.dp)
             .padding(21.dp)
         ) {
             // Kotak Activity List
@@ -253,7 +268,7 @@ fun HomePage(navController: NavController, navMainController: NavController) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(18.dp,12.dp)
+                        .padding(18.dp, 12.dp)
                 ){
                     Text(
                         text = "Set your regular reminder!",
@@ -424,7 +439,7 @@ fun Streaks(persen: Float = 0.7f){
                 .height(10.dp)
                 .width(140.dp) // Ubah untuk persentase
                 .background(Color.Gray, shape = RoundedCornerShape(15.dp))
-                .constrainAs(barContainer){
+                .constrainAs(barContainer) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     top.linkTo(title.bottom, margin = 14.dp)
@@ -438,7 +453,7 @@ fun Streaks(persen: Float = 0.7f){
                 .height(10.dp)
                 .width(140.dp) // Ubah untuk persentase
                 .background(Color(0xFF16423C), shape = RoundedCornerShape(15.dp))
-                .constrainAs(bar){
+                .constrainAs(bar) {
                     start.linkTo(parent.start)
                     end.linkTo(batas)
                     top.linkTo(barContainer.top)
@@ -450,7 +465,7 @@ fun Streaks(persen: Float = 0.7f){
             painter = painterResource(id = R.drawable.fire_on), // Icon berbentuk api
             contentDescription = "Streak",
             modifier = Modifier
-                .offset(x = -20.dp, y=10.dp)
+                .offset(x = -20.dp, y = 10.dp)
                 .size(41.dp)
                 .constrainAs(icon) {
                     start.linkTo(bar.end)
@@ -472,6 +487,11 @@ fun Streaks(persen: Float = 0.7f){
             }
         )
     }
+}
+fun getCurrentDate(): String {
+    val formatter = java.time.format.DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy")
+    val currentDate = java.time.LocalDate.now()
+    return currentDate.format(formatter)
 }
 
 @Preview(showBackground = true)
