@@ -215,6 +215,7 @@ fun ListActivity(navController: NavController) {
                     items(filteredActivities.value) { activity ->
                         Log.d("ActivityList", "Activity: $activity")
                         CardList(
+                            navController = navController,
                             activityName = activity.name,
                             target = activity.target,
                             unit = activity.unit,

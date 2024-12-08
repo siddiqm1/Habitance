@@ -27,7 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
 import com.example.habitance.R
+import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
@@ -36,6 +38,7 @@ import com.example.habitance.ui.theme.fontFamily
 
 @Composable
 fun CardList(
+    navController: NavController,
     activityName: String,
     target: String,
     unit: String,
@@ -194,7 +197,7 @@ fun CardList(
                     }
             )
             Button(
-                onClick = {},
+                onClick = {navController.navigate(Screen.NotePage.route)},//buat aja ke page baru untuk add note,berarti tambah kan note di data base pda collections activity
                 modifier = Modifier
                     .size(35.dp) // Ukuran lingkaran
                     .clip(CircleShape) // Membuat bentuk lingkaran
@@ -238,16 +241,17 @@ fun CardList(
     Spacer(modifier = Modifier.height(16.dp))
 }
 
-@Preview
-@Composable
-fun CardListPreview() {
-    CardList(
-        activityName = "Activity Name",
-        target = "10",
-        unit = "Unit",
-        startDate = "Start Date",
-        endDate = "End Date"
-    )
-}
+//@Preview
+//@Composable
+//fun CardListPreview() {
+//    CardList(
+//        activityName = "Activity Name",
+//        target = "10",
+//        unit = "Unit",
+//        startDate = "Start Date",
+//        endDate = "End Date"
+//        navController = NavController(LocalContext.current)
+//    )
+//}
 
 

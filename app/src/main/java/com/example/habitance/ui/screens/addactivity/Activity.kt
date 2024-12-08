@@ -7,5 +7,6 @@ data class Activity(
     val target: String,
     val category: String,
     val start: String?,
-    val end: String?
+    val end: String?,
+//    val note : String? gas
 )

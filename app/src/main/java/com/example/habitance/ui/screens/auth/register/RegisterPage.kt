@@ -64,6 +64,7 @@ import com.example.habitance.data.User
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Bottom
+import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextLogo
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -350,7 +351,7 @@ fun RegisterScreen(modifier: Modifier = Modifier, navController: NavController) 
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Back to Login",
-                        color =com.example.habitance.ui.theme.BottomText
+                        color =(TextDark)
                     )
                 }
 

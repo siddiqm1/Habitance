@@ -85,6 +85,9 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = Screen.ActivityListEmpty.route){
                     ActivityScreen(navController)
                 }
+                composable(route = Screen.NotePage.route) {
+                    NotePage(navController)
+                }
             }
         }
     }
