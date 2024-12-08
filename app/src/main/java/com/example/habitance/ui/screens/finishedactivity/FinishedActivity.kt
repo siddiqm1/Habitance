@@ -3,6 +3,7 @@ package com.example.habitance.ui.screens.finishedactivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,9 +19,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -29,6 +32,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,11 +52,14 @@ import com.example.habitance.ui.components.CardFinished
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.TextLight
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
 fun FinishedActivity(navController: NavHostController){
+    val searchQuery = remember { mutableStateOf("") }
+
     Column(modifier = Modifier
         .fillMaxSize()
         .background(BackGround)
@@ -119,12 +129,43 @@ fun FinishedActivity(navController: NavHostController){
                         )
                     }
                     Spacer(Modifier.size(12.dp))
-                    OutlinedTextField(
-                        value = "tes",
-                        onValueChange = { },
-                        label = { Text("Masukkan Nama") },
+                    BasicTextField(
+                        value = searchQuery.value,
+                        onValueChange = { query ->
+                            searchQuery.value = query
+//                            filteredActivities.value = activities.value.filter {
+//                                it.name.contains(query, ignoreCase = true)
+//                            }
+                        },
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .background(TextLight, shape = RoundedCornerShape(size = 20.dp))
+                            .border(width = 1.dp, color = TextDark, shape = RoundedCornerShape(size = 20.dp))
+                            .height(42.dp)
+                            .fillMaxWidth(),
+                        decorationBox = { innerTextField ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = "Search Icon",
+                                    tint = TextDark,
+                                    modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+                                )
+                                Box(
+                                    Modifier.weight(1f),
+                                    contentAlignment = Alignment.CenterStart
+                                ){
+                                    if(searchQuery.value.isEmpty()){
+                                        Text(
+                                            text = "Search",
+                                            fontSize = 13.sp,
+                                            color = TextDark.copy(alpha = 0.5f),
+                                            fontFamily = fontFamily
+                                        )
+                                    }
+                                    innerTextField()
+                                }
+                            }
+                        }
                     )
                 }
                 Spacer(Modifier.size(21.dp))
@@ -133,35 +174,54 @@ fun FinishedActivity(navController: NavHostController){
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(20.dp))
-                        .background(BackGround)
-                ){
-                    Box(
+                ) {
+                    var isClickBaik by remember { mutableStateOf(true) }
+                    var isClickBuruk by remember { mutableStateOf(false) }
+                    Button(
+                        onClick = {
+                            isClickBaik = true
+                            isClickBuruk = false
+//                            selectedCategory.value = "Baik"
+//                            filteredActivities.value = activities.value.filter {
+//                                it.category == selectedCategory.value
+//                            }
+                        },
                         modifier = Modifier
                             .weight(1f)
-                            .background(
-                                color = TextDark,
-                                shape = RoundedCornerShape(20.dp)
-                            )
-                            .padding(10.dp),
-                        contentAlignment = Alignment.Center
-                    ){
+                            .clip(RoundedCornerShape(20.dp)),
+                        colors = if(isClickBaik) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(
+                            TextLight
+                        ),
+                        contentPadding = PaddingValues(10.dp)
+                    ) {
                         Text(
                             text = "Baik",
-                            fontFamily = fontFamily,
-                            color = BackGround2,
+                            color = if(isClickBaik) TextLight else TextDark,
+                            fontFamily = fontFamily
                         )
                     }
-                    Box(
+                    Spacer(Modifier.width(10.dp))
+                    Button(
+                        onClick = {
+                            isClickBaik = false
+                            isClickBuruk = true
+//                            selectedCategory.value = "Buruk"
+//                            filteredActivities.value = activities.value.filter {
+//                                it.category == selectedCategory.value
+//                            }
+                        },
                         modifier = Modifier
                             .weight(1f)
-                            .background(BackGround)
-                            .padding(10.dp),
-                        contentAlignment = Alignment.Center
-                    ){
+                            .clip(RoundedCornerShape(20.dp)),
+                        colors = if(isClickBuruk) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(
+                            TextLight
+                        ),
+                        contentPadding = PaddingValues(10.dp)
+                    ) {
                         Text(
                             text = "Buruk",
-                            fontFamily = fontFamily,
-                            color = TextDark,
+                            color = if(isClickBuruk) TextLight else TextDark,
+                            fontFamily = fontFamily
                         )
                     }
                 }

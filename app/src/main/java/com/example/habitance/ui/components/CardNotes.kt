@@ -42,7 +42,7 @@ import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun CardNotes() {
+fun CardNoteUser() {
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
@@ -113,12 +113,88 @@ fun CardNotes() {
 
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
 }
+
+@Composable
+fun CardNoteActivity() {
+    Card(
+        colors = CardDefaults.cardColors(BackGround2),
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp), // Bentuk sudut card
+        elevation = CardDefaults.cardElevation(6.dp)
+    ) {
+        // Bagian header card
+        ConstraintLayout(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(TextMedium, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)) // Sesuaikan bentuk sudut
+                .padding(16.dp, 3.dp)
+                .height(27.dp)
+        ) {
+            val (judulText, editIcon) = createRefs()
+            Text(
+                text = "Nama kegiatan",
+                fontSize = 15.sp,
+                fontWeight = FontWeight(600),
+                fontFamily = fontFamily,
+                color = TextDark,
+                modifier = Modifier
+                    .constrainAs(judulText) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top, margin = 7.dp)
+                        bottom.linkTo(parent.bottom, margin = 7.dp)
+                    }
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.maximize),
+                contentDescription = "edit",
+                tint = TextDark,
+                modifier = Modifier
+                    .size(17.dp)
+                    .constrainAs(editIcon) {
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    }
+            )
+        }
+
+        // Bagian isi card
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(TextLight, shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)) // Sesuaikan bentuk sudut
+                .height(60.dp)
+                .padding(11.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(TextLight, shape = RoundedCornerShape(8.dp))
+                    .border(1.dp, TextMedium, shape = RoundedCornerShape(8.dp))
+                    .fillMaxSize()
+                    .padding(6.dp)
+            ) {
+                Text(
+                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ornare ipsum in rutrum sollicitudin. Morbi purus nibh, sodales ac malesuada ac, semper eget elit. Pellentesque tincidunt dolor id posuere auctor. Praesent laoreet cursus mauris, a imperdiet lorem efficitur sed. Phasellus porta tempus felis, rutrum aliquet urna tincidunt in. Sed feugiat lorem ex, vel tempor enim ...",
+                    style = TextStyle(
+                        fontSize = 7.sp,
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight(300),
+                        color = Color(0xFF16423C),
+                    )
+                )
+            }
+        }
+        Spacer(modifier = Modifier.size(15.dp))
+    }
+}
+
 
 
 @Preview
 @Composable
 fun CardNotesPreview() {
-    CardNotes()
+    CardNoteUser()
 }
