@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -57,10 +59,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 fun AddActivity(navController: NavController) {
     var activity by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
+//    var periode by remember { mutableStateOf("") }
     var unit by remember { mutableStateOf("") }
     var target by remember { mutableStateOf("") }
     var startDate by remember { mutableStateOf("") }
     var endDate by remember { mutableStateOf("") }
+    var scrollState = rememberScrollState()
 
     val isFormValid = activity.isNotBlank() &&
             category.isNotBlank() &&
@@ -125,6 +129,7 @@ fun AddActivity(navController: NavController) {
                     .width(378.dp)
                     .height(720.dp)
                     .background(BackGround2)
+                    .verticalScroll(scrollState)
                     .padding(vertical = 24.dp, horizontal = 24.dp)
             ) {
 
@@ -143,6 +148,8 @@ fun AddActivity(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextFieldActivity("Satuan", unit, onValueChange = { unit = it })
+
+                TextFieldActivity("Periode", unit, onValueChange = { unit = it })
 
                 TextFieldActivity("Target", target, onValueChange = { target = it })
 
