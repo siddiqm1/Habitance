@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import com.example.habitance.ui.components.ListEmpty
-import com.example.habitance.ui.screens.addactivity.Activity
+import com.example.habitance.ui.screens.add_activity.Activity
 
 
 @Composable

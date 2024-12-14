@@ -20,13 +20,13 @@ sealed class BottomBarScreen(
     // for report
     object Activity: BottomBarScreen(
         route = "activity",
-        title = "Activity",
+        title = "Activities",
         icon = R.drawable.activity,
         icon_focused = R.drawable.activity_focused
     )
     object Note : BottomBarScreen(
         route = "note",
-        title = "Note",
+        title = "Notes",
         icon = R.drawable.note,
         icon_focused = R.drawable.note_focused
     )
@@ -34,7 +34,7 @@ sealed class BottomBarScreen(
     // for Finis
     object FinisActivity: BottomBarScreen(
         route = "finis",
-        title = "FinisActivity",
+        title = "Finished",
         icon = R.drawable.finis,
         icon_focused = R.drawable.finish
     )
