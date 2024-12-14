@@ -174,7 +174,7 @@ fun HomePage(
                         .shadow(4.dp, shape = RoundedCornerShape(20.dp))
                         .background(Color(0xFF16423C))
                         .align(Alignment.BottomCenter)
-                        .clickable { navController.navigate(Screen.AddActivityScreen.route) }
+                        .clickable { navController.navigate(Screen.ActivityListEmpty.route) }
                 ) {
                     // Icon Note
                     Image(
