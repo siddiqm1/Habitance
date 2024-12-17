@@ -2,8 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
-//    id("com.google.dagger.hilt.android") version "2.51.1" apply true // Plugin Hilt untuk Android
-//    id("kotlin-kapt") // Menggunakan KAPT untuk Hilt
 }
 
 android {

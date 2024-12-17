@@ -211,12 +211,8 @@ fun NotePage(navController: NavHostController) {
                                 Text(text = "Simpan")
                             }
                         }
-
-
                     }
-
                 }
-
             }
         }
     }

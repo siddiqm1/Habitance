@@ -27,7 +27,7 @@ fun ActivityScreen(navController: NavController) {
     )
 
     if (isLoading.value) {
-        CircularProgressIndicator()
+//        CircularProgressIndicator()  bagusin pel
     } else {
         if (activities.value.isEmpty()) {
             ListEmpty("Add Activity", navController)
