@@ -1,5 +1,6 @@
 package com.example.habitance.ui.screens.note
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -28,6 +32,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,13 +51,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
 import com.example.habitance.ui.components.CardNoteActivity
 import com.example.habitance.ui.components.CardNoteUser
+import com.example.habitance.ui.screens.activity_list.fetchActivities
 import com.example.habitance.ui.screens.add_activity.Activity
+import com.example.habitance.ui.screens.add_activity.CategoryActivity
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextLight
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.Timestamp
 
 @Composable
 fun ListNote(navController: NavController) {
@@ -66,19 +74,30 @@ fun ListNote(navController: NavController) {
         val filteredActivities = remember { mutableStateOf<List<Activity>>(emptyList()) }
         val searchQuery = remember { mutableStateOf("") }
         val errorMessage = remember { mutableStateOf<String?>(null) }
-        val selectedCategory = remember { mutableStateOf<String?>(null) }
+        val selectedCategory = remember { mutableStateOf(CategoryActivity.Baik) }
 
-//        LaunchedEffect(Unit) {
-//            fetchActivities(
-//                onResult = { fetchedActivities ->
-//                    activities.value = fetchedActivities
-//                    filteredActivities.value = fetchedActivities
-//                },
-//                onError = { error ->
-//                    errorMessage.value = error.message
-//                }
-//            )
-//        }
+        LaunchedEffect(Unit) {
+            fetchActivities(
+                onResult = { fetchedActivities ->
+                    activities.value = fetchedActivities.filter {
+                        it.end.seconds >= Timestamp.now().seconds
+                    }
+                    filteredActivities.value = fetchedActivities
+                    filteredActivities.value = activities.value.filter {
+                        it.category == selectedCategory.value
+                    }
+                },
+                onError = { error ->
+                    errorMessage.value = error.message
+                }
+            )
+        }
+
+        LaunchedEffect(selectedCategory.value) {
+            filteredActivities.value = activities.value.filter {
+                it.category == selectedCategory.value
+            }
+        }
 
         Box(
             modifier = Modifier
@@ -183,7 +202,6 @@ fun ListNote(navController: NavController) {
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(30.dp)
                         .clip(RoundedCornerShape(20.dp))
                 ) {
                     var isClickBaik by remember { mutableStateOf(true) }
@@ -192,21 +210,16 @@ fun ListNote(navController: NavController) {
                         onClick = {
                             isClickBaik = true
                             isClickBuruk = false
-//                            selectedCategory.value = "Baik"
-//                            filteredActivities.value = activities.value.filter {
-//                                it.category == selectedCategory.value
-//                            }
+                            selectedCategory.value = CategoryActivity.Baik
                         },
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = if(isClickBaik) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(
-                            TextLight
-                        ),
+                        colors = if(isClickBaik) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(TextLight),
+                        contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
-                            text = "Baik",
-                            fontSize = 12.sp,
+                            text = CategoryActivity.Baik.name,
                             color = if(isClickBaik) TextLight else TextDark,
                             fontFamily = fontFamily
                         )
@@ -216,21 +229,16 @@ fun ListNote(navController: NavController) {
                         onClick = {
                             isClickBaik = false
                             isClickBuruk = true
-//                            selectedCategory.value = "Buruk"
-//                            filteredActivities.value = activities.value.filter {
-//                                it.category == selectedCategory.value
-//                            }
+                            selectedCategory.value = CategoryActivity.Buruk
                         },
                         modifier = Modifier
                             .weight(1f)
                             .clip(RoundedCornerShape(20.dp)),
-                        colors = if(isClickBuruk) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(
-                            TextLight
-                        ),
+                        colors = if(isClickBuruk) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(TextLight),
+                        contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
-                            text = "Buruk",
-                            fontSize = 12.sp,
+                            text = CategoryActivity.Buruk.name,
                             color = if(isClickBuruk) TextLight else TextDark,
                             fontFamily = fontFamily
                         )
@@ -238,12 +246,15 @@ fun ListNote(navController: NavController) {
                 }
                 Spacer(Modifier.size(20.dp))
 
-                CardNoteActivity()
-                CardNoteActivity()
-                CardNoteActivity()
-                CardNoteActivity()
-                CardNoteActivity()
 
+                LazyColumn {
+                    items(filteredActivities.value) { activity ->
+                        Log.d("ActivityList", "Activity: ${activity.name}")
+                        CardNoteActivity(
+                            activity = activity
+                        )
+                    }
+                }
 //                LazyColumn {
 //                    items(filteredActivities.value) { activity ->
 ////                        Log.d("ActivityList", "Activity: $activity")

@@ -19,6 +19,7 @@ import com.example.habitance.ui.screens.detailactivity.ActivityList
 import com.example.habitance.ui.screens.finished_activity.FinishedActivityEmpty
 import com.example.habitance.ui.screens.finished_activity.FinishedActivityScreen
 import com.example.habitance.ui.screens.home.HomePage
+import com.example.habitance.ui.screens.note.ListNote
 import com.example.habitance.ui.screens.note.NotePage
 import com.example.habitance.ui.screens.notification.NotificationRepository
 import com.example.habitance.ui.screens.notification.NotificationViewModel
@@ -64,8 +65,11 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = Screen.HomeScreen.route){
                     HomePage(navController,navMainController = navHostController)
                 }
+//                composable(route = Screen.NoteScreen.route){
+//                    NotePage(navController)
+//                }
                 composable(route = Screen.NoteScreen.route){
-                    NotePage(navController)
+                    ListNote(navController)
                 }
                 composable(route = Screen.AddActivityScreen.route){
                     AddActivity(navController)
