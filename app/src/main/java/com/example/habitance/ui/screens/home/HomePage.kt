@@ -1,5 +1,6 @@
 package com.example.habitance.ui.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,10 +21,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -40,8 +46,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
@@ -49,23 +53,66 @@ import com.example.habitance.R
 import com.example.habitance.function.AuthManager
 import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
+import com.example.habitance.ui.screens.activity_list.fetchActivities
+import com.example.habitance.ui.screens.add_activity.Activity
+import com.example.habitance.ui.screens.add_activity.CategoryActivity
+import com.example.habitance.ui.screens.detailactivity.showExtendedDate
 import com.example.habitance.ui.screens.profile.ProfileViewModel
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun HomePage(
     navController: NavController,
     navMainController: NavController,
     profileViewModel: ProfileViewModel = viewModel(),
-    ) {
+) {
     val context = LocalContext.current
     val photoProfile = Firebase.auth.currentUser?.photoUrl.toString()
     val name = profileViewModel.name.collectAsState().value
-    val currentDate = remember { getCurrentDate() }
+    val currentDate = Timestamp.now()
+    val activities = remember { mutableStateOf<List<Activity>>(emptyList()) }
+    var streakCount by remember {
+        mutableIntStateOf(
+            0
+        )
+    }
+
+    LaunchedEffect(Unit) {
+        fetchActivities(
+            onResult = { activity ->
+                val filtered = activity.filter {
+                    it.end.seconds > Timestamp.now().seconds && it.start.seconds < Timestamp.now().seconds
+                }
+                Log.d("fetchActivitiesResult", "Fetched activities: $filtered")
+                activities.value = filtered
+            },
+            onError = {
+                emptyList<Activity>()
+            }
+        )
+    }
+
+    LaunchedEffect(activities.value) {
+        Log.d("HomePageStreaks", "Current Progress: ${activities.value}")
+
+        streakCount = activities.value.count {
+            val diffInMillis = currentDate.seconds - it.start.seconds
+            val diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis).toInt()
+            val currentProgress = it.progress[diffInDays.toString()] ?: 0
+            if(it.category == CategoryActivity.Baik) {
+                it.target <= currentProgress
+            } else {
+                currentProgress >= 0
+            }
+        }
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -159,14 +206,14 @@ fun HomePage(
 
             Box(
                 modifier = Modifier
-                    .offset(y=42.dp)
+                    .offset(y = 42.dp)
                     .align(Alignment.BottomCenter)
             ){
                 // "What did you do today?"
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-    //                    .offset(y = (-44).dp)
+                        //                    .offset(y = (-44).dp)
                         .padding(horizontal = 21.dp)
                         .height(88.dp)
                         .shadow(4.dp, shape = RoundedCornerShape(20.dp))
@@ -226,7 +273,7 @@ fun HomePage(
                         .background(color = BackGround2, shape = RoundedCornerShape(15.dp))
                 ){
                     Text(
-                        text = currentDate,
+                        text = currentDate.showExtendedDate(),
                         fontFamily = fontFamily,
                         fontSize = 11.sp,
                         color = TextDark,
@@ -253,7 +300,7 @@ fun HomePage(
             //MENU-MENU
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(21.dp,0.dp,21.dp,21.dp)
+                .padding(21.dp, 0.dp, 21.dp, 21.dp)
             ) {
                 // Kotak Activity List
                 Box(
@@ -312,11 +359,7 @@ fun HomePage(
                 Spacer(Modifier.size(22.dp))
 
                 // Progress Bar untuk Streaks
-                Box(
-                    modifier = Modifier
-                ) {
-                    Streaks(0.1f)
-                }
+                Streaks(streakCount, activities.value.size)
 
                 Spacer(Modifier.size(15.dp))
 
@@ -424,16 +467,13 @@ fun HomePage(
 
 
 @Composable
-fun Streaks(persen: Float = 0.7f){
+fun Streaks(
+    success: Int,
+    total: Int
+){
+    val percent = success.toFloat() / total.toFloat()
 
-    ConstraintLayout(
-        Modifier.width(500.dp)
-    ) {
-        val batas = createGuidelineFromStart(persen)
-        // Defining the constraints
-        val (title, _, progressText, bar, barContainer, icon) = createRefs()
-
-        // Title Text
+    Column {
         Text(
             text = buildAnnotatedString {
                 append("Keep up your ")
@@ -444,70 +484,44 @@ fun Streaks(persen: Float = 0.7f){
             color = Color(0xFF16423C),
             fontSize = 12.sp,
             letterSpacing = -(0.75).sp,
-            textAlign = TextAlign.Start,
-            modifier = Modifier.constrainAs(title) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
+            textAlign = TextAlign.Start
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(10.dp)
+                    .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(15.dp))
+            )
+
+            Box(
+                contentAlignment = Alignment.CenterStart,
+                modifier = Modifier
+                    .fillMaxWidth(percent)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(10.dp)
+                        .background(Color(0xFF16423C), shape = RoundedCornerShape(15.dp))
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.fire_on), // Icon berbentuk api
+                    contentDescription = "Streak",
+                    modifier = Modifier
+                        .size(41.dp)
+                        .offset(y = (-5).dp, x = 5.dp)
+                        .align(Alignment.CenterEnd)
+                )
             }
-        )
-
-        //bar container
-        Box(
-            modifier = Modifier
-                .height(10.dp)
-                .width(140.dp) // Ubah untuk persentase
-                .background(Color.Gray, shape = RoundedCornerShape(15.dp))
-                .constrainAs(barContainer) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(title.bottom, margin = 14.dp)
-                    width = Dimension.fillToConstraints
-                }
-        )
-
-        //bar
-        Box(
-            modifier = Modifier
-                .height(10.dp)
-                .width(140.dp) // Ubah untuk persentase
-                .background(Color(0xFF16423C), shape = RoundedCornerShape(15.dp))
-                .constrainAs(bar) {
-                    start.linkTo(parent.start)
-                    end.linkTo(batas)
-                    top.linkTo(barContainer.top)
-                    width = Dimension.fillToConstraints
-                }
-        )
-
-        Image(
-            painter = painterResource(id = R.drawable.fire_on), // Icon berbentuk api
-            contentDescription = "Streak",
-            modifier = Modifier
-                .offset(x = (-20).dp, y = 10.dp)
-                .size(41.dp)
-                .constrainAs(icon) {
-                    start.linkTo(bar.end)
-                    bottom.linkTo(bar.bottom)
-                }
-        )
+        }
         Text(
-            text = "7 / 10",
-            style = TextStyle(
-                fontSize = 12.sp,
-                fontFamily = fontFamily,
-                fontWeight = FontWeight(500),
-                color = Color(0xFF16423C),
-                letterSpacing = 1.sp
-            ),
-            modifier = Modifier.constrainAs(progressText) {
-                top.linkTo(barContainer.bottom, margin = 14.dp)
-                start.linkTo(parent.start)
-            }
+            text = "$success / $total (${percent * 100} %)",
+            style = MaterialTheme.typography.bodyMedium
         )
     }
-}
-fun getCurrentDate(): String {
-    val formatter = java.time.format.DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy")
-    val currentDate = java.time.LocalDate.now()
-    return currentDate.format(formatter)
 }

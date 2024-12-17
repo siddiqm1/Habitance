@@ -63,9 +63,15 @@ fun DatePicker(onDateSelected: (start: Timestamp?, end: Timestamp?) -> Unit) {
                 border = BorderStroke(1.dp, TextMedium),
                 onClick = {
                     showDatePickerDialog(context) { date ->
-                        startDate = Timestamp(date)
-                        endDate = null
-                        onDateSelected(startDate, endDate) // Call the callback with updated dates
+                        val calendar = Calendar.getInstance()
+                        calendar.time = date
+                        calendar.set(Calendar.HOUR_OF_DAY, 0)
+                        calendar.set(Calendar.MINUTE, 0)
+                        calendar.set(Calendar.SECOND, 0)
+                        calendar.set(Calendar.MILLISECOND, 0)
+
+                        startDate = Timestamp(calendar.time)
+                        onDateSelected(startDate, null) // Call the callback with updated dates
                     }
                 }
             ) {
