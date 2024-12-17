@@ -78,7 +78,7 @@ fun ListActivity(navController: NavController) {
         val errorMessage = remember { mutableStateOf<String?>(null) }
         val selectedCategory = remember { mutableStateOf(CategoryActivity.Baik) }
 
-        LaunchedEffect(Unit) {
+        fun getActivities() {
             fetchActivities(
                 onResult = { fetchedActivities ->
                     activities.value = fetchedActivities.filter {
@@ -95,6 +95,10 @@ fun ListActivity(navController: NavController) {
                     errorMessage.value = error.message
                 }
             )
+        }
+
+        LaunchedEffect(Unit) {
+            getActivities()
         }
 
         LaunchedEffect(selectedCategory.value) {
@@ -261,6 +265,9 @@ fun ListActivity(navController: NavController) {
                         Log.d("ActivityList", "Activity: ${activity.name}")
                         CardList(
                             activity = activity,
+                            onReload = {
+                                getActivities()
+                            },
                             onNavigateToDetail = {
                                 navController.navigate("detailActivity/${activity.id}")
                             }

@@ -15,4 +15,8 @@ class Repository {
     suspend fun updateActivityProgress(userId: String, activityId: String, progress: Map<String, Int>) {
         activityCollection(userId).document(activityId).update("progress", progress).await()
     }
+
+    suspend fun deleteActivity(userId: String, activityId: String) {
+        activityCollection(userId).document(activityId).delete().await()
+    }
 }
