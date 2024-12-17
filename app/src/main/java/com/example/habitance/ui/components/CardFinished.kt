@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -252,7 +253,9 @@ fun CardFinished(
                     contentDescription = "add note"
                 )
             }
-            Box(modifier = Modifier
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
                 .background(color = TextMedium, shape = RoundedCornerShape(16.dp))
                 .padding(10.dp, 8.dp)
                 .constrainAs(notePreview){
@@ -269,7 +272,7 @@ fun CardFinished(
                     fontFamily = fontFamily,
                     fontWeight = FontWeight(300),
                     color = TextDark,
-                    fontSize = 7.sp
+                    fontSize = 8.sp
                 )
             }
         }

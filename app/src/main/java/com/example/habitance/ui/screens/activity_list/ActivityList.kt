@@ -260,18 +260,36 @@ fun ListActivity(navController: NavController) {
                 }
                 Spacer(Modifier.size(15.dp))
 
-                LazyColumn {
-                    items(filteredActivities.value) { activity ->
-                        Log.d("ActivityList", "Activity: ${activity.name}")
-                        CardList(
-                            activity = activity,
-                            onReload = {
-                                getActivities()
-                            },
-                            onNavigateToDetail = {
-                                navController.navigate("detailActivity/${activity.id}")
-                            }
+                if (filteredActivities.value.isEmpty()) {
+                    // Tampilan jika tidak ada aktivitas
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No activities found.",
+                            color = TextDark,
+                            fontSize = 18.sp,
+                            fontFamily = fontFamily,
+                            fontWeight = FontWeight.Medium
                         )
+                    }
+                } else {
+                    // Jika ada aktivitas, tampilkan LazyColumn
+                    LazyColumn {
+                        items(filteredActivities.value) { activity ->
+                            Log.d("ActivityList", "Activity: ${activity.name}")
+                            CardList(
+                                activity = activity,
+                                onReload = {
+                                    getActivities()
+                                },
+                                onNavigateToDetail = {
+                                    navController.navigate("detailActivity/${activity.id}")
+                                }
+                            )
+                        }
                     }
                 }
             }

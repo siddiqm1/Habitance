@@ -260,15 +260,33 @@ fun ListNote(navController: NavController) {
                     }
                     Spacer(Modifier.size(20.dp))
                 }
-                LazyColumn(){
-                    items(filteredActivities.value) { activity ->
-                        Log.d("ActivityList", "Activity: ${activity.name}")
-                        CardNoteActivity(
-                            activity = activity,
-                            isOpened = isOpenedActivity,
-                            onToggle = { isOpenedActivity = !isOpenedActivity }
+
+                if (filteredActivities.value.isEmpty()) {
+                    // Tampilan jika tidak ada aktivitas
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No activities found.",
+                            color = TextDark,
+                            fontSize = 18.sp,
+                            fontFamily = fontFamily,
+                            fontWeight = FontWeight.Medium
                         )
-                        Spacer(Modifier.size(15.dp))
+                    }
+                } else {
+                    LazyColumn() {
+                        items(filteredActivities.value) { activity ->
+                            Log.d("ActivityList", "Activity: ${activity.name}")
+                            CardNoteActivity(
+                                activity = activity,
+                                isOpened = isOpenedActivity,
+                                onToggle = { isOpenedActivity = !isOpenedActivity }
+                            )
+                            Spacer(Modifier.size(15.dp))
+                        }
                     }
                 }
 

@@ -238,12 +238,29 @@ fun FinishedActivity(navController: NavController){
                 }
                 Spacer(Modifier.size(15.dp))
 
-                LazyColumn {
-                    items(filteredActivities.value) {
-                        CardFinished(
-                            it,
-//                            getActivities()
+                if (filteredActivities.value.isEmpty()) {
+                    // Tampilan jika tidak ada aktivitas
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No activities found.",
+                            color = TextDark,
+                            fontSize = 18.sp,
+                            fontFamily = fontFamily,
+                            fontWeight = FontWeight.Medium
                         )
+                    }
+                } else {
+                    LazyColumn {
+                        items(filteredActivities.value) {
+                            CardFinished(
+                                it,
+//                            getActivities()
+                            )
+                        }
                     }
                 }
             }

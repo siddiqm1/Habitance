@@ -323,7 +323,9 @@ fun CardList(
                     contentDescription = "add note"
                 )
             }
-            Box(modifier = Modifier
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
                 .background(color = TextMedium, shape = RoundedCornerShape(16.dp))
                 .padding(10.dp, 8.dp)
                 .constrainAs(notePreview){
@@ -340,7 +342,7 @@ fun CardList(
                     fontFamily = fontFamily,
                     fontWeight = FontWeight.Light,
                     color = TextDark,
-                    fontSize = 7.sp
+                    fontSize = 8.sp
                 )
 
             }
