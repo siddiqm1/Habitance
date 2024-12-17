@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -40,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
+import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.components.CardNoteActivity
 import com.example.habitance.ui.components.CardNoteUser
 import com.example.habitance.ui.screens.activity_list.fetchActivities
@@ -61,6 +64,8 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextLight
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun ListNote(navController: NavController) {
@@ -70,6 +75,9 @@ fun ListNote(navController: NavController) {
             .background(BackGround)
             .padding(0.dp, 15.dp)
     ) {
+        var isOpenedUser by remember { mutableStateOf(false) }
+        var isOpenedActivity by remember { mutableStateOf(false) }
+
         val activities = remember { mutableStateOf<List<Activity>>(emptyList()) }
         val filteredActivities = remember { mutableStateOf<List<Activity>>(emptyList()) }
         val searchQuery = remember { mutableStateOf("") }
@@ -136,125 +144,135 @@ fun ListNote(navController: NavController) {
             Column(
                 modifier = Modifier.padding(28.dp)
             ) {
-                Text(
-                    text = "ACTIVITY NOTE",
-                    fontSize = 22.sp,
-                    color = TextDark,
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight(600)
-                )
-                Spacer(Modifier.size(25.dp))
-                CardNoteUser()
-                Spacer(modifier = Modifier.size(23.dp))
-                Text(
-                    text = "Activity Note",
-                    style = TextStyle(
-                        fontSize = 15.sp,
-                        fontFamily = fontFamily,
-                        fontWeight = FontWeight(600),
+                if ((isOpenedUser && isOpenedActivity) || (!isOpenedUser && !isOpenedActivity)){                    Text(
+                        text = "ACTIVITY NOTE",
+                        fontSize = 22.sp,
                         color = TextDark,
+                        fontFamily = fontFamily,
+                        fontWeight = FontWeight(600)
                     )
-                )
-                Spacer(Modifier.size(20.dp))
-                BasicTextField(
-                    value = searchQuery.value,
-                    onValueChange = { query ->
-                        searchQuery.value = query
-                        filteredActivities.value = activities.value.filter {
-                            it.name.contains(query, ignoreCase = true)
-                        }
-                    },
-                    modifier = Modifier
-                        .background(TextLight, shape = RoundedCornerShape(size = 20.dp))
-                        .border(width = 1.dp, color = TextDark, shape = RoundedCornerShape(size = 20.dp))
-                        .height(30.dp)
-                        .fillMaxWidth(),
-                    decorationBox = { innerTextField ->
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "Search Icon",
-                                tint = TextDark,
-                                modifier = Modifier
-                                    .padding(start = 10.dp, end = 10.dp)
-                                    .size(16.dp)
-                            )
-                            Box(
-                                Modifier.weight(1f),
-                                contentAlignment = Alignment.CenterStart
-                            ){
-                                if(searchQuery.value.isEmpty()){
-                                    Text(
-                                        text = "Search",
-                                        fontSize = 11.sp,
-                                        color = TextDark.copy(alpha = 0.5f),
-                                        fontFamily = fontFamily
-                                    )
+                    Spacer(Modifier.size(25.dp))
+                }
+                if (!isOpenedActivity) {
+                    CardNoteUser(
+                        isOpened = isOpenedUser,
+                        onToggle = { isOpenedUser = !isOpenedUser })
+                }
+                if (!isOpenedActivity){
+                    Spacer(modifier = Modifier.size(23.dp))
+                    Text(
+                        text = "Activity Note",
+                        style = TextStyle(
+                            fontSize = 15.sp,
+                            fontFamily = fontFamily,
+                            fontWeight = FontWeight(600),
+                            color = TextDark,
+                        )
+                    )
+                    Spacer(Modifier.size(20.dp))
+                    BasicTextField(
+                        value = searchQuery.value,
+                        onValueChange = { query ->
+                            searchQuery.value = query
+                            filteredActivities.value = activities.value.filter {
+                                it.name.contains(query, ignoreCase = true)
+                            }
+                        },
+                        modifier = Modifier
+                            .background(TextLight, shape = RoundedCornerShape(size = 20.dp))
+                            .border(width = 1.dp, color = TextDark, shape = RoundedCornerShape(size = 20.dp))
+                            .height(30.dp)
+                            .fillMaxWidth(),
+                        decorationBox = { innerTextField ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = "Search Icon",
+                                    tint = TextDark,
+                                    modifier = Modifier
+                                        .padding(start = 10.dp, end = 10.dp)
+                                        .size(16.dp)
+                                )
+                                Box(
+                                    Modifier.weight(1f),
+                                    contentAlignment = Alignment.CenterStart
+                                ){
+                                    if(searchQuery.value.isEmpty()){
+                                        Text(
+                                            text = "Search",
+                                            fontSize = 11.sp,
+                                            color = TextDark.copy(alpha = 0.5f),
+                                            fontFamily = fontFamily
+                                        )
+                                    }
+                                    innerTextField()
                                 }
-                                innerTextField()
                             }
                         }
-                    }
-                )
+                    )
 
-                Spacer(Modifier.size(15.dp))
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(20.dp))
-                ) {
-                    var isClickBaik by remember { mutableStateOf(true) }
-                    var isClickBuruk by remember { mutableStateOf(false) }
-                    Button(
-                        onClick = {
-                            isClickBaik = true
-                            isClickBuruk = false
-                            selectedCategory.value = CategoryActivity.Baik
-                        },
+                    Spacer(Modifier.size(15.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(20.dp)),
-                        colors = if(isClickBaik) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(TextLight),
-                        contentPadding = PaddingValues(10.dp)
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(20.dp))
                     ) {
-                        Text(
-                            text = CategoryActivity.Baik.name,
-                            color = if(isClickBaik) TextLight else TextDark,
-                            fontFamily = fontFamily
-                        )
+                        var isClickBaik by remember { mutableStateOf(true) }
+                        var isClickBuruk by remember { mutableStateOf(false) }
+                        Button(
+                            onClick = {
+                                isClickBaik = true
+                                isClickBuruk = false
+                                selectedCategory.value = CategoryActivity.Baik
+                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .clip(RoundedCornerShape(20.dp)),
+                            colors = if(isClickBaik) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(TextLight),
+                            contentPadding = PaddingValues(10.dp)
+                        ) {
+                            Text(
+                                text = CategoryActivity.Baik.name,
+                                color = if(isClickBaik) TextLight else TextDark,
+                                fontFamily = fontFamily
+                            )
+                        }
+                        Spacer(Modifier.width(10.dp))
+                        Button(
+                            onClick = {
+                                isClickBaik = false
+                                isClickBuruk = true
+                                selectedCategory.value = CategoryActivity.Buruk
+                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .clip(RoundedCornerShape(20.dp)),
+                            colors = if(isClickBuruk) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(TextLight),
+                            contentPadding = PaddingValues(10.dp)
+                        ) {
+                            Text(
+                                text = CategoryActivity.Buruk.name,
+                                color = if(isClickBuruk) TextLight else TextDark,
+                                fontFamily = fontFamily
+                            )
+                        }
                     }
-                    Spacer(Modifier.width(10.dp))
-                    Button(
-                        onClick = {
-                            isClickBaik = false
-                            isClickBuruk = true
-                            selectedCategory.value = CategoryActivity.Buruk
-                        },
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(20.dp)),
-                        colors = if(isClickBuruk) ButtonDefaults.buttonColors(TextDark) else ButtonDefaults.buttonColors(TextLight),
-                        contentPadding = PaddingValues(10.dp)
-                    ) {
-                        Text(
-                            text = CategoryActivity.Buruk.name,
-                            color = if(isClickBuruk) TextLight else TextDark,
-                            fontFamily = fontFamily
-                        )
-                    }
+                    Spacer(Modifier.size(20.dp))
                 }
-                Spacer(Modifier.size(20.dp))
-
-
-                LazyColumn {
+                LazyColumn(){
                     items(filteredActivities.value) { activity ->
                         Log.d("ActivityList", "Activity: ${activity.name}")
                         CardNoteActivity(
-                            activity = activity
+                            activity = activity,
+                            isOpened = isOpenedActivity,
+                            onToggle = { isOpenedActivity = !isOpenedActivity }
                         )
+                        Spacer(Modifier.size(15.dp))
                     }
                 }
+
+
 //                LazyColumn {
 //                    items(filteredActivities.value) { activity ->
 ////                        Log.d("ActivityList", "Activity: $activity")
