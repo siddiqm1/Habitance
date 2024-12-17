@@ -275,9 +275,10 @@ fun HomePage(
                     Text(
                         text = currentDate.showExtendedDate(),
                         fontFamily = fontFamily,
-                        fontSize = 11.sp,
+                        fontSize = 8.sp,
                         color = TextDark,
-                        fontWeight = FontWeight(700)
+                        fontWeight = FontWeight(700),
+                        textAlign = TextAlign.Center
                     )
                 }
             }

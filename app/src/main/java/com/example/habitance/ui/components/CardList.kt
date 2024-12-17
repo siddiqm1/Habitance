@@ -62,6 +62,7 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -353,13 +354,19 @@ fun CardList(
             confirmButton = {
                 Button(
                     onClick = {
-                        if(note.isNotBlank()){
-                            activity.note = note
+                        if (note.isNotBlank()) {
+                            scope.launch {
+                                updateActivityNote(
+                                    AccountService().currentUserUid!!,
+                                    activity.id,
+                                    note
+                                )
+                                activity.note = note // Perbarui juga nilai lokal untuk sinkronisasi UI.
+                            }
                         }
                         showDialog = false
                     },
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF16423C),
@@ -373,10 +380,6 @@ fun CardList(
                     )
                     Text(text = "Add Notes")
                 }
-                Button(onClick = {showDialog = false}) {
-                    Text("Cancel")
-                }
-
             },
             title = {Text(text = "Add Notes")},
             text = {
@@ -393,6 +396,23 @@ fun CardList(
         )
     }
 }
+
+fun updateActivityNote(userId: String, activityId: String, note: String) {
+    val activityRef = FirebaseFirestore.getInstance()
+        .collection("users")
+        .document(userId)
+        .collection("activities")
+        .document(activityId)
+
+    activityRef.update("note", note)
+        .addOnSuccessListener {
+            Log.d("Firebase", "Note updated successfully")
+        }
+        .addOnFailureListener { e ->
+            Log.e("Firebase", "Error updating note", e)
+        }
+}
+
 
 
 
