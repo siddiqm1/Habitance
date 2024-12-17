@@ -472,6 +472,7 @@ fun Streaks(
     total: Int
 ){
     val percent = success.toFloat() / total.toFloat()
+    val percentText = if(percent.isNaN()) 0 else percent * 100
 
     Column {
         Text(
@@ -520,7 +521,7 @@ fun Streaks(
             }
         }
         Text(
-            text = "$success / $total (${percent * 100} %)",
+            text = "$success / $total ($percentText %)",
             style = MaterialTheme.typography.bodyMedium
         )
     }

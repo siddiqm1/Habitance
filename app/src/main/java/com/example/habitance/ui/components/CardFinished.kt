@@ -2,6 +2,7 @@ package com.example.habitance.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -30,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.habitance.R
+import com.example.habitance.data.AccountService
+import com.example.habitance.data.Repository
 import com.example.habitance.ui.screens.add_activity.Activity
 import com.example.habitance.ui.screens.add_activity.CategoryActivity
 import com.example.habitance.ui.screens.detailactivity.showDate
@@ -39,18 +43,23 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun CardFinished(activity: Activity) {
+fun CardFinished(
+    activity: Activity,
+//    onReload: () -> Unit
+) {
     val startDate = activity.start
     val endDate = activity.end
     val totalTime = activity.end.toDate().time - activity.start.toDate().time
     val diffInDays = TimeUnit.MILLISECONDS.toDays(totalTime).toInt() + 1
     val category = activity.category
+    val scope = rememberCoroutineScope()
 
     val progress = activity.progress
     val successfulProgress = if(category == CategoryActivity.Baik)
@@ -96,6 +105,12 @@ fun CardFinished(activity: Activity) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                     }
+//                    .clickable {
+//                        scope.launch {
+//                            Repository().deleteActivity(AccountService().currentUserUid!!, activity.id)
+//                            onReload()
+//                        }
+//                    }
             )
         }
         ConstraintLayout(modifier = Modifier
@@ -282,5 +297,7 @@ fun CardListPreview() {
         start = Timestamp.now(),
         end = Timestamp(futureDate),
         category = CategoryActivity.Baik
-    ))
+    ),
+//        {}
+    )
 }
