@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityCompat
 import com.example.habitance.function.AuthManager
 import com.example.habitance.function.Navigation
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ActivityCompat.checkSelfPermission(
@@ -39,6 +41,7 @@ class MainActivity : ComponentActivity() {
         val authManager = AuthManager(this)
 
         setContent {
+
             HabitanceTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Navigation(
