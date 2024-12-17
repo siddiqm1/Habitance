@@ -3,6 +3,7 @@ package com.example.habitance.ui.components
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +24,7 @@ import com.example.habitance.ui.theme.fontFamily
 fun TextFieldActivity(
     label: String,
     value: String,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit,
 ){
     Text(
@@ -34,6 +36,7 @@ fun TextFieldActivity(
     Spacer(modifier = Modifier.height(8.dp))
 
     TextField(
+        keyboardOptions = keyboardOptions,
         value = value,
         onValueChange = onValueChange,
         label = { Text(label, color = TextDark,fontSize = 13.sp) },

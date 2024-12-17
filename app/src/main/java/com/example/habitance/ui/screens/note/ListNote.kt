@@ -46,7 +46,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.habitance.R
 import com.example.habitance.ui.components.CardNoteActivity
 import com.example.habitance.ui.components.CardNoteUser
-import com.example.habitance.ui.screens.addactivity.Activity
+import com.example.habitance.ui.screens.add_activity.Activity
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border

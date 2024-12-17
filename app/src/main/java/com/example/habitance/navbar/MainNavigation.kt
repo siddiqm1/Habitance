@@ -14,7 +14,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.habitance.ui.screens.notification.AddNotificationScreen
 import com.example.habitance.ui.screens.notification.NotificationListScreen
 import com.example.habitance.ui.screens.activitylist.ActivityScreen
-import com.example.habitance.ui.screens.addactivity.AddActivity
+import com.example.habitance.ui.screens.add_activity.AddActivity
+import com.example.habitance.ui.screens.detailactivity.ActivityList
 import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
 import com.example.habitance.ui.screens.home.HomePage
 import com.example.habitance.ui.screens.note.NotePage
@@ -85,8 +86,9 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = Screen.ActivityListEmpty.route){
                     ActivityScreen(navController)
                 }
-                composable(route = Screen.NotePage.route) {
-                    NotePage(navController)
+                composable(route = "detailActivity/{activityId}"){
+                    val activityId = it.arguments?.getString("activityId")!!
+                    ActivityList(activityId, navController, { navController.navigateUp() })
                 }
             }
         }

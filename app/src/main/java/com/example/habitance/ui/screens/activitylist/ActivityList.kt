@@ -33,7 +33,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,7 +50,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habitance.R
 import com.example.habitance.navbar.Screen
-import com.example.habitance.ui.screens.addactivity.Activity
+import com.example.habitance.ui.screens.add_activity.Activity
+import com.example.habitance.ui.screens.add_activity.CategoryActivity
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
@@ -73,13 +73,16 @@ fun ListActivity(navController: NavController) {
         val filteredActivities = remember { mutableStateOf<List<Activity>>(emptyList()) }
         val searchQuery = remember { mutableStateOf("") }
         val errorMessage = remember { mutableStateOf<String?>(null) }
-        val selectedCategory = remember { mutableStateOf<String?>(null) }
+        val selectedCategory = remember { mutableStateOf(CategoryActivity.Baik) }
 
         LaunchedEffect(Unit) {
             fetchActivities(
                 onResult = { fetchedActivities ->
                     activities.value = fetchedActivities
                     filteredActivities.value = fetchedActivities
+                    filteredActivities.value = activities.value.filter {
+                        it.category == selectedCategory.value
+                    }
                 },
                 onError = { error ->
                     errorMessage.value = error.message
@@ -87,6 +90,12 @@ fun ListActivity(navController: NavController) {
             )
         }
 
+        LaunchedEffect(selectedCategory.value) {
+            Log.d("Selected Category", "Selected category: ${activities.value}")
+            filteredActivities.value = activities.value.filter {
+                it.category == selectedCategory.value
+            }
+        }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -205,10 +214,7 @@ fun ListActivity(navController: NavController) {
                         onClick = {
                             isClickBaik = true
                             isClickBuruk = false
-                            selectedCategory.value = "Baik"
-                            filteredActivities.value = activities.value.filter {
-                                it.category == selectedCategory.value
-                            }
+                            selectedCategory.value = CategoryActivity.Baik
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -217,7 +223,7 @@ fun ListActivity(navController: NavController) {
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
-                            text = "Baik",
+                            text = CategoryActivity.Baik.name,
                             color = if(isClickBaik) TextLight else TextDark,
                             fontFamily = fontFamily
                         )
@@ -227,10 +233,10 @@ fun ListActivity(navController: NavController) {
                         onClick = {
                             isClickBaik = false
                             isClickBuruk = true
-                            selectedCategory.value = "Buruk"
-                            filteredActivities.value = activities.value.filter {
-                                it.category == selectedCategory.value
-                            }
+                            selectedCategory.value = CategoryActivity.Buruk
+//                            filteredActivities.value = activities.value.filter {
+//                                it.category == selectedCategory.value
+//                            }
                         },
                         modifier = Modifier
                             .weight(1f)
@@ -239,7 +245,7 @@ fun ListActivity(navController: NavController) {
                         contentPadding = PaddingValues(10.dp)
                     ) {
                         Text(
-                            text = "Buruk",
+                            text = CategoryActivity.Buruk.name,
                             color = if(isClickBuruk) TextLight else TextDark,
                             fontFamily = fontFamily
                         )
@@ -251,12 +257,10 @@ fun ListActivity(navController: NavController) {
                     items(filteredActivities.value) { activity ->
                         Log.d("ActivityList", "Activity: $activity")
                         CardList(
-                            navController = navController,
-                            activityName = activity.name,
-                            target = activity.target,
-                            unit = activity.unit,
-                            startDate = activity.start ?: "N/A",
-                            endDate = activity.end ?: "N/A"
+                            activity = activity,
+                            onNavigateToDetail = {
+                                navController.navigate("detailActivity/${activity.id}")
+                            }
                         )
                     }
                 }
@@ -282,13 +286,8 @@ fun fetchActivities(
             .addOnSuccessListener { querySnapshot ->
                 val activities = querySnapshot.documents.mapNotNull { document ->
                     try {
-                        Activity(
-                            name = document.getString("name") ?: "",
-                            unit = document.getString("unit") ?: "",
-                            target = document.getString("target") ?: "",
-                            category = document.getString("category") ?: "",
-                            start = document.getString("start"),
-                            end = document.getString("end")
+                        document.toObject(Activity::class.java)?.copy(
+                            id = document.id
                         )
                     } catch (e: Exception) {
                         null

@@ -1,4 +1,4 @@
-package com.example.habitance.ui.screens.addactivity
+package com.example.habitance.ui.screens.add_activity
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
@@ -18,7 +18,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -34,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,6 +54,7 @@ import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -59,15 +64,16 @@ fun AddActivity(navController: NavController) {
     var category by remember { mutableStateOf("") }
     var unit by remember { mutableStateOf("") }
     var target by remember { mutableStateOf("") }
-    var startDate by remember { mutableStateOf("") }
-    var endDate by remember { mutableStateOf("") }
+    var startDate by remember { mutableStateOf<Timestamp?>(null) }
+    var endDate by remember { mutableStateOf<Timestamp?>(null) }
+    val scrollState = rememberScrollState()
 
     val isFormValid = activity.isNotBlank() &&
             category.isNotBlank() &&
             unit.isNotBlank() &&
             target.isNotBlank() &&
-            startDate.isNotBlank() &&
-            endDate.isNotBlank()
+            startDate != null &&
+            endDate != null
 
     Column(
         modifier = Modifier
@@ -125,6 +131,7 @@ fun AddActivity(navController: NavController) {
                     .width(378.dp)
                     .height(720.dp)
                     .background(BackGround2)
+                    .verticalScroll(scrollState)
                     .padding(vertical = 24.dp, horizontal = 24.dp)
             ) {
 
@@ -142,9 +149,9 @@ fun AddActivity(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextFieldActivity("Satuan", unit, onValueChange = { unit = it })
+                TextFieldActivity("Target", target, onValueChange = { target = it }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
 
-                TextFieldActivity("Target", target, onValueChange = { target = it })
+                TextFieldActivity("Satuan", unit, onValueChange = { unit = it })
 
                 DatePicker { start, end ->
                     if (start != null) {
@@ -163,13 +170,17 @@ fun AddActivity(navController: NavController) {
                         val currentUser = FirebaseAuth.getInstance().currentUser
 
                         if (currentUser != null) {
+                            val categoryActivity = CategoryActivity.valueOf(category)
                             val newActivity = Activity(
                                 name = activity,
                                 unit = unit,
-                                target = target,
-                                category = category,
-                                start = startDate,
-                                end = endDate
+                                progress = if(categoryActivity == CategoryActivity.Baik) listOf(0) else listOf(target.toIntOrNull() ?: 0),
+                                target = target.toIntOrNull() ?: 0,
+                                category = categoryActivity,
+                                periode = "Hari",
+                                start = startDate!!,
+                                end = endDate!!,
+                                id = ""
                             )
 
                             firestore.collection("users")

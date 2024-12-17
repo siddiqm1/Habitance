@@ -1,10 +1,20 @@
+import android.util.Log
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -18,8 +28,13 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,29 +42,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.NavController
 import com.example.habitance.R
-import com.example.habitance.navbar.Screen
+import com.example.habitance.ui.screens.add_activity.Activity
+import com.example.habitance.ui.screens.add_activity.CategoryActivity
+import com.example.habitance.ui.screens.detailactivity.showDate
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.Timestamp
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun CardList(
-    navController: NavController,
-    activityName: String,
-    target: String,
-    unit: String,
-    startDate: String,
-    endDate: String
+    activity: Activity,
+    onNavigateToDetail: () -> Unit
 ) {
-    val targetInt = target.toIntOrNull() ?: 0
+    val now = Timestamp.now().toDate()
+    val createdDate = activity.start.toDate()
+    val diffInMillis = now.time - createdDate.time
+    val diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis).toInt()
+    val progress = activity.progress[diffInDays]
+
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                onNavigateToDetail()
+            },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp)
     ) {
@@ -60,7 +82,7 @@ fun CardList(
         ) {
             val (judulText, targetText, targetText2, editIcon) = createRefs()
             Text(
-                text = activityName,
+                text = activity.name,
                 fontSize = 13.sp,
                 fontWeight = FontWeight(500),
                 fontFamily = fontFamily,
@@ -86,7 +108,7 @@ fun CardList(
                     }
             )
             Text(
-                text = "$targetInt / $unit",
+                text = "${progress}/${activity.target}",
                 fontSize = 15.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -129,7 +151,7 @@ fun CardList(
                     }
             )
             Text(
-                text = "$target/$unit",
+                text = "${activity.target} ${activity.unit}/${activity.periode}",
                 fontSize = 11.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -152,7 +174,7 @@ fun CardList(
                     }
             )
             Text(
-                text = startDate,
+                text = activity.start.showDate(),
                 fontSize = 7.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -175,7 +197,7 @@ fun CardList(
                     }
             )
             Text(
-                text = endDate,
+                text = activity.end.showDate(),
                 fontSize = 7.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -186,18 +208,70 @@ fun CardList(
                         bottom.linkTo(endIcon.bottom)
                     }
             )
-            Image(
-                painter = painterResource(id = R.drawable.fire_on),
-                contentDescription = "fire on",
+            Box(
                 modifier = Modifier
-                    .size(30.dp)
                     .constrainAs(fireIcon){
                         end.linkTo(parent.end, margin = 10.dp)
                         top.linkTo(targetIcon.top)
                     }
-            )
+                    .clipToBounds(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                val target = activity.target
+                val size = 30.dp
+                val targetPercentage = target.toFloat() / progress.toFloat()
+                val fireHeight = (if(targetPercentage >= 1f || activity.category == CategoryActivity.Buruk) targetPercentage else 1f)
+
+                val containerOffset = if(targetPercentage != Float.NEGATIVE_INFINITY)
+                    size - size / fireHeight
+                else 0.dp
+
+                val imageOffset = if(targetPercentage != Float.NEGATIVE_INFINITY)
+                    -size + size / fireHeight
+                else 0.dp
+                val infiniteTransition = rememberInfiniteTransition()
+                val rotationZ by infiniteTransition.animateFloat(
+                    initialValue = -15f,
+                    targetValue = 15f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(
+                            durationMillis = 300, // Durasi animasi (1 detik)
+                            easing = LinearEasing // Easing linear
+                        ),
+                        repeatMode = RepeatMode.Reverse // Kembali ke nilai awal setelah selesai
+                    ),
+                    label = ""
+                )
+                Box(
+                    modifier = Modifier
+                        .graphicsLayer(
+                            rotationZ = if(targetPercentage < 1f == targetPercentage > 0f) rotationZ else 0f
+                        )
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.fire_off),
+                        contentDescription = "fire off",
+                        modifier = Modifier
+                            .size(size)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(size)
+                            .offset(y = containerOffset)
+                            .clipToBounds()
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.fire_on),
+                            contentDescription = "fire on",
+                            modifier = Modifier
+                                .size(size)
+                                .offset(y = imageOffset) // Geser gambar ke atas sebanyak setengah tinggi
+                        )
+                    }
+                }
+            }
             Button(
-                onClick = {navController.navigate(Screen.NotePage.route)},//buat aja ke page baru untuk add note,berarti tambah kan note di data base pda collections activity
+                onClick = {},
                 modifier = Modifier
                     .size(35.dp) // Ukuran lingkaran
                     .clip(CircleShape) // Membuat bentuk lingkaran
@@ -241,17 +315,10 @@ fun CardList(
     Spacer(modifier = Modifier.height(16.dp))
 }
 
-//@Preview
-//@Composable
-//fun CardListPreview() {
-//    CardList(
-//        activityName = "Activity Name",
-//        target = "10",
-//        unit = "Unit",
-//        startDate = "Start Date",
-//        endDate = "End Date"
-//        navController = NavController(LocalContext.current)
-//    )
-//}
+@Preview
+@Composable
+fun CardListPreview() {
+    CardList(Activity(), {})
+}
 
 

@@ -23,10 +23,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.habitance.ui.screens.detailactivity.showDate
+import com.example.habitance.ui.screens.detailactivity.showDatetime
 import com.example.habitance.ui.theme.BottomText
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.Timestamp
 import java.util.Calendar
 import java.util.Date
 
@@ -34,11 +37,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Composable
-fun DatePicker(onDateSelected: (start: String?, end: String?) -> Unit) {
-    var startDate by remember { mutableStateOf<String?>(null) }
-    var endDate by remember { mutableStateOf<String?>(null) }
+fun DatePicker(onDateSelected: (start: Timestamp?, end: Timestamp?) -> Unit) {
+    var startDate by remember { mutableStateOf<Timestamp?>(null) }
+    var endDate by remember { mutableStateOf<Timestamp?>(null) }
     val context = LocalContext.current
-    val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()) // Tentukan format tanggal
+//    val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()) // Tentukan format tanggal
 
     Column {
         Text(
@@ -61,13 +64,13 @@ fun DatePicker(onDateSelected: (start: String?, end: String?) -> Unit) {
                 border = BorderStroke(1.dp, TextMedium),
                 onClick = {
                     showDatePickerDialog(context) { date ->
-                        startDate = dateFormat.format(date)
+                        startDate = Timestamp(date)
                         onDateSelected(startDate, endDate) // Call the callback with updated dates
                     }
                 }
             ) {
                 Text(
-                    text = startDate ?: "Mulai",
+                    text = startDate?.showDate() ?: "Mulai",
                     modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
                     fontFamily = fontFamily,
                     fontSize = 14.sp,
@@ -85,13 +88,13 @@ fun DatePicker(onDateSelected: (start: String?, end: String?) -> Unit) {
                 border = BorderStroke(1.dp, TextMedium),
                 onClick = {
                     showDatePickerDialog(context) { date ->
-                        endDate = dateFormat.format(date)
+                        endDate = Timestamp(date)
                         onDateSelected(startDate, endDate) // Call the callback with updated dates
                     }
                 }
             ) {
                 Text(
-                    text = endDate ?: "Selesai",
+                    text = endDate?.showDate() ?: "Selesai",
                     modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
                     fontFamily = fontFamily,
                     fontSize = 14.sp,
@@ -116,6 +119,7 @@ private fun showDatePickerDialog(context: Context, onDatePicked: (Date) -> Unit)
             val selectedDate = Calendar.getInstance().apply {
                 set(selectedYear, selectedMonth, selectedDay)
             }.time
+            if (selectedDate.time >= Date().time)
             onDatePicked(selectedDate)
         },
         year,
