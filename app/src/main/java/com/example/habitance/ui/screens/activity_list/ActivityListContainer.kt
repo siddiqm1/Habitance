@@ -1,9 +1,13 @@
 package com.example.habitance.ui.screens.activity_list
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.habitance.ui.screens.add_activity.Activity
 import com.google.firebase.Timestamp
@@ -29,7 +33,12 @@ fun ActivityScreen(navController: NavController) {
     )
 
     if (isLoading.value) {
-        CircularProgressIndicator()
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
     } else {
         if (activities.value.isEmpty()) {
             ActivityListEmpty("Add Activity", navController)

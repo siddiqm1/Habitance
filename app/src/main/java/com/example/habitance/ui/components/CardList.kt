@@ -1,4 +1,5 @@
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,12 +70,16 @@ fun CardList(
         0
     }
 
+    val context = LocalContext.current
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onNavigateToDetail()
+                if(Timestamp.now().seconds >= activity.start.seconds)
+                    onNavigateToDetail()
+                else
+                    Toast.makeText(context, "Belum waktunya Yang \uD83D\uDE01😘😁", Toast.LENGTH_SHORT).show()
             },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp)

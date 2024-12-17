@@ -83,6 +83,8 @@ fun ListActivity(navController: NavController) {
                 onResult = { fetchedActivities ->
                     activities.value = fetchedActivities.filter {
                         it.end.seconds >= Timestamp.now().seconds
+                    }.sortedBy {
+                        it.start
                     }
                     filteredActivities.value = fetchedActivities
                     filteredActivities.value = activities.value.filter {
