@@ -1,5 +1,6 @@
 package com.example.habitance.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,14 +30,34 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.example.habitance.R
+import com.example.habitance.ui.screens.add_activity.Activity
+import com.example.habitance.ui.screens.add_activity.CategoryActivity
+import com.example.habitance.ui.screens.detailactivity.showDate
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.Timestamp
+import java.util.Calendar
+import java.util.Date
+import java.util.concurrent.TimeUnit
 
+@SuppressLint("DefaultLocale")
 @Composable
-fun CardFinished() {
+fun CardFinished(activity: Activity) {
+    val startDate = activity.start
+    val endDate = activity.end
+    val totalTime = activity.end.toDate().time - activity.start.toDate().time
+    val diffInDays = TimeUnit.MILLISECONDS.toDays(totalTime).toInt() + 1
+    val category = activity.category
+
+    val progress = activity.progress
+    val successfulProgress = if(category == CategoryActivity.Baik)
+        progress.values.count { it >= activity.target }
+    else
+        progress.values.count { it < activity.target } + (diffInDays - progress.size)
+
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
@@ -51,7 +72,7 @@ fun CardFinished() {
         ) {
             val (judulText, editIcon) = createRefs()
             Text(
-                text = "Sugar",
+                text = activity.name,
                 fontSize = 13.sp,
                 fontWeight = FontWeight(500),
                 fontFamily = fontFamily,
@@ -95,7 +116,7 @@ fun CardFinished() {
                     }
             )
             Text(
-                text = "0 kali / day",
+                text = "${activity.target} ${activity.unit}/${activity.periode}",
                 fontSize = 11.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -118,7 +139,7 @@ fun CardFinished() {
                     }
             )
             Text(
-                text = "03/01/2024",
+                text = startDate.showDate(),
                 fontSize = 7.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -141,7 +162,7 @@ fun CardFinished() {
                     }
             )
             Text(
-                text = "03/01/2024",
+                text = endDate.showDate(),
                 fontSize = 7.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
@@ -152,8 +173,9 @@ fun CardFinished() {
                         bottom.linkTo(endIcon.bottom)
                     }
             )
+            val successfulPercentage = successfulProgress * 100 / diffInDays.toDouble()
             Text(
-                text = "66.6 %",
+                text = "${String.format("%.2f", successfulPercentage)} %",
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontFamily = fontFamily,
@@ -167,7 +189,7 @@ fun CardFinished() {
                     }
             )
             Text(
-                text = "Total waktu: 60 hari",
+                text = "Total waktu: $diffInDays hari",
                 style = TextStyle(
                     fontSize = 10.sp,
                     fontFamily = fontFamily,
@@ -181,7 +203,7 @@ fun CardFinished() {
                     }
             )
             Text(
-                text = "Target tercapai: 40 hari",
+                text = "Target tercapai: $successfulProgress hari",
                 style = TextStyle(
                     fontSize = 10.sp,
                     fontFamily = fontFamily,
@@ -243,5 +265,22 @@ fun CardFinished() {
 @Preview
 @Composable
 fun CardListPreview() {
-    CardFinished()
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.DAY_OF_MONTH, 7)
+    val futureDate: Date = calendar.time
+
+    CardFinished(Activity(
+        name = "Name",
+        unit = "unit",
+        progress = mapOf(
+            "0" to 100,
+            "1" to 100,
+            "2" to 100
+        ),
+        target = 10,
+        periode = "hari",
+        start = Timestamp.now(),
+        end = Timestamp(futureDate),
+        category = CategoryActivity.Baik
+    ))
 }

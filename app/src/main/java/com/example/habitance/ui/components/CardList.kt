@@ -1,7 +1,6 @@
 import android.util.Log
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -33,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -63,7 +61,12 @@ fun CardList(
     val createdDate = activity.start.toDate()
     val diffInMillis = now.time - createdDate.time
     val diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis).toInt()
-    val progress = activity.progress[diffInDays]
+    val progress = try {
+        activity.progress[diffInDays.toString()]!!
+    } catch (_: Exception) {
+        Log.d("CardList", "Error getting progress:")
+        0
+    }
 
     Card(
         colors = CardDefaults.cardColors(BackGround2),
@@ -229,7 +232,7 @@ fun CardList(
                 val imageOffset = if(targetPercentage != Float.NEGATIVE_INFINITY)
                     -size + size / fireHeight
                 else 0.dp
-                val infiniteTransition = rememberInfiniteTransition()
+                val infiniteTransition = rememberInfiniteTransition(label = activity.id)
                 val rotationZ by infiniteTransition.animateFloat(
                     initialValue = -15f,
                     targetValue = 15f,
@@ -245,7 +248,7 @@ fun CardList(
                 Box(
                     modifier = Modifier
                         .graphicsLayer(
-                            rotationZ = if(targetPercentage < 1f == targetPercentage > 0f) rotationZ else 0f
+                            rotationZ = if(targetPercentage <= 1f && targetPercentage > 0f) rotationZ else 0f
                         )
                 ) {
                     Image(

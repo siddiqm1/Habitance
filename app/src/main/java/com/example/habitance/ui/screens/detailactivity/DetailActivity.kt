@@ -107,7 +107,7 @@ fun ActivityList(
     val createdDate = activity.start.toDate()
     val diffInMillis = now.time - createdDate.time
     val diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis).toInt()
-    val currentProgress = activity.progress.toMutableList()
+    val currentProgress = activity.progress.toMutableMap()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -293,7 +293,7 @@ fun ActivityList(
                         .clickable {
                             scope.launch {
                                 val progress = if(activity.category == CategoryActivity.Baik) (intensity.toIntOrNull() ?: 0) else -(intensity.toIntOrNull() ?: 0)
-                                currentProgress[diffInDays] = currentProgress[diffInDays] + progress
+                                currentProgress[diffInDays.toString()] = (currentProgress[diffInDays.toString()] ?: 0) + progress
                                 Repository().updateActivityProgress(
                                     AccountService().currentUserUid!!,
                                     activityId,

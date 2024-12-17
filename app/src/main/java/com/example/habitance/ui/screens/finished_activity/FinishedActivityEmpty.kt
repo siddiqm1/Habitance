@@ -1,8 +1,7 @@
-package com.example.habitance.ui.components
+package com.example.habitance.ui.screens.finished_activity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,8 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
@@ -27,24 +24,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.habitance.R
 import com.example.habitance.navbar.BottomBarScreen
-import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
-import com.example.habitance.ui.theme.BottomText
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
-fun ListEmpty(
-    label: String,
+fun FinishedActivityEmpty(
     navController: NavController
 ){
     Column(
@@ -61,7 +55,7 @@ fun ListEmpty(
             horizontalArrangement = Arrangement.Start // Mengatur logo di tengah
         ) {
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate(BottomBarScreen.Home.route) },
                 modifier = Modifier.padding(horizontal = 8.dp)
             ) {
                 Image(
@@ -69,9 +63,6 @@ fun ListEmpty(
                     contentDescription = "back button",
                     modifier = Modifier
                         .size(25.dp)
-                        .clickable {
-                            navController.navigate(BottomBarScreen.Home.route)
-                        }
                 )
             }
 
@@ -109,7 +100,7 @@ fun ListEmpty(
                         .padding(top = 20.dp, start = 20.dp)
                 ) {
                     Text(
-                        text = label,
+                        text = "Finished Activity",
                         fontSize = 24.sp,
                         color = TextDark,
                         fontFamily = fontFamily,
@@ -139,7 +130,7 @@ fun ListEmpty(
                         .padding(top = 5.dp)
                 ) {
                     Text(
-                        text = "Oops, belum ada aktivitas. Waktunya menambahkan yang pertama!",
+                        text = "Oops, belum ada aktivitas yang selesai nich 😘",
                         fontSize = 18.sp,
                         color = TextDark,
                         fontFamily = fontFamily,
@@ -148,35 +139,17 @@ fun ListEmpty(
                             .padding(start = 30.dp, end = 12.dp)
                     )
                 }
-
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 5.dp)
-                ){
-                    Button(
-                        onClick = {
-                            navController.navigate(Screen.AddActivityScreen.route)
-                        },
-                        modifier = Modifier
-                            .padding(horizontal = 30.dp, vertical = 18.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF16423C)
-                        )
-                    ) {
-                        Text(
-                            text = "ADD ACTIVITY",
-                            fontSize = 16.sp,
-                            fontFamily = fontFamily,
-                            color = BottomText,
-                            fontWeight = FontWeight(400),
-                            modifier = Modifier
-                                .padding(vertical = 6.dp, horizontal = 8.dp)
-                        )
-                    }
-                }
             }
 
         }
 
     }
 }
+
+@Preview
+@Composable
+fun PreviewFinishedActivityEmpty(){
+//    FinishedActivityEmpty(navController = rememberNavController())
+}
+
+

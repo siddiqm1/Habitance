@@ -43,19 +43,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-
 import com.example.habitance.R
+import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
+import com.example.habitance.ui.screens.finished_activity.navigateAndPopUp
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.Border2
 import com.example.habitance.ui.theme.BottomText
 import com.example.habitance.ui.theme.TextDark
-import com.example.habitance.ui.theme.TextLogo
 import com.example.habitance.ui.theme.fontFamily
 
 @Composable
@@ -73,7 +72,7 @@ fun NotePage(navController: NavHostController) {
             horizontalArrangement = Arrangement.Start
         ) {
             IconButton(
-                onClick = { navController.navigate(Screen.HomeScreen.route)},
+                onClick = { navController.navigateAndPopUp(Screen.HomeScreen.route, BottomBarScreen.Note.route)},
                 modifier = Modifier.padding(horizontal = 8.dp)
             ) {
                 Image(

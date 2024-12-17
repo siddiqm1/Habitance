@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,7 +37,9 @@ fun TextFieldActivity(
     Spacer(modifier = Modifier.height(8.dp))
 
     TextField(
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = keyboardOptions.copy(
+            imeAction = ImeAction.Done
+        ),
         value = value,
         onValueChange = onValueChange,
         label = { Text(label, color = TextDark,fontSize = 13.sp) },
