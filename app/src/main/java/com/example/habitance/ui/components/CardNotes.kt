@@ -1,6 +1,7 @@
 package com.example.habitance.ui.components
 
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,6 +30,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,8 +49,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.habitance.R
+import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.screens.add_activity.Activity
+import com.example.habitance.ui.screens.profile.ProfileViewModel
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.TextMedium
@@ -55,13 +61,51 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextLight
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun CardNoteUser() {
-    var isOpened by remember { mutableStateOf(false) }
-    var note by remember { mutableStateOf("") }
+fun CardNoteUser(
+    profileViewModel: ProfileViewModel = viewModel(),
+    isOpened: Boolean,
+    onToggle: () -> Unit
+) {
+    val firestore = FirebaseFirestore.getInstance()
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    val name = profileViewModel.name.collectAsState().value
+
+//    var isOpened by remember { mutableStateOf(false) }
+
+// State untuk menyimpan note dari Firestore
+    var noteText by remember { mutableStateOf("") }
+
+    if (currentUser != null) {
+        // Mengambil dokumen dari koleksi "users" dengan ID berdasarkan UID pengguna saat ini
+        val documentRef = firestore.collection("users").document(currentUser.uid)
+
+        // Mengambil dokumen
+        documentRef.get().addOnSuccessListener { documentSnapshot ->
+            // Mengecek jika dokumen ada
+            if (documentSnapshot.exists()) {
+                // Mengambil field 'note' dari dokumen
+                val note = documentSnapshot.getString("note") ?: "" // Menghindari null
+
+                // Menyimpan data note ke state noteText
+                noteText = note
+
+                // Menampilkan atau menggunakan data field 'note'
+                Log.d("Firestore", "User's note: $note")
+            } else {
+                Log.d("Firestore", "Document not found!")
+            }
+        }.addOnFailureListener { exception ->
+            Log.e("Firestore", "Error getting document", exception)
+        }
+    }
+
+
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
@@ -78,7 +122,7 @@ fun CardNoteUser() {
         ) {
             val (judulText, editIcon) = createRefs()
             Text(
-                text = "User's Note",
+                text = "${name}'s Note",
                 fontSize = 15.sp,
                 fontWeight = FontWeight(600),
                 fontFamily = fontFamily,
@@ -103,7 +147,7 @@ fun CardNoteUser() {
                         bottom.linkTo(parent.bottom)
                     }
                     .clickable {
-                        isOpened = !isOpened
+                        onToggle()
                     }
             )
         }
@@ -123,7 +167,7 @@ fun CardNoteUser() {
                         .fillMaxSize()
                         .padding(6.dp)
                 ) {
-                    if (note.isEmpty()) {
+                    if (noteText.isEmpty()) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier.fillMaxSize()
@@ -140,7 +184,7 @@ fun CardNoteUser() {
                         }
                     } else {
                         Text(
-                            text = note,
+                            text = noteText,
                             style = TextStyle(
                                 fontSize = 8.sp,
                                 fontFamily = fontFamily,
@@ -159,10 +203,22 @@ fun CardNoteUser() {
                 ) {
                     // TextField
                     BasicTextField(
-                        value = note,
+                        value = noteText,
                         onValueChange = { query ->
-                            note = query
+                            noteText = query
 
+                            if (currentUser != null) {
+                                val userDocRef = firestore.collection("users")
+                                    .document(currentUser.uid)
+
+                                userDocRef.update("note", noteText)
+                                    .addOnSuccessListener {
+                                        Log.d("Firestore", "Note updated successfully!")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("Firestore", "Error updating note", e)
+                                    }
+                            }
                         },
                         modifier = Modifier
                             .background(TextLight, shape = RoundedCornerShape(8.dp))
@@ -173,10 +229,10 @@ fun CardNoteUser() {
                             .verticalScroll(rememberScrollState()),
                         decorationBox = { innerTextField ->
                             Box(
-                                contentAlignment = if(note.isEmpty()) Alignment.Center else Alignment.TopStart,
+                                contentAlignment = if(noteText.isEmpty()) Alignment.Center else Alignment.TopStart,
                                 modifier = Modifier.fillMaxSize()
                             ) {
-                                if (note.isEmpty()) {
+                                if (noteText.isEmpty()) {
                                     Text(
                                         text = "Write here!",
                                         style = TextStyle(
@@ -218,9 +274,17 @@ fun CardNoteUser() {
 }
 
 @Composable
-fun CardNoteActivity(activity :Activity) {
-    var isOpened by remember { mutableStateOf(false) }
+fun CardNoteActivity(
+    activity :Activity,
+    isOpened: Boolean,
+    onToggle: () -> Unit
+    ) {
+//    var isOpened by remember { mutableStateOf(false) }
     var noteText by remember { mutableStateOf(activity.note) }
+
+    val firestore = FirebaseFirestore.getInstance()
+    val currentUser = FirebaseAuth.getInstance().currentUser
+
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
@@ -263,7 +327,7 @@ fun CardNoteActivity(activity :Activity) {
                         bottom.linkTo(parent.bottom)
                     }
                     .clickable{
-                        isOpened = !isOpened
+                        onToggle()
                     }
             )
         }
@@ -322,6 +386,22 @@ fun CardNoteActivity(activity :Activity) {
                         value = noteText,
                         onValueChange = { query ->
                             noteText = query
+                            Log.d("Note", "noteText: $noteText")
+
+                            if (currentUser != null) {
+                                val userDocRef = firestore.collection("users")
+                                    .document(currentUser.uid)
+                                    .collection("activities")
+                                    .document(activity.id) // Pastikan Anda memiliki ID dokumen
+
+                                userDocRef.update("note", noteText)
+                                    .addOnSuccessListener {
+                                        Log.d("Firestore", "Note updated successfully!")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("Firestore", "Error updating note", e)
+                                    }
+                            }
 
                         },
                         modifier = Modifier
@@ -351,25 +431,9 @@ fun CardNoteActivity(activity :Activity) {
                             }
                         }
                     )
-//
-//                    Spacer(Modifier.size(15.dp))
-//
-//                    // Tombol "Simpan"
-//                    Box(
-//                        modifier = Modifier
-//                            .clickable { /* Handle click action */ }
-//                            .background(color = TextDark, shape = RoundedCornerShape(16.dp))
-//                            .clip(RoundedCornerShape(16.dp))
-//                            .padding(horizontal = 20.dp, vertical = 8.dp)
-//                            .align(Alignment.End) // posisikan tombol ke kanan
-//                    ) {
-//                        Text(
-//                            "Simpan",
-//                            color = TextLight,
-//                            fontFamily = fontFamily,
-//                            fontSize = 10.sp
-//                        )
-//                    }
+
+
+
                 }
             }
         }
