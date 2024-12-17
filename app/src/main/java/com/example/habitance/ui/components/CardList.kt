@@ -22,19 +22,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -76,6 +82,8 @@ fun CardList(
         Log.d("CardList", "Error getting progress:")
         0
     }
+    var note by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
     Card(
@@ -293,7 +301,9 @@ fun CardList(
                 }
             }
             Button(
-                onClick = {},
+                onClick = {
+                    showDialog = true
+                },
                 modifier = Modifier
                     .size(35.dp) // Ukuran lingkaran
                     .clip(CircleShape) // Membuat bentuk lingkaran
@@ -325,17 +335,66 @@ fun CardList(
                 }
             ){
                 Text(
-                    text = "lorem12",
+                    text = if (activity.note.isNotBlank()) activity.note else "Tidak ada catatan",
                     fontFamily = fontFamily,
-                    fontWeight = FontWeight(300),
+                    fontWeight = FontWeight.Light,
                     color = TextDark,
                     fontSize = 7.sp
                 )
+
             }
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if(note.isNotBlank()){
+                            activity.note = note
+                        }
+                        showDialog = false
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF16423C),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_access_time_24),
+                        contentDescription = "Time Picker",
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                    Text(text = "Add Notes")
+                }
+                Button(onClick = {showDialog = false}) {
+                    Text("Cancel")
+                }
+
+            },
+            title = {Text(text = "Add Notes")},
+            text = {
+                OutlinedTextField(
+                    value = note,
+                    onValueChange = { note = it },
+                    label = { Text("Add Your Notes Here") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    shape = RoundedCornerShape(16.dp)
+                )
+            }
+        )
+    }
 }
+
+
 
 @Preview
 @Composable

@@ -189,7 +189,8 @@ fun AddActivity(navController: NavController) {
                                 periode = "Hari",
                                 start = startDate!!,
                                 end = endDate!!,
-                                id = ""
+                                id = "",
+                                note = ""
                             )
 
                             firestore.collection("users")

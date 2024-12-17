@@ -12,7 +12,8 @@ data class Activity(
     val category: CategoryActivity = CategoryActivity.Baik,
     val periode : String = "",
     val start: Timestamp = Timestamp.now(),
-    val end: Timestamp = Timestamp.now()
+    val end: Timestamp = Timestamp.now(),
+    var note: String = ""
 )
 
 enum class CategoryActivity {
