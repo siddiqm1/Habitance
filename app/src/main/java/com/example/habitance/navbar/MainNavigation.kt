@@ -13,10 +13,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.habitance.ui.screens.notification.AddNotificationScreen
 import com.example.habitance.ui.screens.notification.NotificationListScreen
-import com.example.habitance.ui.screens.activitylist.ActivityScreen
+import com.example.habitance.ui.screens.activity_list.ActivityScreen
 import com.example.habitance.ui.screens.add_activity.AddActivity
 import com.example.habitance.ui.screens.detailactivity.ActivityList
-import com.example.habitance.ui.screens.finishedactivity.FinishedActivityEmpty
+import com.example.habitance.ui.screens.finished_activity.FinishedActivityEmpty
+import com.example.habitance.ui.screens.finished_activity.FinishedActivityScreen
 import com.example.habitance.ui.screens.home.HomePage
 import com.example.habitance.ui.screens.note.NotePage
 import com.example.habitance.ui.screens.notification.NotificationRepository
@@ -57,8 +58,8 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = BottomBarScreen.Note.route) {
                     NotePage(navController)
                 }
-                composable(route = BottomBarScreen.FinisActivity.route) {
-                    FinishedActivityEmpty(navController)
+                composable(route = BottomBarScreen.FinishedActivity.route) {
+                    FinishedActivityScreen(navController)
                 }
                 composable(route = Screen.HomeScreen.route){
                     HomePage(navController,navMainController = navHostController)

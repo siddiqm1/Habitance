@@ -2,6 +2,7 @@ package com.example.habitance.ui.components
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.habitance.ui.screens.detailactivity.showDate
@@ -32,9 +34,6 @@ import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.Timestamp
 import java.util.Calendar
 import java.util.Date
-
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun DatePicker(onDateSelected: (start: Timestamp?, end: Timestamp?) -> Unit) {
@@ -65,12 +64,14 @@ fun DatePicker(onDateSelected: (start: Timestamp?, end: Timestamp?) -> Unit) {
                 onClick = {
                     showDatePickerDialog(context) { date ->
                         startDate = Timestamp(date)
+                        endDate = null
                         onDateSelected(startDate, endDate) // Call the callback with updated dates
                     }
                 }
             ) {
                 Text(
                     text = startDate?.showDate() ?: "Mulai",
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
                     fontFamily = fontFamily,
                     fontSize = 14.sp,
@@ -85,17 +86,30 @@ fun DatePicker(onDateSelected: (start: Timestamp?, end: Timestamp?) -> Unit) {
                     .padding(8.dp)
                     .weight(1f),
                 colors = ButtonDefaults.buttonColors(BottomText),
+                enabled = startDate != null,
                 border = BorderStroke(1.dp, TextMedium),
                 onClick = {
                     showDatePickerDialog(context) { date ->
-                        endDate = Timestamp(date)
-                        onDateSelected(startDate, endDate) // Call the callback with updated dates
+                        val calendar = Calendar.getInstance()
+                        calendar.time = date
+                        calendar.set(Calendar.HOUR_OF_DAY, 23)
+                        calendar.set(Calendar.MINUTE, 59)
+                        calendar.set(Calendar.SECOND, 59)
+                        calendar.set(Calendar.MILLISECOND, 0)
+
+                        val selectedEndDate = Timestamp(calendar.time)
+                        if(startDate!!.seconds < selectedEndDate.seconds) {
+                            Log.d("DatePicker", "startDate: ${startDate?.showDatetime()}, endDate: ${endDate?.showDatetime()}")
+                            endDate = Timestamp(calendar.time)
+                            onDateSelected(startDate, endDate)
+                        } // Call the callback with updated dates
                     }
                 }
             ) {
                 Text(
                     text = endDate?.showDate() ?: "Selesai",
                     modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
+                    textAlign = TextAlign.Center,
                     fontFamily = fontFamily,
                     fontSize = 14.sp,
                     fontWeight = FontWeight(400),
