@@ -17,12 +17,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -40,7 +38,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -50,6 +47,7 @@ import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.habitance.R
 import com.example.habitance.function.AuthManager
+import com.example.habitance.navbar.BottomBarScreen
 import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.screens.profile.ProfileViewModel
 import com.example.habitance.ui.theme.BackGround2
@@ -74,7 +72,7 @@ fun HomePage(
             .fillMaxSize()
             .background(Color(0xFFE9EFEC))
     ) {
-        Box(){
+        Box {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -216,7 +214,7 @@ fun HomePage(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .offset(y = -71.dp)
+                        .offset(y = (-71).dp)
                         .border(
                             width = 2.dp,
                             color = Color(0xFF16423C),
@@ -330,7 +328,10 @@ fun HomePage(
                         modifier = Modifier
                             .fillMaxHeight()
                             .weight(2f)
-                            .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp)),
+                            .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp))
+                            .clickable {
+                                navController.navigate(BottomBarScreen.FinishedActivity.route)
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -392,7 +393,10 @@ fun HomePage(
                                 .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp))
                                 .padding(16.dp)
                                 .weight(1f)
-                                .fillMaxWidth(),
+                                .fillMaxWidth()
+                                .clickable {
+                                    navController.navigate(BottomBarScreen.Note.route)
+                                },
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -427,7 +431,7 @@ fun Streaks(persen: Float = 0.7f){
     ) {
         val batas = createGuidelineFromStart(persen)
         // Defining the constraints
-        val (title, progressBar, progressText, bar, barContainer, icon) = createRefs()
+        val (title, _, progressText, bar, barContainer, icon) = createRefs()
 
         // Title Text
         Text(
@@ -479,7 +483,7 @@ fun Streaks(persen: Float = 0.7f){
             painter = painterResource(id = R.drawable.fire_on), // Icon berbentuk api
             contentDescription = "Streak",
             modifier = Modifier
-                .offset(x = -20.dp, y = 10.dp)
+                .offset(x = (-20).dp, y = 10.dp)
                 .size(41.dp)
                 .constrainAs(icon) {
                     start.linkTo(bar.end)

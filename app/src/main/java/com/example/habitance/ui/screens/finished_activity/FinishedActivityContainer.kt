@@ -1,16 +1,16 @@
-package com.example.habitance.ui.screens.activitylist
+package com.example.habitance.ui.screens.finished_activity
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
-import com.example.habitance.ui.components.ListEmpty
+import com.example.habitance.ui.screens.activity_list.fetchActivities
 import com.example.habitance.ui.screens.add_activity.Activity
-
+import com.google.firebase.Timestamp
 
 @Composable
-fun ActivityScreen(navController: NavController) {
+fun FinishedActivityScreen(navController: NavController) {
 
     val activities = remember { mutableStateOf<List<Activity>>(emptyList()) }
     val errorMessage = remember { mutableStateOf<String?>(null) }
@@ -18,7 +18,9 @@ fun ActivityScreen(navController: NavController) {
 
     fetchActivities(
         onResult = { fetchedActivities ->
-            activities.value = fetchedActivities
+            activities.value = fetchedActivities.filter {
+                it.end.seconds < Timestamp.now().seconds
+            }
             isLoading.value = false
         },
         onError = { error ->
@@ -30,10 +32,9 @@ fun ActivityScreen(navController: NavController) {
         CircularProgressIndicator()
     } else {
         if (activities.value.isEmpty()) {
-            ListEmpty("Add Activity", navController)
+            FinishedActivityEmpty(navController)
         } else {
-            ListActivity(navController)
+            FinishedActivity(navController)
         }
     }
 }
-

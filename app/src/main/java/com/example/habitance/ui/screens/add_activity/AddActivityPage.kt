@@ -149,7 +149,16 @@ fun AddActivity(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextFieldActivity("Target", target, onValueChange = { target = it }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                TextFieldActivity(
+                    "Target",
+                    target,
+                    onValueChange = { tgt ->
+                        if(tgt == "" || tgt.toIntOrNull() != null) {
+                            target = tgt
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
 
                 TextFieldActivity("Satuan", unit, onValueChange = { unit = it })
 
@@ -172,9 +181,9 @@ fun AddActivity(navController: NavController) {
                         if (currentUser != null) {
                             val categoryActivity = CategoryActivity.valueOf(category)
                             val newActivity = Activity(
-                                name = activity,
-                                unit = unit,
-                                progress = if(categoryActivity == CategoryActivity.Baik) listOf(0) else listOf(target.toIntOrNull() ?: 0),
+                                name = activity.trim(),
+                                unit = unit.trim(),
+                                progress = if(categoryActivity == CategoryActivity.Baik) emptyMap() else mapOf("0" to (target.toIntOrNull() ?: 0)),
                                 target = target.toIntOrNull() ?: 0,
                                 category = categoryActivity,
                                 periode = "Hari",

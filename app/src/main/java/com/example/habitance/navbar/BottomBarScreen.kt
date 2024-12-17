@@ -32,7 +32,7 @@ sealed class BottomBarScreen(
     )
 
     // for Finis
-    object FinisActivity: BottomBarScreen(
+    object FinishedActivity: BottomBarScreen(
         route = "finis",
         title = "Finished",
         icon = R.drawable.finis,
