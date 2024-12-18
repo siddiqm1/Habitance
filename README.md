@@ -15,7 +15,7 @@ Habitance adalah aplikasi manajemen jadwal berbasis Android yang dirancang untuk
 
 - **Bahasa Pemrograman**: Kotlin
 - **Framework UI**: Jetpack Compose
-- **Database**: Firebase & MySQL
+- **Database**: Firebase(Fire Store)
 - **Alat Pengembangan**: Android Studio
 - **API**: Google Sign-In, Firebase Cloud Messaging
 
