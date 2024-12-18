@@ -34,19 +34,27 @@ class NotificationRepository {
 
     suspend fun getNotifications(): List<Notification> {
         val userCollection = getUserCollection()
-            ?: throw IllegalStateException("Tidak dapat mengambil notifikasi. Pengguna belum login.")
+        if (userCollection == null) {
+            // Kembalikan daftar kosong jika pengguna tidak login
+            return emptyList()
+        }
 
         val snapshot = userCollection.get().await()
         return snapshot.toObjects(Notification::class.java)
     }
 
 
+
     suspend fun deleteNotification(id: String) {
         val userCollection = getUserCollection()
-            ?: throw IllegalStateException("Tidak dapat menghapus notifikasi. Pengguna belum login.")
+        if (userCollection == null) {
+            // Hindari exception, cukup abaikan operasi jika pengguna tidak login
+            return
+        }
 
         userCollection.document(id).delete().await()
     }
+
 
 
     fun updateNotificationState(id: String, isEnabled: Boolean) {

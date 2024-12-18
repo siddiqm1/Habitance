@@ -188,7 +188,6 @@ fun HomePage(
 
                     // Icon Keluar
                     Icon(
-
                         painter = painterResource(id = R.drawable.logout),
                         contentDescription = "Keluar",
                         modifier = Modifier
@@ -196,11 +195,12 @@ fun HomePage(
                             .clickable {
                                 AuthManager(context).signOut()
                                 navMainController.navigate("login") {
-                                    popUpTo("home") { inclusive = true }
+                                    popUpTo(0) { inclusive = true } // Menghapus semua layar sebelumnya
                                 }
                             },
                         tint = TextDark
                     )
+
                 }
             }
 

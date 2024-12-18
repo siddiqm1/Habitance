@@ -61,6 +61,7 @@ import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.Border2
 import com.example.habitance.ui.theme.Bottom
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.buttom
 import com.example.habitance.ui.theme.fontFamily
 import java.time.Instant
 import java.time.ZoneId
@@ -279,7 +280,7 @@ fun EditProfilePage(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary),
+                            containerColor = buttom),
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         Text("Save Changes", color = Color.White, fontSize = 18.sp)

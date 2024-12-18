@@ -20,7 +20,6 @@ import com.example.habitance.ui.screens.finished_activity.FinishedActivityEmpty
 import com.example.habitance.ui.screens.finished_activity.FinishedActivityScreen
 import com.example.habitance.ui.screens.home.HomePage
 import com.example.habitance.ui.screens.note.ListNote
-import com.example.habitance.ui.screens.note.NotePage
 import com.example.habitance.ui.screens.notification.NotificationRepository
 import com.example.habitance.ui.screens.notification.NotificationViewModel
 import com.example.habitance.ui.screens.profile.EditProfilePage
@@ -57,7 +56,7 @@ fun  BottomNavGraph(navHostController: NavController) {
                     ActivityScreen(navController)
                 }
                 composable(route = BottomBarScreen.Note.route) {
-                    NotePage(navController)
+                    ListNote(navController)
                 }
                 composable(route = BottomBarScreen.FinishedActivity.route) {
                     FinishedActivityScreen(navController)

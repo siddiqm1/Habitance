@@ -63,10 +63,11 @@ import com.example.habitance.data.SaveUserDataToFirestore
 import com.example.habitance.data.User
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
-import com.example.habitance.ui.theme.Bottom
 import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextLogo
 import com.google.firebase.Firebase
+import com.example.habitance.ui.theme.Bottom
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import java.time.Instant
