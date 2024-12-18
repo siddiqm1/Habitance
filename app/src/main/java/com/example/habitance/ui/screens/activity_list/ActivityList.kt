@@ -258,6 +258,7 @@ fun ListActivity(navController: NavController) {
                     items(filteredActivities.value) { activity ->
                         Log.d("ActivityList", "Activity: ${activity.name}")
                         CardList(
+                            navController,
                             activity = activity,
                             onNavigateToDetail = {
                                 navController.navigate("detailActivity/${activity.id}")

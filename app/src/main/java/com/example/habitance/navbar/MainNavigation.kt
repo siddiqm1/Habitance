@@ -19,7 +19,9 @@ import com.example.habitance.ui.screens.detailactivity.ActivityList
 import com.example.habitance.ui.screens.finished_activity.FinishedActivityEmpty
 import com.example.habitance.ui.screens.finished_activity.FinishedActivityScreen
 import com.example.habitance.ui.screens.home.HomePage
-import com.example.habitance.ui.screens.note.NotePage
+import com.example.habitance.ui.screens.note.AddNote
+import com.example.habitance.ui.screens.note.EditNote
+import com.example.habitance.ui.screens.note.ListNote
 import com.example.habitance.ui.screens.notification.NotificationRepository
 import com.example.habitance.ui.screens.notification.NotificationViewModel
 import com.example.habitance.ui.screens.profile.EditProfilePage
@@ -56,7 +58,7 @@ fun  BottomNavGraph(navHostController: NavController) {
                     ActivityScreen(navController)
                 }
                 composable(route = BottomBarScreen.Note.route) {
-                    NotePage(navController)
+                   ListNote(navController,"","",viewModel = com.example.habitance.ui.screens.note.NoteViewModel())
                 }
                 composable(route = BottomBarScreen.FinishedActivity.route) {
                     FinishedActivityScreen(navController)
@@ -64,8 +66,8 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = Screen.HomeScreen.route){
                     HomePage(navController,navMainController = navHostController)
                 }
-                composable(route = Screen.NoteScreen.route){
-                    NotePage(navController)
+                composable(route = Screen.ListNoteScreen.route){
+                    ListNote(navController,"","",viewModel = com.example.habitance.ui.screens.note.NoteViewModel())
                 }
                 composable(route = Screen.AddActivityScreen.route){
                     AddActivity(navController)
@@ -82,7 +84,8 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = Screen.ProfileScreen.route){
                     ProfilePage(navController, profileViewModel = ProfileViewModel(), navMainController = navHostController)
                 }
-                composable("edit_profile") { EditProfilePage(navController = navController) }
+                composable("edit_profile") {
+                    EditProfilePage(navController = navController) }
 
                 composable(route = Screen.ActivityListEmpty.route){
                     ActivityScreen(navController)
@@ -90,6 +93,12 @@ fun  BottomNavGraph(navHostController: NavController) {
                 composable(route = "detailActivity/{activityId}"){
                     val activityId = it.arguments?.getString("activityId")!!
                     ActivityList(activityId, navController, { navController.navigateUp() })
+                }
+                composable("addnote"){
+                    AddNote(navController,activityName = "",activityId = "")
+                }
+                composable("editnote"){
+                    EditNote(navController)
                 }
             }
         }

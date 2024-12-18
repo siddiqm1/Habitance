@@ -40,7 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
 import com.example.habitance.R
+import com.example.habitance.navbar.Screen
 import com.example.habitance.ui.screens.add_activity.Activity
 import com.example.habitance.ui.screens.add_activity.CategoryActivity
 import com.example.habitance.ui.screens.detailactivity.showDate
@@ -54,6 +56,7 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun CardList(
+    navController: NavController,
     activity: Activity,
     onNavigateToDetail: () -> Unit
 ) {
@@ -274,11 +277,11 @@ fun CardList(
                 }
             }
             Button(
-                onClick = {},
+                onClick = { navController.navigate("addnote/${activity.id}/${activity.name}") },
                 modifier = Modifier
                     .size(35.dp) // Ukuran lingkaran
                     .clip(CircleShape) // Membuat bentuk lingkaran
-                    .constrainAs(noteButton){
+                    .constrainAs(noteButton) {
                         top.linkTo(endIcon.bottom, margin = 10.dp)
                         bottom.linkTo(parent.bottom, margin = 7.dp)
                         start.linkTo(parent.start, margin = 10.dp)
@@ -293,6 +296,7 @@ fun CardList(
                     contentDescription = "add note"
                 )
             }
+
             Box(modifier = Modifier
                 .background(color = TextMedium, shape = RoundedCornerShape(16.dp))
                 .padding(10.dp, 8.dp)
@@ -318,10 +322,10 @@ fun CardList(
     Spacer(modifier = Modifier.height(16.dp))
 }
 
-@Preview
-@Composable
-fun CardListPreview() {
-    CardList(Activity(), {})
-}
+//@Preview
+//@Composable
+//fun CardListPreview() {
+//    CardList(Activity(), {})
+//}
 
 

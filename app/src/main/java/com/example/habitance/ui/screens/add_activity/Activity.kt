@@ -1,5 +1,6 @@
 package com.example.habitance.ui.screens.add_activity
 
+import com.example.habitance.ui.screens.note.Note
 import com.google.firebase.Timestamp
 
 
@@ -12,7 +13,8 @@ data class Activity(
     val category: CategoryActivity = CategoryActivity.Baik,
     val periode : String = "",
     val start: Timestamp = Timestamp.now(),
-    val end: Timestamp = Timestamp.now()
+    val end: Timestamp = Timestamp.now(),
+    val notes: List<Note> = emptyList()
 )
 
 enum class CategoryActivity {

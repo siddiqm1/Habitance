@@ -13,5 +13,10 @@ sealed class Screen(val route: String) {
     object NotificationScreen : Screen("notification")
     object AddNotificationScreen : Screen("add_notification")
     object DetailActivityScreen : Screen("detailactivity")
+    object ListNoteScreen : Screen("listnote")
+    object AddNote : Screen("addnote")
+    object EditNote : Screen("editnote")
+
+
 
 }
