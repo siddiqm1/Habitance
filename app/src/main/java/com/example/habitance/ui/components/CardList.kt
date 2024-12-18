@@ -122,7 +122,7 @@ fun CardList(
             Text(
                 text = "TARGET",
                 letterSpacing = 1.sp,
-                fontSize = 6.sp,
+                fontSize = 10.sp,
                 fontFamily = fontFamily,
                 color = TextDark,
                 modifier = Modifier

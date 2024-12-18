@@ -386,7 +386,7 @@ fun HomePage(
                                 painter = painterResource(id = R.drawable.finish), // Ikon Finished Activity
                                 contentDescription = "Finished Activity",
                                 tint = Color(0xFF16423C),
-                                modifier = Modifier.size(36.dp)
+                                modifier = Modifier.size(60.dp)
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
@@ -416,7 +416,7 @@ fun HomePage(
                                 painter = painterResource(id = R.drawable.note), // Ikon Notes
                                 contentDescription = "Notes",
                                 tint = Color(0xFF16423C),
-                                modifier = Modifier.size(36.dp)
+                                modifier = Modifier.size(60.dp)
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(

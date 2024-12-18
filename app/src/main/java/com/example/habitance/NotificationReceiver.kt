@@ -11,5 +11,6 @@ class NotificationReceiver : BroadcastReceiver() {
         val title = intent.getStringExtra("title") ?: "Default Title"
         val description = intent.getStringExtra("description") ?: "Default Description"
         showNotification(context, title, description)
+
     }
 }

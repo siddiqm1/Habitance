@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,114 +54,112 @@ fun NotificationListScreen(
     val notifications = viewModel.notifications.collectAsState()
     val context = LocalContext.current
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(BackGround2)
     ) {
-        // Header dengan Back Button dan Logo
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            IconButton(
-                onClick = {
-                    navController.navigate(BottomBarScreen.Home.route)
-                },
-                modifier = Modifier.padding(horizontal = 8.dp)
+        Column {
+            // Header dengan Back Button dan Logo
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.baseline_arrow_back_24),
-                    contentDescription = "Back button",
-                    modifier = Modifier.size(25.dp)
+                IconButton(
+                    onClick = {
+                        navController.navigate(BottomBarScreen.Home.route)
+                    },
+                    modifier = Modifier.padding(horizontal = 8.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                        contentDescription = "Back button",
+                        modifier = Modifier.size(25.dp)
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset(x = (-30).dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "Logo",
+                        modifier = Modifier.size(72.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Judul Layar
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Notification",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
                 )
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Jam analog
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .offset(x = (-30).dp),
+                    .height(200.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "Logo",
-                    modifier = Modifier.size(72.dp)
-                )
+                AnalogClockSmall() // Komponen jam analog
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Daftar notifikasi yang bisa di-scroll
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(bottom = 80.dp) // Beri ruang untuk FAB
+            ) {
+                items(notifications.value) { notification ->
+                    NotificationRow(
+                        notification = notification,
+                        onToggle = { isEnabled ->
+                            viewModel.updateNotificationState(notification.id, isEnabled)
+                        },
+                        onDelete = {
+                            viewModel.deleteNotification(notification.id, context)
+                        }
+                    )
+                }
             }
         }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Judul Layar
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "Notification",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Jam analog
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            AnalogClockSmall() // Komponen jam analog
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Daftar notifikasi
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(notifications.value) { notification ->
-                NotificationRow(
-                    notification = notification,
-                    onToggle = { isEnabled ->
-                        viewModel.updateNotificationState(notification.id, isEnabled)
-                    },
-                    onDelete = {
-                        viewModel.deleteNotification(notification.id, context)
-                    }
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         // FloatingActionButton untuk Tambah Alarm
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomEnd
+        FloatingActionButton(
+            onClick = { navController.navigate("add_notification") },
+            backgroundColor = Color(0xFF16423C),
+            contentColor = Color.White,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
         ) {
-            FloatingActionButton(
-                onClick = { navController.navigate("add_notification") },
-                backgroundColor = Color(0xFF16423C),
-                contentColor = Color.White,
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.notif_add),
-                    contentDescription = "Add Alarm"
-                )
-            }
+            Icon(
+                painter = painterResource(id = R.drawable.notif_add),
+                contentDescription = "Add Alarm"
+            )
         }
     }
 }

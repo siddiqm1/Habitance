@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -28,6 +29,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.habitance.R
+import com.example.habitance.ui.theme.fontFamily
 
 @Composable
 fun BottomBar(navController: NavHostController) {
@@ -72,8 +74,8 @@ fun AddItem(
         if (selected) colorResource(id = R.color.navbar_icon_background) // Warna merah dari colors.xml
         else Color.Transparent
 
-    val contentColor =
-        if (selected) Color.White else Color.Black
+    val contentColor =   if (selected) Color.White else Color.Black
+
 
     Box(
         modifier = Modifier
@@ -103,18 +105,12 @@ fun AddItem(
             AnimatedVisibility(visible = selected) {
                 Text(
                     text = screen.title,
-                    color = contentColor
+                    color = contentColor,
+                    fontFamily = fontFamily
                 )
             }
         }
     }
 }
-
-//@Composable
-//@Preview
-//fun BottomNavPreview() {
-//    NavBar()
-//}
-
 
 
