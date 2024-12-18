@@ -90,16 +90,16 @@ fun NotificationRow(
             )
         }
 
-        androidx.compose.material.Switch(
-            checked = isEnabled,
-            onCheckedChange = { isChecked ->
-                isEnabled = isChecked
-                onToggle(isChecked)
-            },
-            colors = androidx.compose.material.SwitchDefaults.colors(
-                checkedThumbColor = Color(0xFF16423C),
-                uncheckedThumbColor = Color.Gray
-            )
-        )
+//        androidx.compose.material.Switch(
+//            checked = isEnabled,
+//            onCheckedChange = { isChecked ->
+//                isEnabled = isChecked
+//                onToggle(isChecked)
+//            },
+//            colors = androidx.compose.material.SwitchDefaults.colors(
+//                checkedThumbColor = Color(0xFF16423C),
+//                uncheckedThumbColor = Color.Gray
+//            )
+//        )
     }
 }

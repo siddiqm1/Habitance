@@ -105,7 +105,7 @@ fun HomePage(
             val diffInMillis = currentDate.seconds - it.start.seconds
             val diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis).toInt()
             val currentProgress = it.progress[diffInDays.toString()] ?: 0
-            if(it.category == CategoryActivity.Baik) {
+            if (it.category == CategoryActivity.Baik) {
                 it.target <= currentProgress
             } else {
                 currentProgress >= 0
@@ -195,7 +195,9 @@ fun HomePage(
                             .clickable {
                                 AuthManager(context).signOut()
                                 navMainController.navigate("login") {
-                                    popUpTo(0) { inclusive = true } // Menghapus semua layar sebelumnya
+                                    popUpTo(0) {
+                                        inclusive = true
+                                    } // Menghapus semua layar sebelumnya
                                 }
                             },
                         tint = TextDark
@@ -208,7 +210,7 @@ fun HomePage(
                 modifier = Modifier
                     .offset(y = 42.dp)
                     .align(Alignment.BottomCenter)
-            ){
+            ) {
                 // "What did you do today?"
                 Box(
                     modifier = Modifier
@@ -271,11 +273,11 @@ fun HomePage(
                         .height(35.dp)
                         .align(Alignment.BottomCenter)
                         .background(color = BackGround2, shape = RoundedCornerShape(15.dp))
-                ){
+                ) {
                     Text(
                         text = currentDate.showExtendedDate(),
                         fontFamily = fontFamily,
-                        fontSize = 8.sp,
+                        fontSize = 10.sp,
                         color = TextDark,
                         fontWeight = FontWeight(700),
                         textAlign = TextAlign.Center
@@ -299,9 +301,10 @@ fun HomePage(
             )
 
             //MENU-MENU
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(21.dp, 0.dp, 21.dp, 21.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(21.dp, 0.dp, 21.dp, 21.dp)
             ) {
                 // Kotak Activity List
                 Box(
@@ -318,7 +321,7 @@ fun HomePage(
                         fontFamily = FontFamily.Default,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
-                            .padding(24.dp,22.dp,0.dp,0.dp)
+                            .padding(24.dp, 22.dp, 0.dp, 0.dp)
 
                     )
 
@@ -328,7 +331,7 @@ fun HomePage(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .padding(18.dp, 12.dp)
-                    ){
+                    ) {
                         Text(
                             text = "Set your regular reminder!",
                             fontSize = 14.sp,
@@ -371,7 +374,7 @@ fun HomePage(
                     Box(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .weight(2f)
+                            .weight(1f) // Sama weight dengan Notes
                             .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp))
                             .clickable {
                                 navController.navigate(BottomBarScreen.FinishedActivity.route)
@@ -397,67 +400,31 @@ fun HomePage(
 
                     Spacer(Modifier.size(22.dp))
 
-                    Column(
+                    // Notes
+                    Box(
                         modifier = Modifier
-                            .weight(1.5f)
-                    ){
-
-                        // Light Mode
-                        Box(
-                            modifier = Modifier
-                                .background(Color(0xFF6A9C89), shape = RoundedCornerShape(16.dp))
-                                .padding(16.dp)
-                                .weight(1f)
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.light_mode), // Ikon Light Mode
-                                    contentDescription = "Light mode",
-                                    tint = Color(0xFFE9EFEC),
-                                    modifier = Modifier.size(36.dp)
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "Light Mode",
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color(0xFFE9EFEC)
-
-                                )
-                            }
-                        }
-
-                        Spacer(Modifier.size(22.dp))
-
-                        //            Notes
-                        Box(
-                            modifier = Modifier
-                                .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp))
-                                .padding(16.dp)
-                                .weight(1f)
-                                .fillMaxWidth()
-                                .clickable {
-                                    navController.navigate(BottomBarScreen.Note.route)
-                                },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.note), // Ikon Notes
-                                    contentDescription = "Notes",
-                                    tint = Color(0xFF16423C),
-                                    modifier = Modifier.size(36.dp)
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "Notes",
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color(0xFF16423C)
-                                )
-                            }
+                            .fillMaxHeight()
+                            .weight(1f) // Sama weight dengan Finished Activity
+                            .background(Color(0xFFC4DAD2), shape = RoundedCornerShape(16.dp))
+                            .clickable {
+                                navController.navigate(BottomBarScreen.Note.route)
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.note), // Ikon Notes
+                                contentDescription = "Notes",
+                                tint = Color(0xFF16423C),
+                                modifier = Modifier.size(36.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Notes",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF16423C)
+                            )
                         }
                     }
                 }
@@ -467,7 +434,7 @@ fun HomePage(
 }
 
 
-@Composable
+                @Composable
 fun Streaks(
     success: Int,
     total: Int
