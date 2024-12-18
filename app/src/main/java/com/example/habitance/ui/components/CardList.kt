@@ -1,4 +1,5 @@
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -19,20 +20,29 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,9 +50,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.NavController
 import com.example.habitance.R
-import com.example.habitance.navbar.Screen
+import com.example.habitance.data.AccountService
+import com.example.habitance.data.Repository
 import com.example.habitance.ui.screens.add_activity.Activity
 import com.example.habitance.ui.screens.add_activity.CategoryActivity
 import com.example.habitance.ui.screens.detailactivity.showDate
@@ -52,14 +62,17 @@ import com.example.habitance.ui.theme.TextDark
 import com.example.habitance.ui.theme.TextMedium
 import com.example.habitance.ui.theme.fontFamily
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 @Composable
 fun CardList(
-    navController: NavController,
     activity: Activity,
+    onReload: () -> Unit,
     onNavigateToDetail: () -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     val now = Timestamp.now().toDate()
     val createdDate = activity.start.toDate()
     val diffInMillis = now.time - createdDate.time
@@ -70,13 +83,19 @@ fun CardList(
         Log.d("CardList", "Error getting progress:")
         0
     }
+    var note by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
     Card(
         colors = CardDefaults.cardColors(BackGround2),
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onNavigateToDetail()
+                if(Timestamp.now().seconds >= activity.start.seconds)
+                    onNavigateToDetail()
+                else
+                    Toast.makeText(context, "Belum waktunya Yang \uD83D\uDE01😘😁", Toast.LENGTH_SHORT).show()
             },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(6.dp)
@@ -127,7 +146,7 @@ fun CardList(
                     }
             )
             Icon(
-                imageVector = Icons.Default.Edit,
+                imageVector = Icons.Default.Delete,
                 contentDescription = "edit",
                 tint = TextDark,
                 modifier = Modifier
@@ -136,6 +155,12 @@ fun CardList(
                         end.linkTo(parent.end)
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
+                    }
+                    .clickable {
+                        scope.launch {
+                            Repository().deleteActivity(AccountService().currentUserUid!!, activity.id)
+                            onReload()
+                        }
                     }
             )
         }
@@ -277,11 +302,13 @@ fun CardList(
                 }
             }
             Button(
-                onClick = { navController.navigate("addnote/${activity.id}/${activity.name}") },
+                onClick = {
+                    showDialog = true
+                },
                 modifier = Modifier
                     .size(35.dp) // Ukuran lingkaran
                     .clip(CircleShape) // Membuat bentuk lingkaran
-                    .constrainAs(noteButton) {
+                    .constrainAs(noteButton){
                         top.linkTo(endIcon.bottom, margin = 10.dp)
                         bottom.linkTo(parent.bottom, margin = 7.dp)
                         start.linkTo(parent.start, margin = 10.dp)
@@ -296,8 +323,9 @@ fun CardList(
                     contentDescription = "add note"
                 )
             }
-
-            Box(modifier = Modifier
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
                 .background(color = TextMedium, shape = RoundedCornerShape(16.dp))
                 .padding(10.dp, 8.dp)
                 .constrainAs(notePreview){
@@ -310,22 +338,90 @@ fun CardList(
                 }
             ){
                 Text(
-                    text = "lorem12",
+                    text = if (activity.note.isNotBlank()) activity.note else "Tidak ada catatan",
                     fontFamily = fontFamily,
-                    fontWeight = FontWeight(300),
+                    fontWeight = FontWeight.Light,
                     color = TextDark,
-                    fontSize = 7.sp
+                    fontSize = 8.sp
                 )
+
             }
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (note.isNotBlank()) {
+                            scope.launch {
+                                updateActivityNote(
+                                    AccountService().currentUserUid!!,
+                                    activity.id,
+                                    note
+                                )
+                                activity.note = note // Perbarui juga nilai lokal untuk sinkronisasi UI.
+                            }
+                        }
+                        showDialog = false
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF16423C),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_access_time_24),
+                        contentDescription = "Time Picker",
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                    Text(text = "Add Notes")
+                }
+            },
+            title = {Text(text = "Add Notes")},
+            text = {
+                OutlinedTextField(
+                    value = note,
+                    onValueChange = { note = it },
+                    label = { Text("Add Your Notes Here") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    shape = RoundedCornerShape(16.dp)
+                )
+            }
+        )
+    }
 }
 
-//@Preview
-//@Composable
-//fun CardListPreview() {
-//    CardList(Activity(), {})
-//}
+fun updateActivityNote(userId: String, activityId: String, note: String) {
+    val activityRef = FirebaseFirestore.getInstance()
+        .collection("users")
+        .document(userId)
+        .collection("activities")
+        .document(activityId)
+
+    activityRef.update("note", note)
+        .addOnSuccessListener {
+            Log.d("Firebase", "Note updated successfully")
+        }
+        .addOnFailureListener { e ->
+            Log.e("Firebase", "Error updating note", e)
+        }
+}
+
+
+
+
+@Preview
+@Composable
+fun CardListPreview() {
+    CardList(Activity(), {}, {})
+}
 
 

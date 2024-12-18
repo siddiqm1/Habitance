@@ -69,11 +69,13 @@ fun FinishedActivity(navController: NavController){
     val errorMessage = remember { mutableStateOf<String?>(null) }
     val selectedCategory = remember { mutableStateOf(CategoryActivity.Baik) }
 
-    LaunchedEffect(Unit) {
+    fun getActivities() {
         fetchActivities(
             onResult = { fetchedActivities ->
                 activities.value = fetchedActivities.filter {
                     it.end.seconds < Timestamp.now().seconds
+                }.sortedBy {
+                    it.start
                 }
                 filteredActivities.value = fetchedActivities
                 filteredActivities.value = activities.value.filter {
@@ -84,6 +86,11 @@ fun FinishedActivity(navController: NavController){
                 errorMessage.value = error.message
             }
         )
+
+    }
+
+    LaunchedEffect(Unit) {
+        getActivities()
     }
 
     LaunchedEffect(selectedCategory.value) {
@@ -231,9 +238,29 @@ fun FinishedActivity(navController: NavController){
                 }
                 Spacer(Modifier.size(15.dp))
 
-                LazyColumn {
-                    items(filteredActivities.value) {
-                        CardFinished(it)
+                if (filteredActivities.value.isEmpty()) {
+                    // Tampilan jika tidak ada aktivitas
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No activities found.",
+                            color = TextDark,
+                            fontSize = 18.sp,
+                            fontFamily = fontFamily,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                } else {
+                    LazyColumn {
+                        items(filteredActivities.value) {
+                            CardFinished(
+                                it,
+//                            getActivities()
+                            )
+                        }
                     }
                 }
             }

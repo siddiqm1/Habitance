@@ -327,5 +327,11 @@ fun Timestamp.showDate(): String {
     val formatter = DateTimeFormatter.ofPattern("d MMM yyyy")
         .withZone(ZoneId.systemDefault())
     return formatter.format(instant)
+}
 
+fun Timestamp.showExtendedDate(): String {
+    val instant = Instant.ofEpochSecond(this.seconds)
+    val formatter = DateTimeFormatter.ofPattern("EEEE, d MMM yyyy")
+        .withZone(ZoneId.systemDefault())
+    return formatter.format(instant)
 }
