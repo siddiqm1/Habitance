@@ -61,6 +61,7 @@ import com.example.habitance.ui.theme.Border
 import com.example.habitance.ui.theme.Border2
 import com.example.habitance.ui.theme.Bottom
 import com.example.habitance.ui.theme.TextDark
+import com.example.habitance.ui.theme.buttom
 import com.example.habitance.ui.theme.fontFamily
 import java.time.Instant
 import java.time.ZoneId
@@ -75,7 +76,7 @@ fun EditProfilePage(
 ) {
     val context = LocalContext.current
     val dateOfBirth by profileViewModel.dateofbirth.collectAsState()
-    var name by remember { mutableStateOf(profileViewModel.name.value) }
+    val name by profileViewModel.name.collectAsState()
     val gender by profileViewModel.gender.collectAsState()
     val showDatePicker by profileViewModel.showDatePicker.collectAsState()
 
@@ -144,7 +145,6 @@ fun EditProfilePage(
                     TextField(
                         value = name,
                         onValueChange = {
-                            name = it
                             profileViewModel.updateName(it)
                         },
                         label = { Text("Name", fontSize = 14.sp, color = Color.Gray) },
@@ -280,7 +280,7 @@ fun EditProfilePage(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary),
+                            containerColor = buttom),
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         Text("Save Changes", color = Color.White, fontSize = 18.sp)

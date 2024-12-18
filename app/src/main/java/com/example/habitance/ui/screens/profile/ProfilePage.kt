@@ -27,6 +27,7 @@ import com.example.habitance.ui.screens.profile.components.ProfileItem
 import com.example.habitance.ui.theme.BackGround
 import com.example.habitance.ui.theme.BackGround2
 import com.example.habitance.ui.theme.Border2
+import com.example.habitance.ui.theme.buttom
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -146,9 +147,9 @@ fun ProfilePage(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp), // Padding horizontal disamakan
+                        .padding(horizontal = 16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
+                        containerColor =buttom,
                         contentColor = Color.White
                     ),
                     shape = MaterialTheme.shapes.medium

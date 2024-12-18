@@ -208,13 +208,14 @@ fun AddActivity(navController: NavController) {
                     }
                 ) {
                     Text(
-                        text = "Simpan",
+                        text = "Save",
                         modifier = Modifier.padding(vertical = 3.dp, horizontal = 16.dp),
                         fontFamily = fontFamily,
                         fontSize = 14.sp,
                         fontWeight = FontWeight(400)
                     )
                 }
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

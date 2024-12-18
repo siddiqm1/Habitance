@@ -19,9 +19,16 @@ class NotificationViewModel(private val repository: NotificationRepository) : Vi
 
     private fun loadNotifications() {
         viewModelScope.launch {
-            _notifications.value = repository.getNotifications()
+            try {
+                val notifications = repository.getNotifications()
+                _notifications.value = notifications
+            } catch (e: IllegalStateException) {
+                // Kosongkan daftar notifikasi jika user sudah logout
+                _notifications.value = emptyList()
+            }
         }
     }
+
 
     fun addNotification(notification: Notification) {
         viewModelScope.launch {
