@@ -338,12 +338,22 @@ fun CardList(
                 }
             ){
                 Text(
-                    text = if (activity.note.isNotBlank()) activity.note else "Tidak ada catatan",
+                    text = if (activity.note.isNotBlank()) {
+                        if (activity.note.length > 40) {
+                            activity.note.take(40) + "..." // Potong teks dan tambahkan "..."
+                        } else {
+                            activity.note
+                        }
+                    } else {
+                        "Tidak ada catatan"
+                    },
                     fontFamily = fontFamily,
-                    fontWeight = FontWeight.Light,
+                    fontWeight = FontWeight(600),
                     color = TextDark,
-                    fontSize = 8.sp
+                    fontSize = 8.sp,
+                    modifier = Modifier.offset(0.dp, -3.dp)
                 )
+
 
             }
         }
